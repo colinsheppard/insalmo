@@ -1,0 +1,139 @@
+@begin
+
+fishCaptureParam1                  1.6
+fishCaptureParam9                  0.5
+
+fishCmaxParamA                   0.628
+fishCmaxParamB                    -0.3
+fishCmaxTempF1                    0.05
+fishCmaxTempF2                    0.05
+fishCmaxTempF3                     0.5
+fishCmaxTempF4                       1
+fishCmaxTempF5                     0.8
+fishCmaxTempF6                       0
+fishCmaxTempF7                       0
+fishCmaxTempT1                       0
+fishCmaxTempT2                       2
+fishCmaxTempT3                      10
+fishCmaxTempT4                      22
+fishCmaxTempT5                      23
+fishCmaxTempT6                      25
+fishCmaxTempT7                     100
+
+fishDetectDistParamA                 4.0
+fishDetectDistParamB                 2.0
+fishEnergyDensity                 5900
+
+fishFecundParamA                  690
+fishFecundParamB                  0.552
+
+fishFitnessHorizon                  90
+
+fishMaxSwimParamA                  2.8
+fishMaxSwimParamB                   21
+fishMaxSwimParamC              -0.0029
+fishMaxSwimParamD                0.084
+fishMaxSwimParamE                 0.37
+fishMoveDistParamA                 100
+fishMoveDistParamB                   2
+
+fishOutmigrateSuccessL1            5.0
+fishOutmigrateSuccessL9           12.0
+
+fishRespParamA                      30
+fishRespParamB                   0.784
+fishRespParamC                  0.0693
+fishRespParamD                    0.03
+fishSearchArea                   20000
+
+fishSpawnEggViability              0.9
+fishSpawnDefenseArea             56000
+
+fishSpawnDSuitD1                   0.0
+fishSpawnDSuitD2                  12.0
+fishSpawnDSuitD3                  27.0
+fishSpawnDSuitD4                  33.5
+fishSpawnDSuitD5                 204.0
+fishSpawnDSuitS1                   0.0
+fishSpawnDSuitS2                   0.0
+fishSpawnDSuitS3                  0.95
+fishSpawnDSuitS4                   1.0
+fishSpawnDSuitS5                   0.0
+fishSpawnMaxFlowChange             0.2
+fishSpawnMaxTemp                    14
+fishSpawnMinTemp                     5
+fishSpawnProb                      0.2
+fishSpawnVSuitS1                   0.0
+fishSpawnVSuitS2                   0.0
+fishSpawnVSuitS3                  0.06
+fishSpawnVSuitS4                   1.0
+fishSpawnVSuitS5                   1.0
+fishSpawnVSuitS6                   0.0
+fishSpawnVSuitV1                   0.0
+fishSpawnVSuitV2                   2.3
+fishSpawnVSuitV3                   3.0
+fishSpawnVSuitV4                  54.0
+fishSpawnVSuitV5                  61.0
+fishSpawnVSuitV6                 192.0
+fishSpawnWtLossFraction            0.4
+
+fishTurbidExp                  -0.0711
+fishTurbidMin                      0.1
+fishTurbidThreshold                5.0
+
+
+fishWeightParamA               0.00411
+fishWeightParamB                  3.49
+
+mortFishAqPredD1                    20
+mortFishAqPredD9                    10
+mortFishAqPredF1                    18
+mortFishAqPredF9                     0
+mortFishAqPredL1                     4
+mortFishAqPredL9                    18
+
+mortFishAqPredMin                 0.92
+
+mortFishAqPredT1                    15
+mortFishAqPredT9                     8
+mortFishAqPredU1                     5
+mortFishAqPredU9                    80
+mortFishConditionK1                0.3
+mortFishConditionK9                0.6
+mortFishHiTT1                     28.0
+mortFishHiTT9                     24.0
+mortFishStrandD1                  -0.3
+mortFishStrandD9                   0.3
+mortFishTerrPredD1                   5
+mortFishTerrPredD9                 200
+mortFishTerrPredF1                  18
+mortFishTerrPredF9                   0
+mortFishTerrPredH1                 500
+mortFishTerrPredH9                -100
+mortFishTerrPredL1                   6
+mortFishTerrPredL9                   3
+
+mortFishTerrPredMin               0.95
+
+mortFishTerrPredT1                  10
+mortFishTerrPredT9                  50
+mortFishTerrPredV1                  20
+mortFishTerrPredV9                 200
+mortFishVelocityV1                 1.8
+mortFishVelocityV9                 1.4
+
+mortReddDewaterSurv                0.9
+mortReddHiTT1                     23.0
+mortReddHiTT9                     17.5
+mortReddLoTT1                      1.7
+mortReddLoTT9                      4.0
+mortReddScourDepth             10000.0
+
+reddDevelParamA                33000.0
+reddDevelParamB                  -2.04
+reddDevelParamC                  -7.58
+reddNewLengthMin                   3.5
+reddNewLengthMax                   4.1
+reddSize                         56000
+
+@end

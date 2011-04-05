@@ -1,0 +1,61 @@
+inSALMO Version 0.7
+
+This software is an adaptation of inSTREAM which is described below.
+
+inSTREAM Version 4.3.1a
+Readme file revised 19 June 2007, SF Railsback
+
+v. 4.3.1a is version 4.3a with small modifications of the software so it compiles on versions 4.0.0 and higher of the gcc Objective-C compiler, which are standard in new releases of Linux. The changes include: (1) The fish parameters are no longer declared as "CONST" in FishParams.h. (2) In SurvProb.m, the variables "isStarvProb" and "anAgentKnows" are declared as "unsigned" instead of BOOL. (3) In EcoAverager, the casting function "(IMP)" is removed everywhere it was used. The compiler still produces many warnings.
+
+All files are in Unix format.
+
+This version of inSTREAM uses the same formulation for fish behavior as v. 4.2, but input from a two-dimensional hydrodynamic model to define habitat cells and model depth and velocity as a function of flow.
+
+This version is documented in the letter report "inSTREAM-2D: The Individual-based Stream Trout Research and Environmental Assessment Model with Two-Dimensional Habitat Simulation", prepared by: Steve Railsback, Lang, Railsback & Associates, Arcata, CA; for: USDA Forest Service, Pacific Southwest Research Station; September, 2006.
+
+For information and assistance contact:
+	Bret Harvey
+	USDA Forest Service
+	Redwood Sciences Laboratory
+	Arcata, CA, USA 95521
+	http://www.fs.fed.us/psw/rsl/
+
+or:
+	Steve Railsback
+	Lang, Railsback & Assoc.
+	Arcata, CA, USA 95521
+	LRA@Northcoast.com
+
+Changes made from version 4.3 to 4.3a: 
+
+1.) Cleanup and renaming of parameter files.
+
+2.) Implementation of a slight revision to how aquatic predation is simulated, as described in the current draft of the documentation report for inSTREAM 4.2. In previous versions, each trout with length greater than fishPiscivoryLength updated all the habitat mortality functions when it selected its cell each day. To reduce computations, now habitat mortality functions are updated only after the last such piscivorous fish completes its habitat selection ("move"). 
+
+In a test run (the example run distributed with the software), this change resulted in ~40% reduction in execution time while producing identical results. The execution speed benefit increases with the number of adult trout.
+
+The following changes were made to the software.
+
+Trout:
+
+- moveToMaximizeExpectedMaturity: When a trout has selected its destination cell, it checks whether it is piscivorous (length > fishPiscivoryLength). If so, it increments the number of piscivorous fish in its new reach. The trout then checks whether it is the smallest piscivorous trout (if(toggledFishForHabSurvUpdate == self)). If so, it tells the model swarm to execute its method updateHabSurvProbs.
+
+Trout have a new instance variable (id) toggledFishForHabSurvUpdate, which is daily set to nil in -updateFishWith:. The model swarm sets it to the trout's self (via [trout toggleFishForHabSurvUpdate]) if the trout is the smallest piscivore.
+
+TroutModelSwarm:
+
+The model swarm has a new method toggleFishForHabSurvUpdate, which is scheduled daily as one of the fish actions (in buildActions). This method loops through all the fish (in descending size order) and identifies the last fish with length >= minSpeciesMinPiscLength. This fish has its method toggleFishForHabSurvUpdate executed so it knows it is the last piscivorous fish.
+
+The variable minSpeciesMinPiscLength is the lowest value of fishPiscivoryLength among all the species being simulated. It is identified in the new model swarm method "findMinSpeciesPiscLength", which is executed once at the start.
+
+The method "updateHabSurvProbs" now tells each reach to execute its method updateHabSurvProbForAqPred.
+
+HabitatSpace:
+
+The new method updateHabSurvProbForAqPred tells each of the reach's cells to execute their (new) method updateHabSurvProbForAqPred.
+
+The existing method incrementNumPiscivorousFish no longer updates the habitat survival probs for all the reach's cells.
+
+FishCell:
+
+The new method updateHabSurvProbForAqPred simply updates all the fish survival managers to update their habitat functions. 	

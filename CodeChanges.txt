@@ -1,0 +1,70 @@
+Dec 21 2009
+                     Touched various files to make code run.
+                         Files including:
+				TroutObserverSwarm
+                                Copied: ExperSwarm.[hm], ScenarioIterator.[hm], SearchElement.[hm] from  
+                                        /home/jackson/swarm/inSTREAM_4.2.1aMemDebug/inSTREAM_4.2.1
+
+                      Fixed warning incompatible implicit declaration of built-in function ‘exit'
+                                  in files: ReddSuperImp.m
+                                            BreakoutReporter.m
+                                            BreakoutAverager.m
+                                            BreakoutVarProbe.m
+                                            BreakoutMessageProbe.m
+                                            EcoAverager.m
+                                            SolarManager.m
+                                            UTMInterpolatorFactory.m
+                                            UTMCell.m
+                                            ReddScour.m
+
+                        Overwrote files:    BreakoutReporter.m
+                                            BreakoutAverager.m
+                                            BreakoutVarProbe.m
+                                            BreakoutMessageProbe.m
+                                            EcoAverager.m
+                                            SolarManager.m
+                                      with same files from: /home/jackson/swarm/inSTREAM_4.2.1aMemDebug/inSTREAM_4.2.1
+
+			Trout.m   Fixed casting warning:  - (FishCell *) findCellForNewRedd 
+                                                         - (double)calcFeedTimeAt:(FishCell *)aCell
+
+                        HabitatSpace Fixed casting warning - getNeighborsWithin: (double) aRange 
+                                                                             of: refCell 
+                                                                       withList: (id <List>) aCellList; 
+ 
+
+                        Fixed: TroutModelSwarm.m:495: warning: cast to pointer from integer of different size
+                               TroutModelSwarm.m:1595: warning: cast from pointer to integer of different size
+
+                        OverWrote SurvProb.[hm] same file from /home/jackson/swarm/inSTREAM_4.2.1aMemDebug/inSTREAM_4.2.1 
+                                to fix casting problem.
+
+                        Commented out section of code in FishParams drop
+
+
+Dec 29 2009             Removed ZoneAllocMapper from TroutModelSwarm
+                        other memory management changes to TroutModelSwarm.
+                        Other debugging of code
+
+Dec 30 2009             Removing  ZoneAllocMapper  from HabitatSpace
+                        Change float to double in Barrier
+                        Added drop methof to Barrier
+                        Copied modified TimeSeriesInputManger to this source.
+
+
+
+Jan 5 2010              Modified the way memory for nodeUTMXArray and nodeUTMYArray is allocated to facilitate deallocation.  
+
+
+
+
+
+June 3 2010		Copied and overwrote InterpolationTable.m from inSTREAM_4.2.1a 
+			Removed ZoneAllocMapper from FishParams
+			Removed ZoneAllocMapper from HabitatSetup
+			Added drop to HabitatSetup
+                        Removed HydraulicFileReader from directory
+                        Removed ZoneAllocMapper from StationObject
+ 			Added drop to StationObject
+                        Removed ZoneAllocMapper from YearShuffler
+                        Removed ZoneAllocMapper from Makefile

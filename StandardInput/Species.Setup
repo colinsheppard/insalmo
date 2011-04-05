@@ -1,0 +1,8 @@
+Species.Setup file, inSTREAM 4.5.
+For each species, provide species class name, parameter file name,
+initial population file name, and raster display color.
+
+FallChinook
+ClearCreekFallChinook.Params
+ClearCreekSpawnerInitFile.csv
+OliveDrab
