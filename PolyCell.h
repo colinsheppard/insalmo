@@ -53,8 +53,6 @@ typedef struct PolyPixelCoordStruct PolyPixelCoord;
 
   int numberOfNodes;
 
-  int** cornerNodeArray;
-
   double** polyCornerCoords;
   int numCornerCoords;
   
@@ -80,8 +78,6 @@ typedef struct PolyPixelCoordStruct PolyPixelCoord;
 
    id <List> polyPointList;
  
-   PolyDisplayPoint** displayPointArray; 
-
    long int minXCoordinate;
    long int maxYCoordinate;
 
@@ -136,7 +132,6 @@ typedef struct PolyPixelCoordStruct PolyPixelCoord;
 - setNumberOfNodes: (int) aNumberOfNodes;     // This may go away
 
 - (int) getNumberOfNodes;
-- (int **) getCornerNodeArray; 
 
 - createPolyCoordinateArray;
 - setPolyCoordsWith: (double) aPolyCoordX

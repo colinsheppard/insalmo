@@ -113,18 +113,6 @@ Boston, MA 02111-1307, USA.
 }
 
 
-///////////////////////////////////
-//
-// getCornerNodeArray
-//
-///////////////////////////////////
-- (int **) getCornerNodeArray
-{
-   return cornerNodeArray;
-
-}
-
-
 
 /////////////////////////////////////////////////
 //
@@ -1005,26 +993,7 @@ Boston, MA 02111-1307, USA.
     //fprintf(stdout, "PolyCell >>>> drop >>>> BEGIN\n");
     //fflush(0);
 
-
-    /*
     for(i = 0; i < numberOfNodes; i++)
-    {
-          [cellZone free: polyPointArray[i]];
-          polyPointArray[i] = NULL;
-    }
-    [cellZone free: polyPointArray];
-    polyPointArray = NULL;
-    */
-
-    for(i = 0; i < numberOfNodes; i++)
-    {
-         [cellZone free: polyCoordinates[i]]; 
-         polyCoordinates[i] = NULL;
-    }
-    [cellZone free: polyCoordinates]; 
-    polyCoordinates = NULL;
-
-    for(i = 0; i < numCornerCoords; i++)
     {
          [cellZone free: polyCoordinates[i]]; 
          polyCoordinates[i] = NULL;
@@ -1034,23 +1003,6 @@ Boston, MA 02111-1307, USA.
 
     [polyPointList deleteAll];
     polyPointList = nil;
-
-   for(i = 0; i < numberOfNodes; i++)
-    {
-          [cellZone free: displayPointArray[i]];
-          displayPointArray[i] = NULL;
-    }
-    [cellZone free: displayPointArray];
-    displayPointArray= NULL;
-
-    for(i = 0; i < numberOfNodes; i++)
-    {
-          [cellZone free: cornerNodeArray[i]];
-          cornerNodeArray[i] = NULL;
-    }
-    [cellZone free: cornerNodeArray];
-
-    cornerNodeArray= NULL;
 
     for(i = 0; i < pixelCount; i++)
     {
