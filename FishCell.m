@@ -2048,24 +2048,24 @@ END of OLD CODE */
    //fflush(0);
    
 
-   //[fishIContain  removeAll];
-   //[fishIContain  drop];
-   //fishIContain = nil;
-   //[reddsIContain removeAll];
-   //[reddsIContain drop];
-   //reddsIContain = nil;
+	[fishIContain  removeAll];
+	[fishIContain  drop];
+	fishIContain = nil;
+	[reddsIContain removeAll];
+	[reddsIContain drop];
+	reddsIContain = nil;
 
-   //[listOfAdjacentCells removeAll];
-   //[listOfAdjacentCells drop];
-   //listOfAdjacentCells = nil;
+	[listOfAdjacentCells removeAll];
+	[listOfAdjacentCells drop];
+	listOfAdjacentCells = nil;
 
-   //[survMgrMap deleteAll];
-   //[survMgrMap drop];
-   //survMgrMap = nil;
+	[survMgrMap deleteAll];
+	[survMgrMap drop];
+	survMgrMap = nil;
 
-   //[survMgrReddMap deleteAll];
-   //[survMgrReddMap drop];
-   //survMgrReddMap = nil;
+	[survMgrReddMap deleteAll];
+	[survMgrReddMap drop];
+	survMgrReddMap = nil;
 
 	[super drop];
 	self = nil;

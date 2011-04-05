@@ -4629,94 +4629,94 @@ return self;
         //fclose(habitatRptFilePtr);
     }
 
-    //[habitatZone free: hydraulicFile];
-    //hydraulicFile = NULL;
+    [habitatZone free: hydraulicFile];
+    hydraulicFile = NULL;
 
-    //[habitatZone free: flowFile];
-    //flowFile = NULL;
+    [habitatZone free: flowFile];
+    flowFile = NULL;
 
-    //[habitatZone free: temperatureFile];
-    //temperatureFile = NULL;
+    [habitatZone free: temperatureFile];
+    temperatureFile = NULL;
 
-    //[habitatZone free: turbidityFile];
-    //turbidityFile = NULL;
+    [habitatZone free: turbidityFile];
+    turbidityFile = NULL;
 
-    //[habitatZone free: polyCellGeomFile];
-    //polyCellGeomFile = NULL;
+    [habitatZone free: polyCellGeomFile];
+    polyCellGeomFile = NULL;
 
-    //[habitatZone free: cellHabVarsFile];
-    //cellHabVarsFile = NULL;
+    [habitatZone free: cellHabVarsFile];
+    cellHabVarsFile = NULL;
 
-    //[barrierList deleteAll];
-    //[barrierList drop];
-    //barrierList = nil; 
+    [barrierList deleteAll];
+    [barrierList drop];
+    barrierList = nil; 
 
-    //[habitatZone free: cellDepthReportFile];
-    //[habitatZone free: cellVelocityReportFile];
-    //[habitatZone free: habitatReportFile];
-    //[habitatZone free: cellAreaDepthVelReportFile];
-    //[habitatZone free: Date];
+    [habitatZone free: cellDepthReportFile];
+    [habitatZone free: cellVelocityReportFile];
+    [habitatZone free: habitatReportFile];
+    [habitatZone free: cellAreaDepthVelReportFile];
+    [habitatZone free: Date];
 
-    //[habDownstreamLinksToDS removeAll];
-    //[habDownstreamLinksToDS drop];
-    //habDownstreamLinksToDS = nil;
+    [habDownstreamLinksToDS removeAll];
+    [habDownstreamLinksToDS drop];
+    habDownstreamLinksToDS = nil;
 
-    //[habDownstreamLinksToUS removeAll];
-    //[habDownstreamLinksToUS drop];
-    //habDownstreamLinksToUS = nil;
+    [habDownstreamLinksToUS removeAll];
+    [habDownstreamLinksToUS drop];
+    habDownstreamLinksToUS = nil;
 
-    //[habUpstreamLinksToDS removeAll];
-    //[habUpstreamLinksToDS drop];
-    //habUpstreamLinksToDS = nil;
+    [habUpstreamLinksToDS removeAll];
+    [habUpstreamLinksToDS drop];
+    habUpstreamLinksToDS = nil;
 
-    //[habUpstreamLinksToUS removeAll];
-    //[habUpstreamLinksToUS drop];
-    //habUpstreamLinksToUS = nil;
+    [habUpstreamLinksToUS removeAll];
+    [habUpstreamLinksToUS drop];
+    habUpstreamLinksToUS = nil;
 
-    //[tempCellList removeAll];
-    //[tempCellList drop];
-    //tempCellList = nil;
+    [tempCellList removeAll];
+    [tempCellList drop];
+    tempCellList = nil;
 
-    //[upstreamCells removeAll];
-    //[upstreamCells drop];
-    //upstreamCells = nil;
+    [upstreamCells removeAll];
+    [upstreamCells drop];
+    upstreamCells = nil;
 
-    //[downstreamCells removeAll];
-    //[downstreamCells drop];
-    //downstreamCells = nil;
+    [downstreamCells removeAll];
+    [downstreamCells drop];
+    downstreamCells = nil;
 
 
-    //[cellFishList removeAll];
-    //[cellFishList drop];
-    //cellFishList = nil;
+    [cellFishList removeAll];
+    [cellFishList drop];
+    cellFishList = nil;
 
-    //[habitatZone free: reachName];
-    //reachName = NULL;
+    [habitatZone free: reachName];
+    reachName = NULL;
 
-    //[habitatZone free: instanceName];
-    //instanceName = NULL;
+    [habitatZone free: instanceName];
+    instanceName = NULL;
 
-    //[habitatZone free: modelDate];
-    //modelDate = NULL;
+    [habitatZone free: modelDate];
+    modelDate = NULL;
 
-    //[flowInputManager drop];
-    //flowInputManager = nil;
+    [flowInputManager drop];
+    flowInputManager = nil;
 
-    //[temperatureInputManager drop];
-    //temperatureInputManager = nil;
+    [temperatureInputManager drop];
+    temperatureInputManager = nil;
 
-    //[turbidityInputManager drop];
-    //turbidityInputManager = nil;
+    [turbidityInputManager drop];
+    turbidityInputManager = nil;
 
-    //[polyCellListNdx drop];
-    //polyCellListNdx = nil;
+    [polyCellListNdx drop];
+    polyCellListNdx = nil;
 
     [polyCellList deleteAll];
     [polyCellList drop];
     polyCellList = nil;
 
-    //[habitatZone drop];
-    //habitatZone = nil;
+    [habitatZone drop];
+    habitatZone = nil;
 
     fprintf(stdout, "HabitatSpace >>>> drop >>>> END\n");
     fflush(0);
