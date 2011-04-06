@@ -869,8 +869,6 @@ char **speciesColor;
              id newSpawner;
 	     double length = 0.0;
              time_t arrivalTime = 0;
-             int arrivalMonth = -1;
-             int arrivalDay = -1;
   
              //
 	     // set properties of the new Trout
@@ -916,13 +914,6 @@ char **speciesColor;
              }
              
              [newSpawner setArrivalTime: arrivalTime];
-
-             arrivalMonth = [timeManager getMonthWithTimeT: arrivalTime];
-             arrivalDay = [timeManager getDayOfMonthWithTimeT: arrivalTime];
-
-             [newSpawner setArrivalMonth: arrivalMonth 
-                                  andDay: arrivalDay];
-             
 
          } // end numFish/Age loop
 
@@ -1661,20 +1652,21 @@ char **speciesColor;
     while(([ndx getLoc] != End) && ((aSpawner = [ndx next]) != nil))
     {
          arrivalTime = [aSpawner getArrivalTime];
-         arrivalMonth = [aSpawner getArrivalMonth];
+         arrivalMonth = [timeManager getMonthWithTimeT: arrivalTime];
 
          if(arrivalMonth == modelMonth)
          {
-
-             arrivalDay = [aSpawner getArrivalDay];
+             arrivalDay = [timeManager getDayOfMonthWithTimeT: arrivalTime];
              if(arrivalDay == modelDay)
              {
                  id reach = nil;
                  FishCell*  fishCell = (FishCell *) nil;
 
-//                 fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %s\n", [timeManager getDateWithTimeT: modelTime]);
-//                 fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
-//                 fflush(0);
+		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %s\n", [timeManager getDateWithTimeT: modelTime]);
+		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
+		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %d\n", modelTime);
+		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %d\n", arrivalTime);
+		 //fflush(0);
 
                  [liveFish addLast: aSpawner];
                  [activeSpawners addLast: aSpawner];

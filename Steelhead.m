@@ -64,13 +64,6 @@ Boston, MA 02111-1307, USA.
 {
       return arrivalTime;
 }
-- setArrivalMonth: (int) aMonth 
-           andDay: (int) aDay
-{
-     arrivalMonth = aMonth;
-     arrivalDay = aDay;
-     return self;
-}
 
 - (int) getArrivalMonth
 {

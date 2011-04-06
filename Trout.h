@@ -183,8 +183,6 @@ BOOL spawnedThisSeason;
 BOOL iAmPiscivorous;
 
 time_t arrivalTime;
-int arrivalMonth;
-int arrivalDay;
 
   //
   // This is used to update the habitat survival probs
@@ -264,12 +262,6 @@ id toggledFishForHabSurvUpdate;
 
 - setArrivalTime: (time_t) anArrivalTime;
 - (time_t) getArrivalTime;
-
-- setArrivalMonth: (int) aMonth 
-                andDay: (int) aDay;
-
-- (int) getArrivalMonth;
-- (int) getArrivalDay;
 
 
 - (id <Symbol>) getCauseOfDeath;
