@@ -1205,6 +1205,7 @@ Boston, MA 02111-1307, USA.
    char c = 'a';
    char aNum[25];
    int numberOfFlows = 0;
+   int maxFlowsInFile = 100;
    double* flow = NULL;
    int flowNdx = 0;
    int numPolyId = 0;
@@ -1244,8 +1245,8 @@ Boston, MA 02111-1307, USA.
         if(isspace(c))
         {
             aNum[j] = '\0';
-            //fprintf(stdout, "%s\n", aNum);
-            //fflush(0);
+	    //fprintf(stdout, "%s\n", aNum);
+	    //fflush(0);
             if(isdigit(aNum[0]))
             {
                 numberOfFlows++;
@@ -1261,7 +1262,7 @@ Boston, MA 02111-1307, USA.
 
     //fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> numberofFlows = %d\n", numberOfFlows);
     //fflush(0);
-    flow = (double *) [habitatZone alloc: 24*sizeof(double)];
+    flow = (double *) [habitatZone alloc: maxFlowsInFile*sizeof(double)];
     for(i = 0; i < length; i++)
     {
         c = inputString[i];
@@ -1306,8 +1307,7 @@ Boston, MA 02111-1307, USA.
        int numDepths = 0;
        int numVelocities = 0;
        
-       if((dataFPTR = fopen(hydraulicFile, "r")) == NULL)
-       {
+       if((dataFPTR = fopen(hydraulicFile, "r")) == NULL){
             fprintf(stderr, "ERROR: HabitatSpace >>>> readPolyInterpolatorFiles >>>> unable to open %s for reading\n", hydraulicFile);
             fflush(0);
             exit(1);
@@ -1330,67 +1330,54 @@ Boston, MA 02111-1307, USA.
 
                length = strlen(inputString);
                j = 0;
-               for(i = 0; i < length; i++)
-               {
+	       //fprintf(stdout, "strlen(inputString) = %d",length);
+	       //fflush(0);
+               for(i = 0; i < length; i++){
                    c = inputString[i];
 
-                   //fprintf(stdout, "Now read in the actual data >>>> c = %c\n", c);
-                   //fflush(0);
+		   //fprintf(stdout, "Now read in the actual data >>>> c = %c, setInterpolatorData = %d, i = %d\n", c, setInterpolatorData,i);
+		   //fflush(0);
 
-                   if(isalpha(c))
-                   {
+                   if(isalpha(c)){
                        continue;
                    }
                   
-                   if(isspace(c))
-                   {
+                   if(isspace(c)){
                       aNum[j] = '\0';
-                      if(strchr(aNum, '.'))
-                      {
+                      if(strchr(aNum, '.')){
                           flushNdx = 0;
-                          if(isdigit(aNum[0]) || aNum[0] == '-')
-                          {
+                          if(isdigit(aNum[0]) || aNum[0] == '-'){
                               aVal = atof(aNum);
                               //fprintf(stdout, "%f\n", aVal);
                               //fflush(0);
                           }
-                          for(flushNdx = 0; flushNdx < 25; flushNdx++)
-                          {
+                          for(flushNdx = 0; flushNdx < 25; flushNdx++){
                                aNum[flushNdx] = '\0';
                           }
-
-                          if(setInterpolatorData == 0)
-                          {
+                          if(setInterpolatorData == 0){
                               setInterpolatorData = 1;
                           }
-
-                      }
-                      else if(aNum[0] == '0')
-                      {
+                      }else if(aNum[0] == '0'){
                             aVal = atof(aNum);
                             //fprintf(stdout, "%f\n", aVal);
                             //fflush(0);
-                            for(flushNdx = 0; flushNdx < 25; flushNdx++)
-                            {
+                            for(flushNdx = 0; flushNdx < 25; flushNdx++){
                                  aNum[flushNdx] = '\0';
                             }
-                            if(setInterpolatorData == 0)
-                            {
+                            if(setInterpolatorData == 0){
                                 setInterpolatorData = 1;
                             }
-                      }
-                      else if(isdigit(aNum[0]) && (aNum[0] != '0'))
-                      {
+                      }else if(isdigit(aNum[0]) && (aNum[0] != '0')){
                               //
                               // check the previously created and poulated interpolators
                               //
                               if(setInterpolatorData != 0)
                               {
-                                   //fprintf(stdout, "check interpolators >>>> polyId = %d\n", polyId);
-                                   //fflush(0);
-                                   //[depthInterpolator printSelf];
-                                   //[velocityInterpolator printSelf];
-
+				      //fprintf(stdout, "check interpolators >>>> polyId = %d\n", polyId);
+				      //fflush(0);
+				      //[depthInterpolator printSelf];
+				      //[velocityInterpolator printSelf];
+				      //exit(1);
 
                                     if(numDepths != numberOfFlows)
                                     {
@@ -1429,50 +1416,45 @@ Boston, MA 02111-1307, USA.
                               numDepths = 0;
                               numVelocities = 0;
                       }
-
-                      if(setInterpolatorData == 1)
-                      {
+                      if(setInterpolatorData == 1 && numDepths<numberOfFlows){
                            //set the depth interpolator data
-                           //xprint(depthInterpolator);
+			   //xprint(depthInterpolator);
 
-                           if(aVal <= 0.0)
-                           {
+                           if(aVal <= 0.0){
                                aVal = 0.0;
                            }
+			      //fprintf(stdout, "set depth interpolator data >>>> polyId = %d\tflow = %f\taVal = %f\tnumDepths = %d\n", polyId,flow[flowNdx],aVal*100.0,numDepths+1);
+			      //fflush(0);
 
                            [depthInterpolator addX: flow[flowNdx]
                                                  Y: 100.0*aVal];
                            setInterpolatorData = 2;
                            numDepths++;
-                      }
-                      else if(setInterpolatorData == 2)
-                      {
+			   //[depthInterpolator printSelf];
+                      }else if(setInterpolatorData == 2 && numVelocities<numberOfFlows){
                            // set the velocity interpolator data
-                           //xprint(velocityInterpolator);
-
-                             
+			   //xprint(velocityInterpolator);
+			      //fprintf(stdout, "set velocity interpolator data >>>> polyId = %d\tflow = %f\taVal = %f\tnumVelocities = %d\n", polyId,flow[flowNdx],aVal*100.0,numVelocities+1);
+			      //fflush(0);
 
                            [velocityInterpolator addX: flow[flowNdx]
                                                     Y: 100.0*aVal];
                            setInterpolatorData = 1;
                            flowNdx++;
                            numVelocities++;
+			   //[velocityInterpolator printSelf];
                       }
                       j = 0;
                       aNum[0] = '\0';
                       continue;
                   }
-
                   aNum[j] = c;
                   j++;
-           
               } 
        }
-
        //fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> numPolyId = %d\n", numPolyId);
        //fflush(0);
    }
-
    //
    // Check to see if each cell has the interpolation tables
    //   
