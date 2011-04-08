@@ -435,16 +435,16 @@ struct updateVar {
 
    struct experVar *myVar;
 
-   fprintf(stdout, "ScenarioIterator >>>> nextControlSetOnObject >>>> BEGIN\n");
-   fflush(0);
-   xprint(theObject);
-   xprint(anInstanceName);
+   //fprintf(stdout, "ScenarioIterator >>>> nextControlSetOnObject >>>> BEGIN\n");
+   //fflush(0);
+   //xprint(theObject);
+   //xprint(anInstanceName);
 
    [self updateClassScenarioCounts: theObject];
    [self updateClassReplicateCounts: theObject];
 
-   fprintf(stdout, "ScenarioIterator >>>> nextControlSetOnObject >>>> after update*Counts\n");
-   fflush(0);
+   //fprintf(stdout, "ScenarioIterator >>>> nextControlSetOnObject >>>> after update*Counts\n");
+   //fflush(0);
 
    if([iterMap at: getClass(theObject)] != nil)
    {
@@ -452,14 +452,14 @@ struct updateVar {
        {
            myProbeMap = [[iterMap at: getClass(theObject)] at: anInstanceName];
       
-           fprintf(stderr, "SCENARIO ITERATOR >>>> iterMap = %p\n", iterMap);
-           fprintf(stderr, "SCENARIO ITERATOR >>>> iterMap getCount = %d\n", [iterMap getCount]);
-           fprintf(stderr, "SCENARIO ITERATOR >>>> theObject = %p\n", theObject);
-           xprint(theObject);
-           fprintf(stderr, "SCENARIO ITERATOR >>>> myProbeMap = %p\n", myProbeMap);
-           fprintf(stderr, "SCENARIO ITERATOR >>>> anInstanceName = %p\n", anInstanceName);
-           xprint(anInstanceName);
-           fflush(0);
+           //fprintf(stderr, "SCENARIO ITERATOR >>>> iterMap = %p\n", iterMap);
+           //fprintf(stderr, "SCENARIO ITERATOR >>>> iterMap getCount = %d\n", [iterMap getCount]);
+           //fprintf(stderr, "SCENARIO ITERATOR >>>> theObject = %p\n", theObject);
+           //xprint(theObject);
+           //fprintf(stderr, "SCENARIO ITERATOR >>>> myProbeMap = %p\n", myProbeMap);
+           //fprintf(stderr, "SCENARIO ITERATOR >>>> anInstanceName = %p\n", anInstanceName);
+           //xprint(anInstanceName);
+           //fflush(0);
        }
    }
       
@@ -530,7 +530,6 @@ struct updateVar {
   {
       [WarningMessage raiseEvent: "WARNING: SCENARIO ITERATOR >>>> nextControlSetOnObject\n"
                                   "         theObject = %s does not belong to iterMap\n", [theObject getName]];
-
   }
 
   fprintf(stdout, "ScenarioIterator >>>> nextControlSetOnObject >>>> END\n");
@@ -549,8 +548,8 @@ struct updateVar {
                    inClass: (Class) paramClass {
    struct updateVar *aScenarioCounter;
 
-   fprintf(stdout, "ScenarioIterator >>>> sendScenarioCountToParam >>>> BEGIN\n");
-   fflush(0);
+   //fprintf(stdout, "ScenarioIterator >>>> sendScenarioCountToParam >>>> BEGIN\n");
+   //fflush(0);
 
    aScenarioCounter = (struct updateVar *) [scenarioIterZone alloc: sizeof(struct updateVar)];
 
@@ -560,10 +559,10 @@ struct updateVar {
 
    [updateScenarioClassList addLast: (void *) aScenarioCounter];
 
-   xprint(aScenarioCounter->varProbe); 
+   //xprint(aScenarioCounter->varProbe); 
    
-   fprintf(stdout, "ScenarioIterator >>>> sendScenarioCountToParam >>>> END\n");
-   fflush(0);
+   //fprintf(stdout, "ScenarioIterator >>>> sendScenarioCountToParam >>>> END\n");
+   //fflush(0);
 
    return self;
 }
@@ -578,8 +577,8 @@ struct updateVar {
  
    struct updateVar *aReplicateCounter;
 
-   fprintf(stdout, "ScenarioIterator >>>> sendReplicateCountToParam >>>> BEGIN\n");
-   fflush(0);
+   //fprintf(stdout, "ScenarioIterator >>>> sendReplicateCountToParam >>>> BEGIN\n");
+   //fflush(0);
 
    aReplicateCounter = (struct updateVar *) [scenarioIterZone alloc: sizeof(struct updateVar)];
 
@@ -588,10 +587,10 @@ struct updateVar {
 
    [updateReplicateClassList addLast: (void *) aReplicateCounter];
 
-   xprint(aReplicateCounter->varProbe);
+   //xprint(aReplicateCounter->varProbe);
 
-   fprintf(stdout, "ScenarioIterator >>>> sendReplicateCountToParam >>>> END\n");
-   fflush(0);
+   //fprintf(stdout, "ScenarioIterator >>>> sendReplicateCountToParam >>>> END\n");
+   //fflush(0);
 
    return self;
 }
@@ -605,21 +604,21 @@ struct updateVar {
 {
   struct updateVar *anSCounter;
 
-  fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> BEGIN\n");
-  fflush(0);
+  //fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> BEGIN\n");
+  //fflush(0);
 
-  xprint(updateScenarioClassList);
-  xprint(scenarioNdx);
+  //xprint(updateScenarioClassList);
+  //xprint(scenarioNdx);
 
   [scenarioNdx setLoc: Start];
 
   while(([scenarioNdx getLoc] != End) && ((anSCounter = (struct updateVar *) [scenarioNdx next]) != (struct updateVar *) nil))
   {
-         fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> while >>>> varProbe = %p\n", anSCounter->varProbe);
-         fflush(0);
-         fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> while >>>> varProbe getProbedVar = %s\n", [anSCounter->varProbe getProbedVariable]);
-         fflush(0);
-         xprint(anSCounter->varProbe);
+         //fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> while >>>> varProbe = %p\n", anSCounter->varProbe);
+         //fflush(0);
+         //fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> while >>>> varProbe getProbedVar = %s\n", [anSCounter->varProbe getProbedVariable]);
+         //fflush(0);
+         //xprint(anSCounter->varProbe);
 
           if(getClass(inObject) != anSCounter->updateClass) 
           {
@@ -630,8 +629,8 @@ struct updateVar {
           [anSCounter->varProbe setData: inObject To: &scenarioCount];
   }
 
-  fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> END\n");
-  fflush(0);
+  //fprintf(stdout, "ScenarioIterator >>>> updateClassScenarioCounts >>>> END\n");
+  //fflush(0);
 
   return self;
 }
@@ -646,8 +645,8 @@ struct updateVar {
 {
   struct updateVar *anRCounter;
 
-  fprintf(stdout, "ScenarioIterator >>>> updateClassReplicateCounts >>>> BEGIN\n");
-  fflush(0);
+  //fprintf(stdout, "ScenarioIterator >>>> updateClassReplicateCounts >>>> BEGIN\n");
+  //fflush(0);
 
 
   [replicateNdx setLoc: Start];
@@ -659,8 +658,8 @@ struct updateVar {
           [anRCounter->varProbe setData: inObject To: &replicateCount];
   }
 
-  fprintf(stdout, "ScenarioIterator >>>> updateClassReplicateCounts >>>> END\n");
-  fflush(0);
+  //fprintf(stdout, "ScenarioIterator >>>> updateClassReplicateCounts >>>> END\n");
+  //fflush(0);
 
   return self;
 }

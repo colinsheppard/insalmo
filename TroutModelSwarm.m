@@ -1045,19 +1045,19 @@ char **speciesColor;
            fishRecord->meanLength = atof(meanLength);
            fishRecord->stdDevLength = atof(stdDevLength);
 
-           fprintf(stdout, "TroutModelSwarm >>>> checking fish records >>>>>\n");
-           fprintf(stdout, "speciesNdx = %d speciesName = %s year = %d reach = %s number = %d arrivalStartTime = %ld arrivalEndTime = %ld ratio = %f meanLength = %f stdDevLength = %f\n",
-                                           fishRecord->speciesNdx,
-                                           [fishRecord->mySpecies getName],
-                                           fishRecord->year,
-                                           fishRecord->reach,
-                                           fishRecord->number,
-                                           (long) fishRecord->arrivalStartTime,
-                                           (long) fishRecord->arrivalEndTime,
-                                           fishRecord->ratio,
-                                           fishRecord->meanLength,
-                                           fishRecord->stdDevLength);
-           fflush(0);
+	   //fprintf(stdout, "TroutModelSwarm >>>> checking fish records >>>>>\n");
+	   //fprintf(stdout, "speciesNdx = %d speciesName = %s year = %d reach = %s number = %d arrivalStartTime = %ld arrivalEndTime = %ld ratio = %f meanLength = %f stdDevLength = %f\n",
+                                           //fishRecord->speciesNdx,
+                                           //[fishRecord->mySpecies getName],
+                                           //fishRecord->year,
+                                           //fishRecord->reach,
+                                           //fishRecord->number,
+                                           //(long) fishRecord->arrivalStartTime,
+                                           //(long) fishRecord->arrivalEndTime,
+                                           //fishRecord->ratio,
+                                           //fishRecord->meanLength,
+                                           //fishRecord->stdDevLength);
+           //fflush(0);
 
            [spawnerInitializationRecords addLast: (void *) fishRecord];
 
