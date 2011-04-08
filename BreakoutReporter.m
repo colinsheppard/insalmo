@@ -94,7 +94,7 @@ Boston, MA 02111-1307, USA.
    reporter->useCSV = FALSE;
    reporter->columnWidth = aColumnWidth;
    sprintf(reporter->headerFormatString, "%s%d%s", "%-",aColumnWidth,"s");
-   sprintf(reporter->floatFormatString, "%s%d%s", "%-",aColumnWidth,"E");
+   sprintf(reporter->floatFormatString, "%s%d%s", "%-",aColumnWidth,"f");
 
 
    if(aBool == TRUE)
@@ -184,20 +184,17 @@ Boston, MA 02111-1307, USA.
    reporter->useCSV = TRUE;
    reporter->columnWidth = 25;
    sprintf(reporter->headerFormatString, "%s%s%s", "%", "s", ",");
-   sprintf(reporter->floatFormatString, "%s%s%s", "%","E", ",");
+   sprintf(reporter->floatFormatString, "%s%s%s", "%","f", ",");
 
-   fprintf(stdout, "BreakoutReport >>>>   createBegin: aZone >>>> useCSV = %d \n", (int) reporter->useCSV);
-   fprintf(stdout, "BreakoutReport >>>>   headerFormatString = %s\n", reporter->headerFormatString);
-   fprintf(stdout, "BreakoutReport >>>>   floatFormatString = %s\n", reporter->floatFormatString);
-   fprintf(stdout, "BreakoutReport >>>>   test >>>>\n");
-   fprintf(stdout, reporter->headerFormatString, "testString");
-   fprintf(stdout, reporter->floatFormatString, 123.8967435);
-   fflush(0);
+   //fprintf(stdout, "BreakoutReport >>>>   createBegin: aZone >>>> useCSV = %d \n", (int) reporter->useCSV);
+   //fprintf(stdout, "BreakoutReport >>>>   headerFormatString = %s\n", reporter->headerFormatString);
+   //fprintf(stdout, "BreakoutReport >>>>   floatFormatString = %s\n", reporter->floatFormatString);
+   //fprintf(stdout, "BreakoutReport >>>>   test >>>>\n");
+   //fprintf(stdout, reporter->headerFormatString, "testString");
+   //fprintf(stdout, reporter->floatFormatString, 123.456789012345678);
+   //fflush(0);
    //exit(0);
-
-
-  
-
+   
    if(aBool == TRUE)
    {
       [reporter openFileNamed: reporter->fileName
@@ -1299,6 +1296,7 @@ Boston, MA 02111-1307, USA.
       id level5Key = nil;
 
       int i;
+      double aVal;
 
       for(i = 0; i < [dataColumnList getCount]; i++)
       {
@@ -1380,7 +1378,12 @@ Boston, MA 02111-1307, USA.
                                                            at: level5Key];
                            [anAverager update];
 
-                           fprintf(filePtr, floatFormatString, [anAverager getAveragerValue]);
+			  aVal = [anAverager getAveragerValue];
+			  if(aVal==(double)(int)aVal){
+				   fprintf(filePtr, "%d,",(int)aVal);
+			  }else{
+				   fprintf(filePtr, floatFormatString,aVal);
+			  }
                            fflush(filePtr);
                       }                           
                    }
