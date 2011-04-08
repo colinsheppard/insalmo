@@ -159,6 +159,8 @@ int          fileOutputFrequency;
 char*        movementRule;
 
 char* tagFishColor;
+char* tagCellColor;
+char* dryCellColor;
 
 // New for superindividuals
 int juvenileSuperindividualRatio;  // Number of juveniles / object
@@ -345,6 +347,9 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 //
 
 - getRandGen;
+- (char *) getTagFishColor;
+- (char *) getDryCellColor;
+- (char *) getTagCellColor;
 
 - (int) getJuvenileSuperindividualRatio;
 

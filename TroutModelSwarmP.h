@@ -53,6 +53,7 @@ Boston, MA 02111-1307, USA.
 - (id <Symbol>) getSpeciesSymbolWithName: (char *) aName;
 - (id <List>) getSpeciesSymbolList;
 - (id <Zone>) getModelZone;
+- (char *) getTagFishColor;
 
 - (id <Symbol>) getFishMortalitySymbolWithName: (char *) aName;
 - (id <Symbol>) getReddMortalitySymbolWithName: (char *) aName;

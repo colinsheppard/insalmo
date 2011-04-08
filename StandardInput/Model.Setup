@@ -21,6 +21,8 @@ shuffleYearReplace           0
 shuffleYearSeed              737899
 
 tagFishColor                 tomato
+tagCellColor                 black
+dryCellColor                 white
 
 siteLatitude                 42
 
