@@ -1,5 +1,5 @@
-Example cell habitat variables file	Site A			
-SFR 4/6/2011				
+Example cell habitat variables file	Site A
+SFR 12/21/2010				
 poly_id	VS_pct	DC_m	GR_pct	reach_End
 2	0.1	0.5	0	U
 4	0	2.2	0	I
@@ -54,6 +54,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 74	0	6	0.8	I
 78	0	1	0	I
 79	0.1	1.5	0	I
+80	0	0.4	0	I
 81	0	0.4	0	I
 82	0	4	0	I
 84	0	0.5	0	I
@@ -307,6 +308,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 373	0.1	0.9	0	I
 374	0.2	0.7	0	I
 375	0	0.4	0	I
+376	0	0	0	I
 378	0.1	0.4	0	I
 379	0	7	0	I
 380	0.1	1	0	I
@@ -355,6 +357,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 431	0	5	0.3	I
 432	0	3.5	0.2	I
 433	0	3.5	0.2	I
+434	0	0	0	I
 435	0.05	3	1	I
 437	0.05	3	0.6	I
 438	0	5	0	I
@@ -417,6 +420,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 507	0.1	1	0	I
 509	0	6	0	I
 510	0	4	0	I
+511	0	6	0	I
 512	0	7	0.9	I
 513	0.1	0.3	0	I
 514	0	2	1	I
@@ -426,6 +430,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 518	0	10	0.2	I
 520	0	10	0.2	I
 523	0	2	0.2	I
+525	0	4	0	I
 526	0	4	0	I
 527	0	6	0	I
 528	0.1	0.6	0	I
@@ -446,7 +451,6 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 551	0.1	1	0	I
 553	0	4.5	0	I
 554	0	0.5	0.9	I
-555	0	10	1	I
 556	0	6	1	I
 558	0.2	0.7	0	I
 559	0.1	1	0	I
@@ -509,8 +513,8 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 628	0	0.6	0	I
 629	0	6	0.4	I
 630	0	8	0.8	D
-631	0	0	0	I
 647	0	8	0.8	D
+631	0	0	0	I
 650	0.1	1.5	0	U
 651	0	2.5	1	U
 652	0.1	0.4	0	I
@@ -518,6 +522,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 654	0.1	0.6	0	I
 655	0	8	1	I
 656	0	8	1	I
+657	0	5	1	I
 658	0	0.6	0	I
 659	0.1	0.6	0	I
 660	0	2.5	0	I
@@ -544,6 +549,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 682	0.1	0.5	0	I
 683	0.1	1.5	0	I
 684	0	4.5	0.9	I
+555	0	10	1	I
 686	0.1	1	0	I
 687	0	4.5	0	I
 688	0	10	0.9	I
