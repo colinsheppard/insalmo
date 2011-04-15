@@ -26,6 +26,7 @@ Boston, MA 02111-1307, USA.
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <time.h>
 
 #import "BreakoutReporter.h"
@@ -184,14 +185,16 @@ Boston, MA 02111-1307, USA.
    reporter->useCSV = TRUE;
    reporter->columnWidth = 25;
    sprintf(reporter->headerFormatString, "%s%s%s", "%", "s", ",");
-   sprintf(reporter->floatFormatString, "%s%s%s", "%","f", ",");
+   sprintf(reporter->floatFormatString, "%s%d%s%s", "%",reporter->columnWidth,"f", ",");
+    
 
    //fprintf(stdout, "BreakoutReport >>>>   createBegin: aZone >>>> useCSV = %d \n", (int) reporter->useCSV);
    //fprintf(stdout, "BreakoutReport >>>>   headerFormatString = %s\n", reporter->headerFormatString);
    //fprintf(stdout, "BreakoutReport >>>>   floatFormatString = %s\n", reporter->floatFormatString);
    //fprintf(stdout, "BreakoutReport >>>>   test >>>>\n");
    //fprintf(stdout, reporter->headerFormatString, "testString");
-   //fprintf(stdout, reporter->floatFormatString, 123.456789012345678);
+   //fprintf(stdout, reporter->floatFormatString, -0.0012345678901234567890123456789012345678901234567890);
+   //fprintf(stdout, reporter->floatFormatString, log10(0.00012345678901234567890123456789012345678901234567890));
    //fflush(0);
    //exit(0);
    
@@ -1382,7 +1385,19 @@ Boston, MA 02111-1307, USA.
 			  if(aVal==(double)(int)aVal){
 				   fprintf(filePtr, "%d,",(int)aVal);
 			  }else{
+			    if(aVal == 0.0){
 				   fprintf(filePtr, floatFormatString,aVal);
+			    }else if(aVal < 0.0){
+				    if(log10(-aVal) < -3.0){
+					   fprintf(filePtr,"%E,",aVal);
+				    }else{
+					   fprintf(filePtr, floatFormatString,aVal);
+				    }
+			    }else if(log10(aVal) < -3.0){
+				   fprintf(filePtr,"%E,",aVal);
+			    }else{
+				   fprintf(filePtr, floatFormatString,aVal);
+			    }
 			  }
                            fflush(filePtr);
                       }                           
