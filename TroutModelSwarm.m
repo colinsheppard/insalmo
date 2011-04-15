@@ -922,6 +922,7 @@ char **speciesColor;
 	  [doubleNormDist1 drop];
 
 
+
       }  //if fishInitRecord->number != 0
    
 
@@ -1715,7 +1716,7 @@ char **speciesColor;
     [activeSpawners removeAll];
     [activeSpawners drop];
 
-
+    [randCellDist drop];
  
     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> END\n");
     // fflush(0);
@@ -2076,94 +2077,6 @@ char **speciesColor;
   return newSpawner;
 }
 
-
-
-
-
-/*
-
-//////////////////////////////////////////////////////
-//
-// createNewFishWithSpeciesIndex
-//
-/////////////////////////////////////////////////////
-- (Trout *) createNewFishWithSpeciesIndex: (int) speciesNdx  
-                                  Species: (id <Symbol>) species
-                                      Age: (int) age
-                                   Length: (double) fishLength 
-{
-
-  id newFish;
-  id <Symbol> ageSymbol = nil;
-  id <InterpolationTable> aCMaxInterpolator = nil;
-  id <InterpolationTable> aSpawnDepthInterpolator = nil;
-  id <InterpolationTable> aSpawnVelocityInterpolator = nil;
-  LogisticFunc* aCaptureLogistic = nil;
-
-  //fprintf(stdout, "TroutModelSwarm >>>> createNewFishWithSpeciesIndex >>>> BEGIN\n");
-  //fflush(0);
-
-  //
-  // The newFish color is currently being set in the observer swarm
-  //
-
-  newFish = [MyTroutClass[speciesNdx] createBegin: modelZone];
-
-  [newFish setFishParams: [fishParamsMap at: species]];
-
-  //
-  // set properties of the new Trout
-  //
-
-  ((Trout *)newFish)->sex = ([coinFlip getCoinToss] == YES ?  Female : Male);
-
-  ((Trout *)newFish)->randGen = randGen;
-
-  ((Trout *)newFish)->rasterResolutionX = polyRasterResolutionX;
-  ((Trout *)newFish)->rasterResolutionY = polyRasterResolutionY;
-
-  [newFish setSpecies: species];
-  [newFish setSpeciesNdx: speciesNdx];
-  [newFish setAge: age];
-
-  ageSymbol = [self getAgeSymbolForAge: age];
-   
-  [newFish setAgeSymbol: ageSymbol];
-
-  [newFish setFishLength: fishLength];
-  [newFish setFishCondition: 1.0];
-  [newFish setFishWeightFromLength: fishLength andCondition: 1.0]; 
-  [newFish setTimeTLastSpawned: 0];    //Dec 31 1969
-
-  [newFish calcStarvPaAndPb];
-
-  if(fishColorMap != nil)
-  {
-     [newFish setFishColor: (Color) *((long *) [fishColorMap at: [newFish getSpecies]])];
-  }
-
-  [newFish setTimeManager: timeManager];
-  [newFish setModel: (id <TroutModelSwarm>) self];
-
-  aCMaxInterpolator = [cmaxInterpolatorMap at: species];
-  aSpawnDepthInterpolator = [spawnDepthInterpolatorMap at: species];
-  aSpawnVelocityInterpolator = [spawnVelocityInterpolatorMap at: species];
-  aCaptureLogistic = [captureLogisticMap at: species];
-  
-  [newFish setCMaxInterpolator: aCMaxInterpolator];
-  [newFish setSpawnDepthInterpolator: aSpawnDepthInterpolator];
-  [newFish setSpawnVelocityInterpolator: aSpawnVelocityInterpolator];
-  [newFish setCaptureLogistic: aCaptureLogistic];
-
-  newFish = [newFish createEnd];
-
-  //fprintf(stdout, "TroutModelSwarm >>>> createNewFishWithSpeciesIndex >>>> END\n");
-  //fflush(0);
-        
-  return newFish;
-}
-
-*/
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3332,6 +3245,10 @@ char **speciesColor;
       [timeManager drop];
       timeManager = nil;
   }
+  if(coinFlip){
+   [coinFlip drop];
+   coinFlip = nil;
+  }
 
   if(fishColorMap){
        id <MapIndex> mapNdx = [fishColorMap mapBegin: scratchZone];
@@ -3352,7 +3269,6 @@ char **speciesColor;
       [randGen drop]; 
       randGen = nil;
   }
-
   if(modelZone != nil){
       int speciesIDX = 0;
       fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping objects in  modelZone >>>> BEGIN\n");
@@ -3426,7 +3342,46 @@ char **speciesColor;
      [liveFish deleteAll];
      [liveFish drop];
      liveFish = nil;
+
+     [updateActions drop];
+     updateActions = nil;
+     [initAction drop];
+     initAction = nil;
+     [fishActions drop];
+     fishActions = nil;
+     [reddActions drop];
+     reddActions = nil;
+     [modelActions drop];
+     modelActions = nil;
+     [overheadActions drop];
+     overheadActions = nil;
+  #ifdef PRINT_CELL_FISH_REPORT
+     [printCellFishAction drop];
+     printCellFishAction = nil;
+  #endif
+
+     [modelSchedule drop];
+     modelSchedule = nil;
+     [printSchedule drop];
+     printSchedule = nil;
+      
+     // The following produces error: FallChinook does not recognize drop
+     //[speciesClassList deleteAll];
+     //[speciesClassList drop];
+     //speciesClassList = nil;
         
+     // The following segfaults, but should be fixed
+     //[spawnerInitializationRecords deleteAll];
+     [spawnerInitializationRecords drop];
+     spawnerInitializationRecords = nil;
+
+     [reddBinomialDist drop];
+     reddBinomialDist = nil;
+        
+    [spawners deleteAll];
+    [spawners drop];
+    spawners = nil;
+
      [deadFish deleteAll];
      [deadFish drop];
      deadFish = nil;
@@ -3455,6 +3410,11 @@ char **speciesColor;
      [reddList drop];
      reddList = nil;
 
+     [Male drop];
+     Male = nil;
+     [Female drop];
+     Female = nil;
+
      if(yearShuffler != nil){
           [yearShuffler drop];
           yearShuffler = nil;
@@ -3472,13 +3432,15 @@ char **speciesColor;
      //
      // Drop the fishParams
      //
-    fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> BEGIN\n");
-    fflush(0);
+    //fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> BEGIN\n");
+    //fflush(0);
 
     [fishParamsMap deleteAll];
+    [fishParamsMap drop];
+    fishParamsMap = nil;
 
-    fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> END\n");
-    fflush(0);
+    //fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> END\n");
+    //fflush(0);
 
      [fishMortSymbolList deleteAll];
      [fishMortSymbolList drop];
@@ -3488,6 +3450,9 @@ char **speciesColor;
      [reddMortSymbolList drop];
      reddMortSymbolList = nil;
 
+    [outmigrationSymbol drop];
+    outmigrationSymbol = nil;
+
      [ageSymbolList deleteAll];
      [ageSymbolList drop];
      ageSymbolList = nil;
@@ -3496,9 +3461,14 @@ char **speciesColor;
      [reachSymbolList drop];
      reachSymbolList = nil;
 
+     [lifestageSymbolList deleteAll];
+     [lifestageSymbolList drop];
+     lifestageSymbolList = nil;
+
      [sizeSymbolList deleteAll];
      [sizeSymbolList drop];
      sizeSymbolList = nil;
+
 
       if(habitatManager){
           [habitatManager drop];
@@ -3510,8 +3480,8 @@ char **speciesColor;
      [modelZone drop];
      modelZone = nil;
 
-     fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping modelZone >>>> END\n");
-     fflush(0);
+     //fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping modelZone >>>> END\n");
+     //fflush(0);
   }
   
   [super drop];
