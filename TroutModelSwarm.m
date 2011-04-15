@@ -3316,24 +3316,16 @@ char **speciesColor;
 //////////////////////////////////////////////////////////
 - (void) drop 
 {
-
   fprintf(stderr, "TroutModelSwarm >>>> drop >>>> BEGIN\n");
   fflush(0);
 
-
-  if(reddSummaryFilePtr != NULL)
-  {
+  if(reddSummaryFilePtr != NULL){
       fclose(reddSummaryFilePtr);
   }
-  if(reddRptFilePtr != NULL)
-  {
+  if(reddRptFilePtr != NULL){
       fclose(reddRptFilePtr);
   }
-
-
-
-  if(timeManager)
-  {
+  if(timeManager){
       fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping timeManager\n");
       fflush(0);
 
@@ -3341,13 +3333,11 @@ char **speciesColor;
       timeManager = nil;
   }
 
-  if(fishColorMap)
-  {
+  if(fishColorMap){
        id <MapIndex> mapNdx = [fishColorMap mapBegin: scratchZone];
        long* aFishColor = (long *) nil;
  
-       while(([mapNdx getLoc] != End) && ((aFishColor = (long *) [mapNdx next]) != (long *) nil))
-       {
+       while(([mapNdx getLoc] != End) && ((aFishColor = (long *) [mapNdx next]) != (long *) nil)){
             [modelZone free: aFishColor];
        }
 
@@ -3357,19 +3347,13 @@ char **speciesColor;
        [speciesSymbolList deleteAll];
        [speciesSymbolList drop];
        speciesSymbolList = nil;
-
   }
-
-
-  
-  if(randGen)
-  {
+  if(randGen){
       [randGen drop]; 
       randGen = nil;
   }
 
-  if(modelZone != nil)
-  {
+  if(modelZone != nil){
       int speciesIDX = 0;
       fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping objects in  modelZone >>>> BEGIN\n");
       fflush(0);
@@ -3377,8 +3361,7 @@ char **speciesColor;
       [modelZone free: mySpecies];
       [modelZone free: modelDate];
 
-      for(speciesIDX=0;speciesIDX<numberOfSpecies;speciesIDX++) 
-      {
+      for(speciesIDX=0;speciesIDX<numberOfSpecies;speciesIDX++) {
           [modelZone free: speciesName[speciesIDX]];
           [modelZone free: speciesParameter[speciesIDX]];
           [modelZone free: speciesPopFile[speciesIDX]];
@@ -3396,35 +3379,29 @@ char **speciesColor;
       //
       // drop interpolation tables
       //
-
-            [spawnVelocityInterpolatorMap deleteAll];
-            [spawnVelocityInterpolatorMap drop];
-            spawnVelocityInterpolatorMap = nil;
-            [spawnDepthInterpolatorMap deleteAll];
-            [spawnDepthInterpolatorMap drop];
-            spawnDepthInterpolatorMap = nil;
-            [cmaxInterpolatorMap deleteAll];
-            [cmaxInterpolatorMap drop];
-            cmaxInterpolatorMap = nil;
+    [spawnVelocityInterpolatorMap deleteAll];
+    [spawnVelocityInterpolatorMap drop];
+    spawnVelocityInterpolatorMap = nil;
+    [spawnDepthInterpolatorMap deleteAll];
+    [spawnDepthInterpolatorMap drop];
+    spawnDepthInterpolatorMap = nil;
+    [cmaxInterpolatorMap deleteAll];
+    [cmaxInterpolatorMap drop];
+    cmaxInterpolatorMap = nil;
      //
      // End drop interpolation tables
      //
      fprintf(stdout, "After drop interpolationTables\n");
      fflush(0);
 
-
       fprintf(stdout, "Before drop capture logistic\n");
       fflush(0);
      //
      // drop capture logistics
      //
-     if(1)
-     {
-            [captureLogisticMap deleteAll];
-            [captureLogisticMap drop];
-            captureLogisticMap = nil;
-
-     }
+    [captureLogisticMap deleteAll];
+    [captureLogisticMap drop];
+    captureLogisticMap = nil;
      //
      // drop capture logistics
      //
@@ -3433,18 +3410,11 @@ char **speciesColor;
 
       fprintf(stdout, "Before drop juveOutMigLogisticMap\n");
       fflush(0);
-     if(1)
-     {
-  
-            [juveOutMigLogisticMap deleteAll];
-            [juveOutMigLogisticMap drop];
-            juveOutMigLogisticMap = nil;
-
-     }
+    [juveOutMigLogisticMap deleteAll];
+    [juveOutMigLogisticMap drop];
+    juveOutMigLogisticMap = nil;
       fprintf(stdout, "After drop juveOutMigLogisticMap\n");
       fflush(0);
-
-
 
      [mortalityCountLstNdx drop];
      mortalityCountLstNdx = nil;
@@ -3472,8 +3442,6 @@ char **speciesColor;
      [outmigrantList deleteAll];
      [outmigrantList drop];
      outmigrantList = nil;
-
-
     
      [reddRemovedList deleteAll];
      [reddRemovedList drop];
@@ -3483,13 +3451,11 @@ char **speciesColor;
      [emptyReddList drop];
      emptyReddList = nil;
 
-
      [reddList deleteAll];
      [reddList drop];
      reddList = nil;
 
-     if(yearShuffler != nil)
-     {
+     if(yearShuffler != nil){
           [yearShuffler drop];
           yearShuffler = nil;
      }
@@ -3506,15 +3472,13 @@ char **speciesColor;
      //
      // Drop the fishParams
      //
-     {
-         fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> BEGIN\n");
-         fflush(0);
+    fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> BEGIN\n");
+    fflush(0);
 
-         [fishParamsMap deleteAll];
+    [fishParamsMap deleteAll];
 
-         fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> END\n");
-         fflush(0);
-     }
+    fprintf(stdout, "TroutModelSwarm >>>> drop >>>> dropping fishParams >>>> END\n");
+    fflush(0);
 
      [fishMortSymbolList deleteAll];
      [fishMortSymbolList drop];
@@ -3536,9 +3500,7 @@ char **speciesColor;
      [sizeSymbolList drop];
      sizeSymbolList = nil;
 
-
-      if(habitatManager)
-      {
+      if(habitatManager){
           [habitatManager drop];
           habitatManager = nil;
       }
