@@ -3,7 +3,7 @@ SWARMHOME=/usr
 endif
 
 
-APPLICATION=insalmo-2d
+APPLICATION=insalmo-2d.exe
 OBJECTS=Trout.o \
 	HabitatSpace.o \
 	Redd.o \
