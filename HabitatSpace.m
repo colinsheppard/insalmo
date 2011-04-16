@@ -1194,8 +1194,7 @@ Boston, MA 02111-1307, USA.
 // createPolyInterpolationTables;
 //
 ///////////////////////////////////////////
-- createPolyInterpolationTables
-{
+- createPolyInterpolationTables {
    FILE* dataFPTR = NULL;
    int strArraySize = 1501;
    char inputString[strArraySize];
@@ -1213,8 +1212,7 @@ Boston, MA 02111-1307, USA.
    fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> BEGIN\n");
    fflush(0);
 
-   if((dataFPTR = fopen(hydraulicFile, "r")) == NULL)
-   {
+   if((dataFPTR = fopen(hydraulicFile, "r")) == NULL){
         fprintf(stderr, "ERROR: HabitatSpace >>>> readPolyInterpolatorFiles >>>> unable to open %s for reading\n", hydraulicFile);
         fflush(0);
         exit(1);
@@ -1222,40 +1220,33 @@ Boston, MA 02111-1307, USA.
 
    (void) fgets(inputString, strArraySize, dataFPTR);
    (void) fgets(inputString, strArraySize, dataFPTR);
-    while(!feof(dataFPTR))
-    {
+    while(!feof(dataFPTR)){
           (void) fgets(inputString, strArraySize, dataFPTR);
-
-           break;
+          break;
     }
     fclose(dataFPTR);
 
     //fprintf(stdout, "%s\n", inputString);
     //fflush(0);
     length = strlen(inputString);
-    for(i = 0; i < length; i++)
-    {
+    for(i = 0; i < length; i++){
         c = inputString[i];
 
-        if(isalpha(c))
-        {
+        if(isalpha(c)){
             continue;
         }
 
-        if(isspace(c))
-        {
+        if(isspace(c)){
             aNum[j] = '\0';
 	    //fprintf(stdout, "%s\n", aNum);
 	    //fflush(0);
-            if(isdigit(aNum[0]))
-            {
+            if(isdigit(aNum[0])){
                 numberOfFlows++;
             }
             j = 0;
 	    aNum[j] = '\0';
             continue;
         }
-
         aNum[j] = c;
         j++;
     } 
@@ -1263,20 +1254,16 @@ Boston, MA 02111-1307, USA.
     //fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> numberofFlows = %d\n", numberOfFlows);
     //fflush(0);
     flow = (double *) [habitatZone alloc: maxFlowsInFile*sizeof(double)];
-    for(i = 0; i < length; i++)
-    {
+    for(i = 0; i < length; i++){
         c = inputString[i];
 
-        if(isalpha(c))
-        {
+        if(isalpha(c)){
             continue;
         }
 
-        if(isspace(c))
-        {
+        if(isspace(c)){
            aNum[j] = '\0';
-           if(isdigit(aNum[0]))
-           {
+           if(isdigit(aNum[0])){
                flow[flowNdx] = atof(aNum); 
                //fprintf(stdout, "%f\n", flow[flowNdx]);
                //fflush(0);
@@ -1289,7 +1276,6 @@ Boston, MA 02111-1307, USA.
 
        aNum[j] = c;
        j++;
-           
    } 
 
    //
@@ -1317,8 +1303,7 @@ Boston, MA 02111-1307, USA.
        (void) fgets(inputString, strArraySize, dataFPTR);
        (void) fgets(inputString, strArraySize, dataFPTR);
 
-         while(feof(dataFPTR) == 0)
-         {
+         while(feof(dataFPTR) == 0){
                numPolyId++;
                (void) fgets(inputString, strArraySize, dataFPTR);
 
@@ -1371,22 +1356,19 @@ Boston, MA 02111-1307, USA.
                               //
                               // check the previously created and poulated interpolators
                               //
-                              if(setInterpolatorData != 0)
-                              {
+                              if(setInterpolatorData != 0){
 				      //fprintf(stdout, "check interpolators >>>> polyId = %d\n", polyId);
 				      //fflush(0);
 				      //[depthInterpolator printSelf];
 				      //[velocityInterpolator printSelf];
 				      //exit(1);
 
-                                    if(numDepths != numberOfFlows)
-                                    {
+                                    if(numDepths != numberOfFlows){
                                          fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> number of depth reads is not equal to the number of flows\n");
                                          fflush(0);
                                          exit(1);
                                     }
-                                    if(numVelocities != numberOfFlows)
-                                    {
+                                    if(numVelocities != numberOfFlows){
                                          fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> number of velocity reads is not equal to the number of flows\n");
                                          fflush(0);
                                          exit(1);
@@ -1398,13 +1380,11 @@ Boston, MA 02111-1307, USA.
                               flowNdx = 0;
                               polyCell = nil;
                               polyCell = [self getCellWithCellNum: polyId];
-                              if(polyCell == nil)
-                              {
+                              if(polyCell == nil){
                                     fprintf(stderr, "ERROR: HabitatSpace >>>> reachName >>>> %s >>>> createPolyInterpolationTables >>>> no cell with polyId %d\n",reachName, polyId);
                                     fflush(0);
                                     exit(1);
                               }
-
 
                               depthInterpolator    = [InterpolationTable create: habitatZone];
                               velocityInterpolator = [InterpolationTable create: habitatZone];
