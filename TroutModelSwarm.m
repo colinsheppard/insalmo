@@ -3229,8 +3229,8 @@ char **speciesColor;
 //////////////////////////////////////////////////////////
 - (void) drop 
 {
-  fprintf(stderr, "TroutModelSwarm >>>> drop >>>> BEGIN\n");
-  fflush(0);
+  //fprintf(stderr, "TroutModelSwarm >>>> drop >>>> BEGIN\n");
+  //fflush(0);
 
   if(reddSummaryFilePtr != NULL){
       fclose(reddSummaryFilePtr);
@@ -3239,8 +3239,8 @@ char **speciesColor;
       fclose(reddRptFilePtr);
   }
   if(timeManager){
-      fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping timeManager\n");
-      fflush(0);
+    //  fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping timeManager\n");
+    //  fflush(0);
 
       [timeManager drop];
       timeManager = nil;
@@ -3271,8 +3271,8 @@ char **speciesColor;
   }
   if(modelZone != nil){
       int speciesIDX = 0;
-      fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping objects in  modelZone >>>> BEGIN\n");
-      fflush(0);
+      //fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping objects in  modelZone >>>> BEGIN\n");
+      //fflush(0);
  
       [modelZone free: mySpecies];
       [modelZone free: modelDate];
@@ -3290,8 +3290,8 @@ char **speciesColor;
 
       [modelZone free: MyTroutClass];
 
-      fprintf(stdout, "Before drop interpolationTables\n");
-      fflush(0);
+      //fprintf(stdout, "Before drop interpolationTables\n");
+      //fflush(0);
       //
       // drop interpolation tables
       //
@@ -3307,11 +3307,11 @@ char **speciesColor;
      //
      // End drop interpolation tables
      //
-     fprintf(stdout, "After drop interpolationTables\n");
-     fflush(0);
+     //fprintf(stdout, "After drop interpolationTables\n");
+     //fflush(0);
 
-      fprintf(stdout, "Before drop capture logistic\n");
-      fflush(0);
+     // fprintf(stdout, "Before drop capture logistic\n");
+     // fflush(0);
      //
      // drop capture logistics
      //
@@ -3321,16 +3321,16 @@ char **speciesColor;
      //
      // drop capture logistics
      //
-      fprintf(stdout, "After drop capture logistic\n");
-      fflush(0);
+     // fprintf(stdout, "After drop capture logistic\n");
+     // fflush(0);
 
-      fprintf(stdout, "Before drop juveOutMigLogisticMap\n");
-      fflush(0);
+     // fprintf(stdout, "Before drop juveOutMigLogisticMap\n");
+     // fflush(0);
     [juveOutMigLogisticMap deleteAll];
     [juveOutMigLogisticMap drop];
     juveOutMigLogisticMap = nil;
-      fprintf(stdout, "After drop juveOutMigLogisticMap\n");
-      fflush(0);
+     // fprintf(stdout, "After drop juveOutMigLogisticMap\n");
+     // fflush(0);
 
      [mortalityCountLstNdx drop];
      mortalityCountLstNdx = nil;
@@ -3410,9 +3410,9 @@ char **speciesColor;
      [reddList drop];
      reddList = nil;
 
-     [Male drop];
+     //[Male drop];
      Male = nil;
-     [Female drop];
+     //[Female drop];
      Female = nil;
 
      if(yearShuffler != nil){
@@ -3450,7 +3450,7 @@ char **speciesColor;
      [reddMortSymbolList drop];
      reddMortSymbolList = nil;
 
-    [outmigrationSymbol drop];
+    //[outmigrationSymbol drop];
     outmigrationSymbol = nil;
 
      [ageSymbolList deleteAll];
@@ -3486,8 +3486,8 @@ char **speciesColor;
   
   [super drop];
 
-  fprintf(stdout, "TroutModelSwarm >>>> drop >>>> END\n");
-  fflush(0);
+  //fprintf(stdout, "TroutModelSwarm >>>> drop >>>> END\n");
+  //fflush(0);
 
   //exit(0);
 

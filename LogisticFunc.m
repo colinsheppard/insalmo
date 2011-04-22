@@ -215,13 +215,13 @@ Boston, MA 02111-1307, USA.
 
 - (void) drop
 {
-     fprintf(stdout, "LogisticFunc >>>> drop >>>> BEGIN\n");
-     fflush(0);
+    // fprintf(stdout, "LogisticFunc >>>> drop >>>> BEGIN\n");
+    // fflush(0);
 
      [super drop];
 
-     fprintf(stdout, "LogisticFunc >>>> drop >>>> END\n");
-     fflush(0);
+    // fprintf(stdout, "LogisticFunc >>>> drop >>>> END\n");
+    // fflush(0);
 }
  
 

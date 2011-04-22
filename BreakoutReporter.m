@@ -1567,8 +1567,8 @@ Boston, MA 02111-1307, USA.
 - (void) drop
 {
 
-    fprintf(stdout, "BreakoutReporter drop >>>> BEGIN\n");
-    fflush(0);
+   // fprintf(stdout, "BreakoutReporter drop >>>> BEGIN\n");
+   // fflush(0);
 
     if(outputWithLabelsList)
     {
@@ -1644,8 +1644,8 @@ Boston, MA 02111-1307, USA.
 
     [super drop];
 
-    fprintf(stdout, "BreakoutReporter drop >>>> END\n");
-    fflush(0);
+   // fprintf(stdout, "BreakoutReporter drop >>>> END\n");
+   // fflush(0);
 
 }
 

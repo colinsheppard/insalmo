@@ -4573,8 +4573,8 @@ return self;
 {
  //   int i = 0;
 
-    fprintf(stdout, "HabitatSpace >>>> drop >>>> BEGIN\n");
-    fflush(0);
+   // fprintf(stdout, "HabitatSpace >>>> drop >>>> BEGIN\n");
+   // fflush(0);
 
 
     //fclose(areaDepthFileStream);
@@ -4680,8 +4680,8 @@ return self;
     [habitatZone drop];
     habitatZone = nil;
 
-    fprintf(stdout, "HabitatSpace >>>> drop >>>> END\n");
-    fflush(0);
+   // fprintf(stdout, "HabitatSpace >>>> drop >>>> END\n");
+   // fflush(0);
 }
 
 

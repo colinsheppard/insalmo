@@ -3,7 +3,7 @@ created Mar 21 2000
 For no experiment SFR
 
 numberOfScenarios    1
-numberOfReplicates   2
+numberOfReplicates   1
 
 sendScenarioCountToParam: scenario
 inClass:                  TroutModelSwarm
