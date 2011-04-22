@@ -1242,6 +1242,8 @@ Boston, MA 02111-1307, USA.
       }
 
          spawnedThisSeason = YES;
+         fishFeedingStrategy = GUARDING;
+
          [spawnCell addFish: self]; 
          [spawnCell calcCellAvailableGravelArea]; 
          [self _createAReddInCell_: spawnCell];
@@ -1255,7 +1257,6 @@ Boston, MA 02111-1307, USA.
       fishCondition = [self getConditionForWeight: fishWeight andLength: fishLength];
 
       timeLastSpawned = [self getCurrentTimeT];
-      fishFeedingStrategy = GUARDING;
 
 
       //
