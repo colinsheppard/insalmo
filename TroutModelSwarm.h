@@ -331,7 +331,6 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 - readFishInitializationFiles;
 
 - createFishParameters;
-//- findMinSpeciesPiscLength;
 - buildFishClass;
 - buildActions;
 - updateTkEventsFor: aReach;

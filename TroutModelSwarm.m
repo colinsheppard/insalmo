@@ -125,7 +125,6 @@ char **speciesColor;
   fishParamsMap = [Map create: modelZone];
 
   [self createFishParameters];
-  //[self findMinSpeciesPiscLength];
 
   //
   // To create additional age classes, add more symbols to this list.
@@ -503,50 +502,6 @@ char **speciesColor;
 
 }  // createFishParameters
 
-
-/*
-//////////////////////////////////////////////
-//
-// findMinSpeciesPiscLength 
-//
-//////////////////////////////////////////////
-- findMinSpeciesPiscLength
-{
-  int speciesNdx;
-  FishParams* fishParams = nil;
-
-  fprintf(stdout, "TroutModelSwarm >>>> findMinSpeciesPiscLength >>>> BEGIN\n");
-  fprintf(stdout, "TroutModelSwarm >>>> findMinSpeciesPiscLength >>>> numberOfSpecies = %d\n", numberOfSpecies);
-  fflush(0);
-
-
-
-  if(numberOfSpecies > 1)
-  {
-      for(speciesNdx = 0; speciesNdx < numberOfSpecies; speciesNdx++) 
-      {
-         fishParams = [fishParamsMap at: mySpecies[speciesNdx]]; 
-         minSpeciesMinPiscLength =  (minSpeciesMinPiscLength > fishParams->fishPiscivoryLength) ?
-                                    fishParams->fishPiscivoryLength  
-                                  : minSpeciesMinPiscLength;
-      }
-  }
-  else
-  {
-      fishParams = [fishParamsMap at: mySpecies[0]]; 
-      minSpeciesMinPiscLength =   fishParams->fishPiscivoryLength;
-  }
-
-
-  fprintf(stdout, "TroutModelSwarm >>>> minSpeciesMinPiscLength = %f\n", minSpeciesMinPiscLength);
-  fflush(0);
-
-  fprintf(stdout, "TroutModelSwarm >>>> findMinSpeciesPiscLength >>>> END\n");
-  fflush(0);
-
-  return self;
-}
-*/
 
 
 /////////////////////////////////////////////////////////
