@@ -975,7 +975,7 @@ char **speciesColor;
 
   char year[5];
   char reach[35];
-  char number[4];
+  char number[10];
   char arrivalStartDate[12];
   char arrivalEndDate[12];
   char ratio[10];
