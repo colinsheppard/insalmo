@@ -1,6 +1,6 @@
-Example cell habitat variables file	Site A			
-SFR 4/6/2011				
-poly_id	VS_pct	DC_m	GR_pct	reach_End
+Clear Creek Site 3A Cell habitat variables file
+Last modified: SFR 4/20/2011				
+Cell#	FracVelocityShelter	DistToHidingCover	FracSpawnGravel	ReachEndCode
 2	0.1	0.5	0	U
 4	0	2.2	0	I
 5	0.1	1.5	0	U
@@ -510,7 +510,7 @@ poly_id	VS_pct	DC_m	GR_pct	reach_End
 629	0	6	0.4	I
 630	0	8	0.8	D
 631	0	0	0	I
-647	0	8	0.8	D
+647	0	8	0.8	I
 650	0.1	1.5	0	U
 651	0	2.5	1	U
 652	0.1	0.4	0	I
