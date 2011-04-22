@@ -55,6 +55,7 @@ Boston, MA 02111-1307, USA.
 
   int numberOfSpecies;
   int numberOfFish;
+  int numberOfRedds;
   double cellDistToHide;
   id <List> fishIContain;
   id <List> reddsIContain;

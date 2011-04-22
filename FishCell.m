@@ -1195,6 +1195,7 @@ END of OLD CODE */
   int aPixelNum = [reddPixelDist getIntegerSample];
 
   [reddsIContain addFirst: aRedd];
+  numberOfRedds = [reddsIContain getCount];
 
   [aRedd setRasterX: polyCellPixels[aPixelNum]->pixelX];
   [aRedd setRasterY: polyCellPixels[aPixelNum]->pixelY];
@@ -1216,6 +1217,8 @@ END of OLD CODE */
 - removeRedd: aRedd 
 {
   [reddsIContain remove: aRedd];
+  numberOfRedds = [reddsIContain getCount];
+
   return self;
 }
 
