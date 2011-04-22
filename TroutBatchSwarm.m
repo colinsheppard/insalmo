@@ -230,8 +230,8 @@ Boston, MA 02111-1307, USA.
 - (void) drop 
 {
 
-  fprintf(stderr,"TroutBatchSwarm >>>> drop >>>> BEGIN\n");
-  fflush(stderr);
+ // fprintf(stderr,"TroutBatchSwarm >>>> drop >>>> BEGIN\n");
+ // fflush(stderr);
 
   if(troutModelSwarm != nil) 
   {
@@ -248,8 +248,8 @@ Boston, MA 02111-1307, USA.
 
   [super drop];
 
-  fprintf(stderr,"TroutBatchSwarm >>>> drop >>>> END\n");
-  fflush(stderr);
+ // fprintf(stderr,"TroutBatchSwarm >>>> drop >>>> END\n");
+ // fflush(stderr);
 }
 
 

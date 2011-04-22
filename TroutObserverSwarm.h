@@ -120,7 +120,7 @@ Boston, MA 02111-1307, USA.
   id <EZBin> velocityHisto;
   id <EZBin> depthHisto;
   
-
+  id <EZBin> juveLengthHisto;
   id <EZGraph> mortAgeClassGraph;
   id <EZBin> mortAgeClassHist;
   id <EZGraph> mortalityGraph;
