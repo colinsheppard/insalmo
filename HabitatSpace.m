@@ -3506,15 +3506,15 @@ return self;
       fileOverWrite = FALSE;
   }
 
-  sprintf(cellFishInfoReportFName, "%s%s", reachName, "CellFishInfo.rpt");
+  sprintf(cellFishInfoReportFName, "%s%s", reachName, "CellFishInfo.csv");
   fprintf(stdout, "HabitatSpace >>>> buildCellFishInfoReporter >>>> cellFishInfoReportFName = %s \n", cellFishInfoReportFName);
   fflush(0);
 
   cellFishInfoReporter = [BreakoutReporter   createBegin: habitatZone
                                              forList: cellFishList
                                   withOutputFilename: (char *) cellFishInfoReportFName
-                                   withFileOverwrite: fileOverWrite
-                                     withColumnWidth: 25];
+                                   withFileOverwrite: fileOverWrite];
+//                                     withColumnWidth: 25];
 
 
 
@@ -3590,13 +3590,13 @@ return self;
 ////////////////////////////////////////
 - outputCellFishInfoReport
 {
-   //id <ListIndex> cellNdx = nil;
-   //FishCell*  aCell = nil;
+   id <ListIndex> cellNdx = nil;
+   FishCell*  aCell = nil;
 
    //fprintf(stdout, "HabitatSpace >>>> %s >>>> outputCellFishInfoReport >>>> BEGIN\n", [reachSymbol getName]);
    //fflush(0);
 
-   /*
+   
    if(cellFishInfoReporter == nil)
    {
        fprintf(stderr, "ERROR: HabitatSpace >>>> outputCellFishInfoReport >>>> cellFishInfoReporter is nil\n");
@@ -3605,7 +3605,7 @@ return self;
    }
 
 
-   cellNdx = [utmCellList listBegin: scratchZone];
+   cellNdx = [polyCellList listBegin: scratchZone];
 
 
    while(([cellNdx getLoc] != End) && ((aCell = [cellNdx next]) != nil))
@@ -3616,10 +3616,10 @@ return self;
 
       habCellDepth = [aCell getPolyCellDepth];
 
-      if(habCellDepth <= 0.0)
-      {
-          continue;
-      }
+      //if(habCellDepth <= 0.0)
+      //{
+      //    continue;
+      //}
 
       habCellNumber = [aCell getPolyCellNumber];
       habCellArea = [aCell getPolyCellArea];
@@ -3653,7 +3653,7 @@ return self;
   }
 
   [cellNdx drop];
-  */
+  
 
   //fprintf(stdout, "HabitatSpace >>>> %s >>>> outputCellFishInfoReport >>>> END\n", [reachSymbol getName]);
   //fflush(0);
