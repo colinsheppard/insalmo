@@ -2330,7 +2330,7 @@ char **speciesColor;
 //////////////////////////////////////////////////
 - openReddSummaryFilePtr {
 
-  char* formatString = "%-12s%-12s%-12s%-15s%-15s%-12s%-12s%-25s%-12s%-12s%-12s%-21s%-12s%-12s%-12s%-12s%-12s%-12s%-12s\n";
+  char* formatString = "%-12s%-12s%-21s%-15s%-15s%-12s%-12s%-25s%-12s%-12s%-21s%-12s%-12s%-12s%-12s%-12s%-12s%-12s\n";
 
   if(reddSummaryFilePtr == NULL) {
 
@@ -2352,7 +2352,6 @@ char **speciesColor;
                                                    "SpawnerAge",
                                                    "Species",
                                                    "Reach",
-                                                   "Transect",
                                                    "CellNo",
                                                    "CreateDate",
                                                    "InitialNumberOfEggs",
@@ -2383,7 +2382,6 @@ char **speciesColor;
                                                    "SpawnerAge",
                                                    "Species",
                                                    "Reach",
-                                                   "Transect",
                                                    "CellNo",
                                                    "CreateDate",
                                                    "InitialNumberOfEggs",

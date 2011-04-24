@@ -843,7 +843,7 @@ return self;
 ///////////////////////////////////////////////////////
 - createReddSummaryStr 
 {
-  char* formatString = "%-12d%-12d%-12p%-15f%-15f%-12d%-12s%-25s%-12d%-12s%-21d%-12s%-12d%-12d%-12d%-12d%-12d%-12d\n";
+  char* formatString = "%-12d%-12d%-21p%-15f%-15f%-12d%-12s%-25s%-12d%-12s%-21d%-12s%-12d%-12d%-12d%-12d%-12d%-12d\n";
 
   char reddCreateDate[12];
   char emptyDate[12];
