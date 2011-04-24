@@ -1303,6 +1303,7 @@ Boston, MA 02111-1307, USA.
 ///////////////////////////////////////////////////////////
 - (BOOL) isFemaleReadyToSpawn 
 {
+  time_t currentTime;
   double currentTemp = -LARGEINT;
 
   /* ready?
@@ -1372,6 +1373,18 @@ Boston, MA 02111-1307, USA.
       //return NO;
   //}
 
+
+  currentTime =  [self getCurrentTimeT];
+
+  //
+  // IN THE WINDOW FOR THIS YEAR?
+  //
+  if([timeManager isTimeT: currentTime
+              betweenMMDD: (char *) fishParams->fishSpawnStartDate 
+                  andMMDD: (char *) fishParams->fishSpawnEndDate] == NO) 
+  { 
+      return NO;
+  }
 
   //
   // SPAWNED THIS SEASON?
