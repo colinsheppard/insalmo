@@ -1194,6 +1194,9 @@ Boston, MA 02111-1307, USA.
       // update lastSpawnDate to today
       // select a male that also spawns
 
+      // HOWEVER: for inSALMO all spawners, male or female, spawn by the last
+      // date of the date window.
+
       id spawnCell=nil;
       id <List> fishList;
       id <ListIndex> fishLstNdx;
@@ -1203,9 +1206,21 @@ Boston, MA 02111-1307, USA.
       //
       // If we're dead or male we can't spawn we can't spawn
       //
+      // But if we're male and it's the last day of spawning, then
+      // we have to do it by ourselves.
+      //
       if(sex == Male) 
       {
-          return self;
+        if([timeManager isThisTime: [self getCurrentTimeT] 
+             onThisDay: fishParams->fishSpawnEndDate] == YES) 
+         { 
+           [self updateMaleSpawner];
+           return self;
+         }
+        else
+         {
+           return self;
+         }
       }
 
       if(causeOfDeath) 
@@ -1315,6 +1330,11 @@ Boston, MA 02111-1307, USA.
    *    f) temperature (cell) <branch> <msg>
    *    g) steady flows (cell) <branch> <msg>
    *    h) condition threshhold (fish) <calc>
+
+	Criteria are re-ordered for salmon so females spawn
+	on the last day of date window even if some criteria
+	are not met.
+
    */
 
 
@@ -1333,6 +1353,36 @@ Boston, MA 02111-1307, USA.
     
      #endif
    #endif
+
+  //
+  // SPAWNED THIS SEASON?
+  //
+  if(spawnedThisSeason == YES) 
+  {
+      return NO;
+  }
+
+  currentTime =  [self getCurrentTimeT];
+
+  //
+  // IN THE WINDOW FOR THIS YEAR?
+  //
+  if([timeManager isTimeT: currentTime
+              betweenMMDD: (char *) fishParams->fishSpawnStartDate 
+                  andMMDD: (char *) fishParams->fishSpawnEndDate] == NO) 
+  { 
+      return NO;
+  }
+
+  //
+  //  IS IT THE LAST DAY OF THE SPAWN WINDOW?
+  //
+
+  if([timeManager isThisTime: currentTime onThisDay: fishParams->fishSpawnEndDate] == NO) 
+  { 
+      return YES;
+  }
+
 
   currentTemp = [reach getTemperature];
 
@@ -1373,26 +1423,6 @@ Boston, MA 02111-1307, USA.
       //return NO;
   //}
 
-
-  currentTime =  [self getCurrentTimeT];
-
-  //
-  // IN THE WINDOW FOR THIS YEAR?
-  //
-  if([timeManager isTimeT: currentTime
-              betweenMMDD: (char *) fishParams->fishSpawnStartDate 
-                  andMMDD: (char *) fishParams->fishSpawnEndDate] == NO) 
-  { 
-      return NO;
-  }
-
-  //
-  // SPAWNED THIS SEASON?
-  //
-  if(spawnedThisSeason == YES) 
-  {
-      return NO;
-  }
 
   //
   // FINALLY TEST AGAINST RANDOM DRAW
