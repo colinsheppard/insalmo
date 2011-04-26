@@ -2469,7 +2469,7 @@ Boston, MA 02111-1307, USA.
                 {
                     id anotherReach = [habUpstreamLinksToDS atOffset: i];
 
-                    [anotherReach addUpstreamCellsWithin: fishDistToUSEnd toList: listOfCellsWithinRange]; 
+                    [anotherReach addDownstreamCellsWithin: fishDistToUSEnd toList: listOfCellsWithinRange]; 
  
                 } //for
 
