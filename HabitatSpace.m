@@ -1220,19 +1220,17 @@ Boston, MA 02111-1307, USA.
 
    (void) fgets(inputString, strArraySize, dataFPTR);
    (void) fgets(inputString, strArraySize, dataFPTR);
-    while(!feof(dataFPTR)){
-          (void) fgets(inputString, strArraySize, dataFPTR);
-          break;
-    }
-    fclose(dataFPTR);
+   (void) fgets(inputString, strArraySize, dataFPTR);
+   fclose(dataFPTR);
 
-    //fprintf(stdout, "%s\n", inputString);
-    //fflush(0);
+    fprintf(stdout, "%s\n", inputString);
+    fflush(0);
     length = strlen(inputString);
     for(i = 0; i < length; i++){
         c = inputString[i];
 
-        if(isalpha(c)){
+        if(isalpha(c) && numberOfFlows==0){
+		aNum[j++] = c;
             continue;
         }
 
@@ -1242,7 +1240,11 @@ Boston, MA 02111-1307, USA.
 	    //fflush(0);
             if(isdigit(aNum[0])){
                 numberOfFlows++;
-            }
+            }else if(numberOfFlows==0){
+		if(strcmp(aNum
+		    fprintf(stdout, "%s\n", aNum);
+		    fflush(0);
+	    }
             j = 0;
 	    aNum[j] = '\0';
             continue;
