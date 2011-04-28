@@ -1,3 +1,10 @@
 *.out
+insalmo
 insalmo-2d
 insalmo-2d.exe
+*FishInfo.csv
+DeadFish.csv
+LiveFish.csv
+FoodAvailability.csv
+OutmigrantRpt.csv
+Redds.csv
