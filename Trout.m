@@ -1985,7 +1985,7 @@ Boston, MA 02111-1307, USA.
                   fprintf(stderr, "WARNING: Trout >>>> moveToMaximizeExpectedMaturity >>>>  habDownstreamLinksToUS all have zero depth >>>> juvenile staying in reach %s\n", [reach getReachName]);
                   fflush(0);
             }
-            if(numNonZeroDepthCells == 1)
+            else if(numNonZeroDepthCells == 1)
             {
                  bestDest = [oReachPotentialCells getFirst];
             }
