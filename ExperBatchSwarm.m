@@ -849,8 +849,8 @@ Boston, MA 02111-1307, USA.
   // it. We the subSwarm's activity, and then drop the subSwarm
   // itself which drops of the objects built by subSwarm
 
-  fprintf(stdout, "ExperBatchSwarm >>>> dropModel >>>> BEGIN\n");
-  fflush(0);
+  //fprintf(stdout, "ExperBatchSwarm >>>> dropModel >>>> BEGIN\n");
+  //fflush(0);
 
 
   [[subSwarm getActivity] drop];
@@ -858,8 +858,8 @@ Boston, MA 02111-1307, USA.
   subSwarm = nil; 
 
 
-  fprintf(stdout, "ExperBatchSwarm >>>> dropModel >>>> END\n");
-  fflush(0);
+  //fprintf(stdout, "ExperBatchSwarm >>>> dropModel >>>> END\n");
+  //fflush(0);
 
   return self;
 }

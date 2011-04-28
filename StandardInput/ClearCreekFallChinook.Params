@@ -49,6 +49,9 @@ fishSearchArea                   20000
 fishSpawnEggViability              0.9
 fishSpawnDefenseArea             56000
 
+fishSpawnStartDate                10/1
+fishSpawnEndDate                 11/15
+
 fishSpawnDSuitD1                   0.0
 fishSpawnDSuitD2                  12.0
 fishSpawnDSuitD3                  27.0

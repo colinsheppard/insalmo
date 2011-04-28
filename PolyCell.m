@@ -619,8 +619,6 @@ Boston, MA 02111-1307, USA.
 
    polyCellArea /= 2;
 
-   polyCellArea = 10000.0 * polyCellArea;
-
    if(polyCellArea <= 0.0)
    {
       fprintf(stderr, "ERROR: PolyCell >>>> calcPolyCellCentroid >>>> polyCellNumber = %d polyCellArea = %f\n", polyCellNumber, polyCellArea);

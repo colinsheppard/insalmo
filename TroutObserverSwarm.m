@@ -128,6 +128,8 @@ Boston, MA 02111-1307, USA.
                       inClass: [PolyCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "numberOfFish"
                       inClass: [FishCell class]]];
+   [probeMap addProbe: [probeLibrary getProbeForVariable: "numberOfRedds"
+                      inClass: [FishCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "polyCellArea"
                       inClass: [PolyCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "cellFracSpawn"
@@ -268,6 +270,13 @@ Boston, MA 02111-1307, USA.
 {
   //[populationHisto drop];
   populationHisto = nil;
+  return self;
+}
+
+- _juveLengthHistoDeath_ : caller
+{
+  //[juveLengthHisto drop];
+  juveLengthHisto = nil;
   return self;
 }
 
@@ -546,7 +555,7 @@ Boston, MA 02111-1307, USA.
   velocityHisto = [EZBin createBegin: obsZone];
   SET_WINDOW_GEOMETRY_RECORD_NAME (velocityHisto);
   [velocityHisto setTitle: "Redd Velocity Histogram"];
-  [velocityHisto setAxisLabelsX: "Velocity (cm)" Y: "# of redds"];
+  [velocityHisto setAxisLabelsX: "Velocity (cm)" Y: "Number of redds"];
   [velocityHisto setBinCount: 10];
   [velocityHisto setLowerBound: 0];
   [velocityHisto setUpperBound: 200];
@@ -562,7 +571,7 @@ Boston, MA 02111-1307, USA.
   depthHisto = [EZBin createBegin: obsZone];
   SET_WINDOW_GEOMETRY_RECORD_NAME (depthHisto);
   [depthHisto setTitle: "Redd Depth Histogram"];
-  [depthHisto setAxisLabelsX: "Depth (cm)" Y: "# of redds"];
+  [depthHisto setAxisLabelsX: "Depth (cm)" Y: "Number of redds"];
   [depthHisto setBinCount: 10];
   [depthHisto setLowerBound: 0];
   [depthHisto setUpperBound: 200];
@@ -577,8 +586,8 @@ Boston, MA 02111-1307, USA.
 
   populationHisto = [EZBin createBegin: obsZone];
   SET_WINDOW_GEOMETRY_RECORD_NAME (populationHisto);
-  [populationHisto setTitle: "Population in each Age"];
-  [populationHisto setAxisLabelsX: "Age" Y: "# of Fish"];
+  [populationHisto setTitle: "Population By Age"];
+  [populationHisto setAxisLabelsX: "Age (years)" Y: "Number of fish"];
   [populationHisto setBinCount: 7];
   [populationHisto setLowerBound: 0];
   [populationHisto setUpperBound: 7];
@@ -588,11 +597,25 @@ Boston, MA 02111-1307, USA.
   [populationHisto enableDestroyNotification: self
                 notificationMethod: @selector (_populationHistoDeath_:)];
 
+  juveLengthHisto = [EZBin createBegin: obsZone];
+  SET_WINDOW_GEOMETRY_RECORD_NAME (juveLengthHisto); 
+  [juveLengthHisto setTitle: "Fish Lengths"];
+  [juveLengthHisto setAxisLabelsX: "Length (cm)" Y: "Number of live fish"];
+  [juveLengthHisto setBinCount: 10];
+  [juveLengthHisto setLowerBound: 0];
+  [juveLengthHisto setUpperBound: 10];
+  [juveLengthHisto setCollection: [troutModelSwarm getLiveFishList]];
+  [juveLengthHisto setProbedSelector: M(getFishLength)];
+  juveLengthHisto = [juveLengthHisto createEnd];
+ 
+  [juveLengthHisto enableDestroyNotification: self
+                notificationMethod: @selector (_juveLengthHistoDeath_:)];
+
 
   mortalityGraph = [EZGraph createBegin: self];
   SET_WINDOW_GEOMETRY_RECORD_NAME (mortalityGraph); 
   [mortalityGraph setTitle: "Mortality"];
-  [mortalityGraph setAxisLabelsX: "Time" Y: "NumberDead"];
+  [mortalityGraph setAxisLabelsX: "Time" Y: "Number dead"];
   mortalityGraph = [mortalityGraph createEnd];
 
   //
@@ -704,6 +727,12 @@ Boston, MA 02111-1307, USA.
     [populationHisto reset];
     [populationHisto update];
     [populationHisto output];
+  }  
+  if(juveLengthHisto)
+  {
+    [juveLengthHisto reset];
+    [juveLengthHisto update];
+    [juveLengthHisto output];
   }  
   if(mortalityGraph) 
   {
@@ -1063,6 +1092,12 @@ Boston, MA 02111-1307, USA.
   {
      [populationHisto drop];
      populationHisto = nil;
+  }
+
+  if(juveLengthHisto)
+  {
+     [juveLengthHisto drop];
+     juveLengthHisto = nil;
   }
 
   if(mortalityGraph)

@@ -11,7 +11,7 @@ runEndDate                   9/30/2007
 fishOutputFile               LiveFish.csv
 fishMortalityFile            DeadFish.csv
 reddMortalityFile            ReddMortality.out
-reddOutputFile               Redds.out
+reddOutputFile               Redds.csv
 popInitDate                  10/01/2008
 fileOutputFrequency          1
 appendFiles			     0
@@ -21,12 +21,12 @@ shuffleYearReplace           0
 shuffleYearSeed              737899
 
 tagFishColor                 tomato
-tagCellColor                 black
+tagCellColor                 DeepPink1
 dryCellColor                 white
 
 siteLatitude                 42
 
-juvenileSuperindividualRatio 20
+juvenileSuperindividualRatio 50
 
 @end
 

@@ -124,6 +124,8 @@ double fishSearchArea;
 
 double fishSpawnEggViability;
 double fishSpawnDefenseArea;
+char* fishSpawnStartDate;
+char* fishSpawnEndDate;
 
 double fishSpawnDSuitD1;
 double fishSpawnDSuitD2;

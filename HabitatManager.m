@@ -880,16 +880,16 @@ Boston, MA 02111-1307, USA.
 ////////////////////////////////
 - (void) drop
 {
-    fprintf(stdout, "HabitatManager >>>> drop >>>> BEGIN\n");
-    fflush(0);
+  //  fprintf(stdout, "HabitatManager >>>> drop >>>> BEGIN\n");
+  //  fflush(0);
 
     [habitatSpaceList deleteAll];
     [habitatSpaceList drop];
     habitatSpaceList = nil; 
 
 
-    fprintf(stdout, "HabitatManager >>>> drop >>>> END\n");
-    fflush(0);
+  //  fprintf(stdout, "HabitatManager >>>> drop >>>> END\n");
+  //  fflush(0);
 }
 
 

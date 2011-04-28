@@ -67,9 +67,10 @@ Boston, MA 02111-1307, USA.
    id <ListIndex> reddListNdx=nil;
    double reddSuperimpRisk=-1.0;
    double areaSpawnedToday = 0.0;
-   double cellArea;
-   double cellGravelFrac;
+   //double cellArea;
+   //double cellGravelFrac;
    double otherReddSize;
+   double areaAvailableToday;
 
    id aRedd = anObj;
    FishParams* fishParams;
@@ -103,8 +104,17 @@ Boston, MA 02111-1307, USA.
      return self;
    }
 
+   // If there is no gravel, then there can be no superimposition
+   if ([[aRedd getCell] getCellFracSpawn] < 0.0000001)
+   {
+     funcValue = 0.0;
+     return self;
+   }
+  
+
    // Otherwise, do all the other stuff
    cell = [aRedd getCell];
+   areaAvailableToday = [cell getCellAvailableGravelArea]; // unguarded gravel area after spawning is done
 
    if(uniformDist == nil)
    {
@@ -133,9 +143,12 @@ Boston, MA 02111-1307, USA.
    speciesNdx = [aRedd getSpeciesNdx];
    fishParams = [aRedd getFishParams];
 
+   // Add up how much area was disturbed by redd-building today
+   // assuming redds created on same day do not overlap
+   // And calculate the unguarded spawning area *before* spawning started
    if( (reddList = [cell getReddsIContain]) != nil) 
    {
-     // fprintf(stderr, "Redds in cell: %d \n", [reddList getCount]);
+     // fprintf(stderr, "SuperimpFunc >> Redds in cell: %d \n", [reddList getCount]);
 
      reddListNdx = [reddList listBegin: scratchZone];
 
@@ -145,33 +158,27 @@ Boston, MA 02111-1307, USA.
 
             if([nextRedd getCreateTimeT] == [aRedd getCurrentTimeT])
             {
-               //   otherReddSpNdx = [nextRedd getSpeciesNdx];
+               //   fprintf(stderr, "SuperimpFunc >> another redd created here today \n");
                   otherReddFishParams = [nextRedd getFishParams];
 
                   otherReddSize = otherReddFishParams->reddSize;
                   areaSpawnedToday += otherReddSize;
+                  areaAvailableToday -= otherReddFishParams->fishSpawnDefenseArea;
+                  // fprintf(stderr, "SuperimpFunc >> Area disturbed today: %f \n", areaSpawnedToday);
             }
       }  // while
                  
-      cellArea = [cell getPolyCellArea];
-  
-      cellGravelFrac = [[aRedd getCell] getCellFracSpawn];
- 
-      if(cellGravelFrac == 0.0) 
+
+      if(areaAvailableToday < areaSpawnedToday)  // All available area was disturbed
       {
-                    //
-                    // We can't have superimposition
-                    //if there isn't any gravel
-                    //
-        reddSuperimpRisk = 0.0; 
+         reddSuperimpRisk = 1.0;
       }
-      else 
-      { 
-                    //
-                    //reddSuperimpRisk can be greater than 1 and that's ok
-                    //
-        reddSuperimpRisk = areaSpawnedToday/(cellArea*cellGravelFrac);
+      else
+      {
+         reddSuperimpRisk = areaSpawnedToday/areaAvailableToday;
       }
+      // fprintf(stderr, "SuperimpFunc >> areaSpawnedToday: %f areaAvailableToday: %f Risk: %f \n", 
+      // areaSpawnedToday, areaAvailableToday, reddSuperimpRisk);
 
       uniformRanNum = [uniformDist getDoubleSample];
 

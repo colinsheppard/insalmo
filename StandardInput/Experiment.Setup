@@ -11,13 +11,6 @@ inClass:                  TroutModelSwarm
 sendReplicateCountToParam: replicate
 inClass:                  TroutModelSwarm
 
-ClassName     TroutModelSwarm
-InstanceName  NONE
-ParamName     appendFiles
-ValueType     BOOL
-Value         NO
-#Value         YES
-
 #ClassName     FishParams
 #InstanceName  FallChinook
 #ParamName     fishSpawnProb
