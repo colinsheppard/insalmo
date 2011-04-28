@@ -24,11 +24,13 @@ Boston, MA 02111-1307, USA.
 
 
 
+#include <string.h>
+
 #import "HabitatSpace.h"
 #import "Trout.h"
-
 #import "FishCell.h"
 #import "Redd.h"
+#import "BreakoutReporter.h"
 
 @implementation FishCell
 
@@ -1846,8 +1848,15 @@ END of OLD CODE */
 - foodAvailAndConInCell: aFish 
 {
   FILE * foodReportPtr=NULL;
-  const char * foodReportFile = "FoodAvailability.rpt";
+  const char * foodReportFile = "FoodAvailability.csv";
+  char strDataFormat[100];
   char date[12];
+  double hourlySearchConRate;
+  double hourlyDriftConRate;
+  char sysDateAndTime[35];
+  struct tm *timeStruct;
+  time_t aTime;
+
 
   if([space getFoodReportFirstTime] == YES) 
   {
@@ -1857,15 +1866,19 @@ END of OLD CODE */
           fflush(0);
           exit(1);
      }
+    aTime = time(NULL);
+    timeStruct = localtime(&aTime);
+    strftime(sysDateAndTime, 35, "%a %d-%b-%Y %H:%M:%S", timeStruct) ;
 
-     fprintf(foodReportPtr,"\n%-15s%-16s%-16s%-16s%-16s%-16s%-16s%-16s\n","Date",
-                                                                          "PolyCellNumber",
-                                                                          "SearchFoodProd",
-                                                                          "DriftFoodProd",
-                                                                          "SearchAvail",
-                                                                          "Driftavail",
-                                                                          "SearchConsumed",
-                                                                          "DriftConsumed");
+     fprintf(foodReportPtr, "\nModel Run System Date and Time: %s\n", sysDateAndTime); 
+     fprintf(foodReportPtr,"\n%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+                                                         "PolyCellNumber",
+                                                         "SearchFoodProd",
+                                                         "DriftFoodProd",
+                                                         "SearchAvail",
+                                                         "Driftavail",
+                                                         "SearchConsumed",
+                                                         "DriftConsumed");
      fflush(foodReportPtr);
 
   }
@@ -1879,16 +1892,36 @@ END of OLD CODE */
           exit(1);
       }
 
-      strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
+      hourlySearchConRate = [aFish getHourlySearchConRate];
+      hourlyDriftConRate = [aFish getHourlyDriftConRate];
 
-      fprintf(foodReportPtr,"%-15s%-16d%-16E%-16E%-16E%-16E%-16E%-16E\n", date,
-                                                                          polyCellNumber,
-                                                                          searchHourlyCellTotal,
-                                                                          driftHourlyCellTotal,
-                                                                          hourlyAvailSearchFood,
-                                                                          hourlyAvailDriftFood,
-                                                                          [aFish getHourlySearchConRate],
-                                                                          [aFish getHourlyDriftConRate]);
+      strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
+      strcpy(strDataFormat,"%s,%d,");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: searchHourlyCellTotal]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: driftHourlyCellTotal]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailSearchFood]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailDriftFood]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlySearchConRate]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyDriftConRate]);
+      strcat(strDataFormat,"\n");
+
+      //fprintf(stdout, "FishCell >>>> foodAvailAndConInCell >>> format of line = %s \n", strDataFormat);
+      //fflush(0);
+      //exit(1);
+
+      fprintf(foodReportPtr,strDataFormat, date,
+                                           polyCellNumber,
+                                           searchHourlyCellTotal,
+                                           driftHourlyCellTotal,
+                                           hourlyAvailSearchFood,
+                                           hourlyAvailDriftFood,
+                                           hourlySearchConRate,
+                                           hourlyDriftConRate);
 
      fflush(foodReportPtr);
   }

@@ -1561,7 +1561,24 @@ Boston, MA 02111-1307, USA.
 
 }
 
+    
++ (char *) formatFloatOrExponential: (double) aVal{
+	int sigFigsKept = 4;
 
+	if(aVal == 0.0){
+	   return "%f";
+	}else if(aVal < 0.0){
+	    if(log10(-aVal) < -(sigFigsKept-1)){
+		   return "%E";
+	    }else{
+		   return "%f";
+	    }
+	}else if(log10(aVal) < -(sigFigsKept-1)){
+	   return "%E";
+	}else{
+	   return "%f";
+	}
+}
     
 
 - (void) drop
