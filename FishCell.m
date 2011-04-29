@@ -1865,7 +1865,8 @@ END of OLD CODE */
      fprintf(foodReportPtr,"\n%s\n\n",fileMetaData);
      [scratchZone free: fileMetaData];
 
-     fprintf(foodReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+     fprintf(foodReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+                                                       "ReachName",
                                                        "PolyCellNumber",
                                                        "SearchFoodProd",
                                                        "DriftFoodProd",
@@ -1890,7 +1891,7 @@ END of OLD CODE */
       hourlyDriftConRate = [aFish getHourlyDriftConRate];
 
       strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
-      strcpy(strDataFormat,"%s,%d,");
+      strcpy(strDataFormat,"%s,%s,%d,");
       strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: searchHourlyCellTotal]);
       strcat(strDataFormat,",");
       strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: driftHourlyCellTotal]);
@@ -1909,6 +1910,7 @@ END of OLD CODE */
       //exit(1);
 
       fprintf(foodReportPtr,strDataFormat, date,
+					  [[self getSpace] getReachName],
                                            polyCellNumber,
                                            searchHourlyCellTotal,
                                            driftHourlyCellTotal,
