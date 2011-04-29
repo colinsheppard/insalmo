@@ -612,25 +612,20 @@ Boston, MA 02111-1307, USA.
       double timeDifference=-1;
       int numberOfDays=-1;
 
-      if(aLaterTime >= aTime) 
-      {
+      if(aLaterTime >= aTime){
          timeDifference = difftime(aLaterTime, aTime);
 
-         if(timeDifference == -1) 
-         {
+         if(timeDifference == -1){
              fprintf(stderr, "ERROR: TImeManager >>>> getNumberOfDaysBetween >>>> timeDifference == -1\n"); 
              fflush(0);
              exit(1);
          }
 
          numberOfDays = ((int) timeDifference)/86400;
-      }
-      else 
-      {
+      }else{
          timeDifference = difftime(aTime, aLaterTime);
 
-         if(timeDifference == -1) 
-         {
+         if(timeDifference == -1) {
              fprintf(stderr, "ERROR: TImeManager >>>> getNumberOfDaysBetween >>>> timeDifference == -1\n"); 
              fflush(0);
              exit(1);
@@ -638,7 +633,6 @@ Boston, MA 02111-1307, USA.
 
          numberOfDays = -1 * ((int) timeDifference)/86400;
       }
- 
       return numberOfDays;
 }
 
