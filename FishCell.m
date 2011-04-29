@@ -1945,36 +1945,42 @@ END of OLD CODE */
 // depthVelReport
 //
 /////////////////////////////////////////
-- depthVelReport: (FILE *) depthVelPtr 
-{
+- depthVelReport: (FILE *) depthVelPtr {
     char date[12];
+    char strDataFormat[100];
+    double theFlow;
 
-    if([space getDepthVelRptFirstTime] == YES) 
-    {
-         fprintf(depthVelPtr,"%-15s%-15s%-7s%-16s%-16s%-16s\n", "Date",
-                                                                "Flow",
-                                                                "PolyCellNumber",
-                                                                "PolyCellArea",
-                                                                "PolyCellDepth",
-                                                                "PolyCellVelocity");
+    if([space getDepthVelRptFirstTime] == YES){
+         fprintf(depthVelPtr,"%s,%s,%s,%s,%s,%s\n", "Date",
+                                                    "Flow",
+                                                    "PolyCellNumber",
+                                                    "PolyCellArea",
+                                                    "PolyCellDepth",
+                                                    "PolyCellVelocity");
          fflush(depthVelPtr);
-
     }
+    if(polyCellDepth != 0){
+      theFlow = [space getRiverFlow];
+      strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
+      strcpy(strDataFormat,"%s,");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: theFlow]);
+      strcat(strDataFormat,",%d,");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellArea]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellDepth]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellVelocity]);
+      strcat(strDataFormat,"\n");
 
-    if(polyCellDepth != 0) 
-    {
-         strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
-
-         fprintf(depthVelPtr,"%-15s%-15f%-7d%-16f%-16f%-16f\n", date,
-                                                               [space getRiverFlow],
-                                                               polyCellNumber,
-                                                               polyCellArea,
-                                                               polyCellDepth,
-                                                               polyCellVelocity);
+      fprintf(depthVelPtr,strDataFormat, date,
+                                         theFlow,
+                                         polyCellNumber,
+                                         polyCellArea,
+                                         polyCellDepth,
+                                         polyCellVelocity);
+      fflush(depthVelPtr);
     }
-         
     [space setDepthVelRptFirstTime: NO];
-
     return self;
 }
 

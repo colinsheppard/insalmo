@@ -198,12 +198,12 @@ Boston, MA 02111-1307, USA.
   //
   // BEGIN REPORT FILES
   //
-  cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Depth_Test.rpt") + 1)];
+  cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Depth_Test.csv") + 1)];
 
   strcpy(cellDepthReportFile, reachName);
   strcat(cellDepthReportFile, "Cell_Flow_Depth_Test.csv"); 
 
-  cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Velocity_Test.rpt") + 1)];
+  cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Velocity_Test.csv") + 1)];
 
   strcpy(cellVelocityReportFile, reachName);
   strcat(cellVelocityReportFile, "Cell_Flow_Velocity_Test.csv"); 
@@ -213,10 +213,10 @@ Boston, MA 02111-1307, USA.
   strcpy(habitatReportFile, reachName);
   strcat(habitatReportFile, "Habitat.rpt"); 
 
-  cellAreaDepthVelReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("CellDepthAreaVelocity.rpt") + 1)];
+  cellAreaDepthVelReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("CellDepthAreaVelocity.csv") + 1)];
 
   strcpy(cellAreaDepthVelReportFile, reachName);
-  strcat(cellAreaDepthVelReportFile, "CellDepthAreaVelocity.rpt"); 
+  strcat(cellAreaDepthVelReportFile, "CellDepthAreaVelocity.csv"); 
   
   // 
   // END REPORT FILES
@@ -3729,34 +3729,23 @@ return self;
 
 
 
-- printCellAreaDepthVelocityRpt
-{
+- printCellAreaDepthVelocityRpt{
 
  FILE *depthVelPtr=NULL;
+ char openFmt[1];
 
- if(depthVelRptFirstTime == YES) 
- {
-   if( (depthVelPtr = fopen(cellAreaDepthVelReportFile, "w")) == NULL) 
-   {
-       fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
-       fflush(0);
-       exit(1);
-   }
+ if(depthVelRptFirstTime == YES){
+   openFmt[0] = 'w';
+ }else{
+   openFmt[0] = 'a';
+ }
+ if( (depthVelPtr = fopen(cellAreaDepthVelReportFile, openFmt)) == NULL){
+     fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
+     fflush(0);
+     exit(1);
  }
 
-
- if(depthVelRptFirstTime == NO) 
- {
-     if( (depthVelPtr = fopen(cellAreaDepthVelReportFile,"a")) == NULL) 
-     {
-          fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
-          fflush(0);
-          exit(1);
-     }
- }
-
- //[utmCellList forEach: M(depthVelReport:) : (id) depthVelPtr];
-
+ [polyCellList forEach: M(depthVelReport:) : (id) depthVelPtr];
 
  fclose(depthVelPtr);
  depthVelRptFirstTime = NO;
