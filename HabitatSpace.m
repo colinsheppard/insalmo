@@ -206,7 +206,7 @@ Boston, MA 02111-1307, USA.
   cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Velocity_Test.rpt") + 1)];
 
   strcpy(cellVelocityReportFile, reachName);
-  strcat(cellVelocityReportFile, "Cell_Flow_Velocity_Test.rpt"); 
+  strcat(cellVelocityReportFile, "Cell_Flow_Velocity_Test.csv"); 
 
   habitatReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Habitat.rpt") + 1)];
 
@@ -3211,18 +3211,6 @@ Boston, MA 02111-1307, USA.
 }
 
 
-
-
-//- printCellDepthReport 
-//{
-//    return self;
-//}
-
-- printCellVelocityReport 
-{
-    return self;
-}
-
 - printCellDepthReport 
 {
   FILE * reportPtr=NULL;
@@ -3241,7 +3229,6 @@ Boston, MA 02111-1307, USA.
            fflush(0);
            exit(1);
       }
-      fprintf(reportPtr, "%-6s%-12s%-12s\n","TSEC", "RiverFlow", "CellDepths:");
       fflush(reportPtr);
   }
   if(depthReportFirstWrite == NO) {
@@ -3282,6 +3269,63 @@ Boston, MA 02111-1307, USA.
   return self;
 }
 
+- printCellVelocityReport 
+{
+  FILE * reportPtr=NULL;
+
+  id <ListIndex> cellNdx;
+  id nextCell;
+  int cellNumber;
+  double myRiverFlow;
+  double velocity;
+  char date[12];
+  char strDataFormat[100];
+
+  if(velocityReportFirstWrite == YES) {
+      if((reportPtr = fopen(cellVelocityReportFile,"w+")) == NULL) {
+           fprintf(stderr, "ERROR: HabitatSpace >>>> printCellVelocityReport  >>>> Cannot open file %s",cellVelocityReportFile);
+           fflush(0);
+           exit(1);
+      }
+      fflush(reportPtr);
+  }
+  if(velocityReportFirstWrite == NO) {
+    if((reportPtr = fopen(cellVelocityReportFile,"a")) == NULL){
+        fprintf(stderr, "ERROR: HabitatSpace >>>> printCellVelocityReport  >>>> Cannot open file %s",cellVelocityReportFile);
+        fflush(0);
+        exit(1);
+    }
+  }
+  cellNdx = [polyCellList listBegin: [self getZone]];
+
+  if(velocityReportFirstWrite == YES){
+    fprintf(reportPtr,"\n%s\n","date,cellNumber,cellFlow,cellVelocity");
+  }
+
+  while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)){
+    cellNumber   = [nextCell getPolyCellNumber];
+    myRiverFlow = [nextCell getRiverFlow];
+    velocity    = [nextCell getPolyCellVelocity];
+
+    strncpy(date, [timeManager getDateWithTimeT: [[nextCell getSpace] getModelTime]],12);
+    strcpy(strDataFormat,"%s,%d,");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
+    strcat(strDataFormat,"\n");
+
+    fprintf(reportPtr,strDataFormat, date,
+				     cellNumber,
+				     myRiverFlow,
+				     velocity);
+  } //while
+  fflush(0);
+  [cellNdx drop];
+  fclose(reportPtr);
+  velocityReportFirstWrite = NO;
+
+  return self;
+}
 
 
 /*
