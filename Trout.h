@@ -34,8 +34,8 @@ Boston, MA 02111-1307, USA.
 #import "globals.h"
 
 /*#define MOVE_REPORT_ON*/
-#define READY_TO_SPAWN_RPT
-//#define SPAWN_CELL_RPT
+/*#define READY_TO_SPAWN_RPT*/
+#define SPAWN_CELL_RPT
 
 @interface Trout: SwarmObject
 {

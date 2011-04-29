@@ -3679,69 +3679,79 @@ Boston, MA 02111-1307, USA.
 - printSpawnCellRpt: (id <List>) spawnCellList 
 {
   FILE * spawnCellRptPtr=NULL;
-  const char * spawnCellFile = "Spawn_Cell.rpt";
+  const char * spawnCellFile = "Spawn_Cell.csv";
   static BOOL spawnCellFirstTime = YES;
+  char strDataFormat[150];
+  double cellDepth,cellVelocity,cellArea,fracSpawn,depthSuit,velSuit,spawnQuality;
 
   id <ListIndex> cellListNdx=nil;
   id  aCell=nil;
 
-  if(spawnCellFirstTime == YES) 
-  {
-      if((spawnCellRptPtr = fopen(spawnCellFile,"w+")) == NULL) 
-      {
+  if(spawnCellFirstTime == YES){
+      if((spawnCellRptPtr = fopen(spawnCellFile,"w+")) == NULL){
           fprintf(stderr, "ERROR: Trout >>>> printSpawnCellRpt >>>> Cannot open report file %s for writing", spawnCellFile);
           fflush(0);
           exit(1);
       }
-
-       fprintf(spawnCellRptPtr,"%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n","FishID",
-                                                                            "Depth",
-                                                                            "Velocity",
-                                                                            "Area",
-                                                                            "fracSpawn",
-                                                                            "DepthSuit",
-                                                                            "VelSuit",
-                                                                            "spawnQuality");
+      fprintf(spawnCellRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,\n","FishID",
+                                                           "Depth",
+                                                           "Velocity",
+                                                           "Area",
+                                                           "fracSpawn",
+                                                           "DepthSuit",
+                                                           "VelSuit",
+                                                           "spawnQuality");
+  }
+  if(spawnCellFirstTime == NO){
+	if((spawnCellRptPtr = fopen(spawnCellFile,"a")) == NULL) 
+	{
+	    fprintf(stderr, "ERROR: Trout >>>> printSpawnCellRpt >>>> Cannot open report file %s for writing\n", spawnCellFile);
+	    fflush(0);
+	    exit(1);
+	}
   }
 
-     if(spawnCellFirstTime == NO) 
-     {
-          if((spawnCellRptPtr = fopen(spawnCellFile,"a")) == NULL) 
-          {
-              fprintf(stderr, "ERROR: Trout >>>> printSpawnCellRpt >>>> Cannot open report file %s for writing\n", spawnCellFile);
-              fflush(0);
-              exit(1);
-          }
-     }
+  cellListNdx = [spawnCellList listBegin: [self getZone]];
 
-     cellListNdx = [spawnCellList listBegin: [self getZone]];
+  while(([cellListNdx getLoc] != End) && ((aCell = [cellListNdx next]) != nil)){
+    cellDepth	  = [aCell getPolyCellDepth];
+    cellVelocity  = [aCell getPolyCellVelocity];
+    cellArea	  = [aCell getPolyCellArea];
+    fracSpawn	  = [aCell getCellFracSpawn];
+    depthSuit	  = [self getSpawnDepthSuitFor: [aCell getPolyCellDepth] ];
+    velSuit	  = [self getSpawnVelSuitFor: [aCell getPolyCellVelocity]];
+    spawnQuality  = [self getSpawnQuality: aCell];
+    strcpy(strDataFormat,"%p,");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellDepth]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellVelocity]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellArea]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fracSpawn]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depthSuit]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velSuit]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: spawnQuality]);
+    strcat(strDataFormat,"\n");
+    fprintf(spawnCellRptPtr,strDataFormat,self,
+					  cellDepth, 
+					  cellVelocity, 
+					  cellArea, 
+					  fracSpawn, 
+					  depthSuit, 
+					  velSuit, 
+					  spawnQuality); 
+  }  
+  [cellListNdx drop];
 
-     while(([cellListNdx getLoc] != End) && ((aCell = [cellListNdx next]) != nil)) 
-    {
-    
-       fprintf(spawnCellRptPtr,"%-15p%-15f%-15f%-15f%-15f%-15f%-15f%-15f\n", self,
-                                                                             [aCell getPolyCellDepth],
-                                                                             [aCell getPolyCellVelocity],
-                                                                             [aCell getArea],
-                                                                             [aCell getCellFracSpawn],
-                                                                             [self getSpawnDepthSuitFor: [aCell getPolyCellDepth] ],
-                                                                             [self getSpawnVelSuitFor: [aCell getPolyCellVelocity]],
-                                                                             [self getSpawnQuality: aCell]); 
-
-      
-    }  
- 
-
-   [cellListNdx drop];
-   
-   if(spawnCellRptPtr != NULL)
-   {
-      fclose(spawnCellRptPtr);
-   }
-
-   spawnCellFirstTime = NO;
-
-   return self;
+  if(spawnCellRptPtr != NULL){
+    fclose(spawnCellRptPtr);
+  }
+  spawnCellFirstTime = NO;
+  return self;
 }
 #endif
 
