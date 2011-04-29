@@ -201,7 +201,7 @@ Boston, MA 02111-1307, USA.
   cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Depth_Test.rpt") + 1)];
 
   strcpy(cellDepthReportFile, reachName);
-  strcat(cellDepthReportFile, "Cell_Flow_Depth_Test.rpt"); 
+  strcat(cellDepthReportFile, "Cell_Flow_Depth_Test.csv"); 
 
   cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Velocity_Test.rpt") + 1)];
 
@@ -3213,139 +3213,75 @@ Boston, MA 02111-1307, USA.
 
 
 
-- printCellDepthReport 
-{
-    return self;
-}
+//- printCellDepthReport 
+//{
+//    return self;
+//}
 
 - printCellVelocityReport 
 {
     return self;
 }
 
-
-/*
-
-Broken with the utm cells
-
 - printCellDepthReport 
 {
- 
   FILE * reportPtr=NULL;
-
-  BOOL loopFirstTime=YES;
-
-  char * printString=(char *) NULL;
-  char * print1String=(char *) NULL;
-  char * print2String=(char *) NULL;
 
   id <ListIndex> cellNdx;
   id nextCell;
-  int currTransect=1;
-  int transect;
-  int cellNo;
+  int cellNumber;
   double myRiverFlow;
   double depth;
-  char * cellNo1String=(char *) NULL;
-  char * cellNo2String=(char *) NULL;
-  char * cellPrintString=(char *) NULL;
+  char date[12];
+  char strDataFormat[100];
 
-
-  
-
-
-
-  if(depthReportFirstWrite == YES) 
-  {
-      if((reportPtr = fopen(cellDepthReportFile,"w+")) == NULL) 
-      {
+  if(depthReportFirstWrite == YES) {
+      if((reportPtr = fopen(cellDepthReportFile,"w+")) == NULL) {
            fprintf(stderr, "ERROR: HabitatSpace >>>> printCellDepthReport  >>>> Cannot open file %s",cellDepthReportFile);
            fflush(0);
            exit(1);
       }
-
       fprintf(reportPtr, "%-6s%-12s%-12s\n","TSEC", "RiverFlow", "CellDepths:");
       fflush(reportPtr);
   }
-
-
-  if(depthReportFirstWrite == NO) 
-  {
-    if((reportPtr = fopen(cellDepthReportFile,"a")) == NULL)
-    {
+  if(depthReportFirstWrite == NO) {
+    if((reportPtr = fopen(cellDepthReportFile,"a")) == NULL){
         fprintf(stderr, "ERROR: HabitatSpace >>>> printCellDepthReport  >>>> Cannot open file %s",cellDepthReportFile);
         fflush(0);
         exit(1);
     }
   }
+  cellNdx = [polyCellList listBegin: [self getZone]];
 
-  print1String = (char *) [[self getZone] alloc: 300*sizeof(char)];
-  print2String = (char *) [[self getZone] alloc: 300*sizeof(char)];
+  if(depthReportFirstWrite == YES){
+    fprintf(reportPtr,"\n%s\n","date,cellNumber,cellFlow,cellDepth");
+  }
 
-  cellNo1String = (char *) [[self getZone] alloc: 300*sizeof(char)];
-  cellNo2String = (char *) [[self getZone] alloc: 300*sizeof(char)];
+  while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)){
+    cellNumber   = [nextCell getPolyCellNumber];
+    myRiverFlow = [nextCell getRiverFlow];
+    depth    = [nextCell getPolyCellDepth];
 
-  cellNdx = [listOfCells listBegin: [self getZone]];
- 
-  //fprintf(reportPtr,"\nThe number of cells = %d \n", [listOfCells getCount]);
+    strncpy(date, [timeManager getDateWithTimeT: [[nextCell getSpace] getModelTime]],12);
+    strcpy(strDataFormat,"%s,%d,");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
+    strcat(strDataFormat,"\n");
 
-  while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)) 
-  {
-     transect = [nextCell getTransect];
-     cellNo   = [nextCell getCellNo];
-     myRiverFlow = [nextCell getRiverFlow];
-     depth    = [nextCell getDepth];
-
-    if(loopFirstTime == YES) 
-    {
-       sprintf(cellNo1String,"%-18c",' ');
-       sprintf(print1String,"%-6d%-12f", transect, myRiverFlow);
-       loopFirstTime = NO;
-    }
-
-    if(currTransect == transect) 
-    {
-        sprintf(cellNo2String,"%-12d",cellNo);
-        sprintf(print2String,"%-12f", depth);
-        cellPrintString = strcat(cellNo1String,cellNo2String);
-        printString = strcat(print1String, print2String);
-        continue;
-    }
-
-    //fprintf(reportPtr,"%s\n",cellPrintString);
-
-    fprintf(reportPtr,"%s\n",printString);
-
-    currTransect = transect;
-
-    sprintf(print1String,"%-6d%-12f", transect,myRiverFlow);
-    sprintf(print2String,"%-12f", depth);
-    sprintf(cellNo1String,"%-18c",' ');
-    sprintf(cellNo2String,"%-12d",cellNo);
-    cellPrintString = strcat(cellNo1String, cellNo2String);
-    printString = strcat(print1String, print2String);
-
- } //while
-
-      
-  //fprintf(reportPtr,"%s\n",cellPrintString);
-
-  fprintf(reportPtr,"%s\n",printString);
+    fprintf(reportPtr,strDataFormat, date,
+				     cellNumber,
+				     myRiverFlow,
+				     depth);
+  } //while
   fflush(0);
-  
-  [[self getZone] free: print1String];
-  [[self getZone] free: print2String];
-  [[self getZone] free: cellNo1String];
-  [[self getZone] free: cellNo2String];
-
   [cellNdx drop];
   fclose(reportPtr);
-
   depthReportFirstWrite = NO;
 
   return self;
 }
-*/
+
 
 
 /*
