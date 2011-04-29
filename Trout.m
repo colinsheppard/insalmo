@@ -3440,6 +3440,7 @@ Boston, MA 02111-1307, USA.
   double velocity, depth, temp, turbidity, availableDrift, availableSearch;
   double distToHide;
   char *mySpecies;
+  char *fileMetaData;
   char strDataFormat[150];
 
   velocity = [aCell getPolyCellVelocity];
@@ -3455,7 +3456,10 @@ Boston, MA 02111-1307, USA.
 
   if(moveRptFirstTime == YES){
      if((mvRptPtr = fopen(mvRptFName,"w+")) != NULL){
-         fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(mvRptPtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
+       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
 							   "SPECIES",
 							   "AGE",
                                                           "VELOCITY",
@@ -3594,6 +3598,7 @@ Boston, MA 02111-1307, USA.
   double currentFlowChange;
   char *lastSpawnDate = (char *) NULL;  
   char strDataFormat[150];
+  char *fileMetaData;
 
   if(readyToSpawn == YES) readyTSString = "YES";
 
@@ -3603,6 +3608,9 @@ Boston, MA 02111-1307, USA.
           fflush(0);
           exit(1);
      }
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(spawnReportPtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
       fprintf(spawnReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
                                                                             "Species",
                                                                             "Age",
@@ -3683,6 +3691,7 @@ Boston, MA 02111-1307, USA.
   static BOOL spawnCellFirstTime = YES;
   char strDataFormat[150];
   double cellDepth,cellVelocity,cellArea,fracSpawn,depthSuit,velSuit,spawnQuality;
+  char * fileMetaData;
 
   id <ListIndex> cellListNdx=nil;
   id  aCell=nil;
@@ -3693,6 +3702,9 @@ Boston, MA 02111-1307, USA.
           fflush(0);
           exit(1);
       }
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(spawnCellRptPtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
       fprintf(spawnCellRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,\n","FishID",
                                                            "Depth",
                                                            "Velocity",
@@ -3762,8 +3774,7 @@ Boston, MA 02111-1307, USA.
 // Added SFR 1/14/2011
 //
 ////////////////////////////////////////////////////////
-- outmigrate 
-{
+- outmigrate {
     size_t strLen = strlen("Outmigration") + 1;
 
     [model addToNewOutmigrants: self ];
@@ -3780,16 +3791,14 @@ Boston, MA 02111-1307, USA.
 
 
 
-- (void) drop
-{
+- (void) drop {
      [spawnDist drop]; 
      [dieDist drop];
 
      [destCellList drop];
      destCellList = nil; 
 
-     if(deathCausedBy != NULL)
-     {
+     if(deathCausedBy != NULL){
          [troutZone free: deathCausedBy];
          deathCausedBy = NULL;
      }

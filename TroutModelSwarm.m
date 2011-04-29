@@ -847,9 +847,9 @@ char **speciesColor;
 	     while(!arrivalTimeOK){
 		   arrivalTime = (time_t) [arrivalTimeDist getDoubleSample];  
 		   arrivalTimeOK = (fishInitRecord->arrivalStartTime <= arrivalTime) && (arrivalTime <= fishInitRecord->arrivalEndTime);
-		   fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalTimeOK = %d\n", (int) arrivalTimeOK);
-		   fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
-		   fflush(0);
+		   //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalTimeOK = %d\n", (int) arrivalTimeOK);
+		   //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
+		   //fflush(0);
 	      }
              
              [newSpawner setArrivalTime: arrivalTime];
@@ -1574,11 +1574,11 @@ char **speciesColor;
 	     id reach = nil;
 	     FishCell*  fishCell = (FishCell *) nil;
 
-	     fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %s\n", [timeManager getDateWithTimeT: modelTime]);
-	     fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
+	     //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %s\n", [timeManager getDateWithTimeT: modelTime]);
+	     //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
 	     //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %d\n", modelTime);
 	     //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %d\n", arrivalTime);
-	     fflush(0);
+	     //fflush(0);
 
 	     [liveFish addLast: aSpawner];
 	     [activeSpawners addLast: aSpawner];
