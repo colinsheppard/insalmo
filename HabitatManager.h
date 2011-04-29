@@ -33,15 +33,15 @@ Boston, MA 02111-1307, USA.
 #import "globals.h"
 #import "PolyInputData.h"
 
-#define DEPTH_REPORT_ON
-#define VELOCITY_REPORT_ON
+//#define DEPTH_REPORT_ON
+//#define VELOCITY_REPORT_ON
 
 //
 // HABITAT_REPORT is the only output on daily flow etc. in each reach
 //
-#define HABITAT_REPORT_ON
+//#define HABITAT_REPORT_ON
 
-#define DEPTH_VEL_RPT
+//#define DEPTH_VEL_RPT
 
 
 @interface HabitatManager: SwarmObject
