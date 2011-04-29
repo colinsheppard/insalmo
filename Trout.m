@@ -3585,89 +3585,87 @@ Boston, MA 02111-1307, USA.
 - printReadyToSpawnRpt: (BOOL) readyToSpawn 
 {
   FILE * spawnReportPtr=NULL; 
-  const char* readyToSpawnFile = "Ready_To_Spawn.rpt"; 
- 
+  const char* readyToSpawnFile = "Ready_To_Spawn.csv"; 
   static BOOL firstRTSTime=YES;
-
   char* readyTSString = "NO";
   time_t currentTime = (time_t) 0;
   double currentTemp;
-
+  double currentFlow;
+  double currentFlowChange;
   char *lastSpawnDate = (char *) NULL;  
+  char strDataFormat[150];
 
   if(readyToSpawn == YES) readyTSString = "YES";
 
-   if(firstRTSTime == YES) 
-   {
-     if( (spawnReportPtr = fopen(readyToSpawnFile,"w+")) == NULL) 
-     {
+   if(firstRTSTime == YES){
+     if( (spawnReportPtr = fopen(readyToSpawnFile,"w+")) == NULL){
           fprintf(stderr, "ERROR: Trout >>>> printReadyToSpawnRpt >>>> Cannot open %s for writing",readyToSpawnFile);
           fflush(0);
           exit(1);
      }
-
-      fprintf(spawnReportPtr,"%-15s%-12s%-4s%-9s%-25s%-12s%-12s%-12s%-12s%-12s%-15s%-20s%-18s%-12s\n","Date",
-                                                                                                 "Species",
-                                                                                                 "Age",
-                                                                                                 "Sex",
-                                                                                                 "Reach",
-                                                                                                 "Temperature",
-                                                                                                 "Flow",
-                                                                                                 "FlowChange",
-                                                                                                "FishLength",
-                                                                                                 "Condition",
-                                                                                                "LastSpawnDate",
-                                                                                                "FishSpawnStartDate",
-                                                                                                "FishSpawnEndDate",
-                                                                                                "ReadyToSpawn");
-  }
-   if(firstRTSTime == NO) 
-   {
-     if( (spawnReportPtr = fopen(readyToSpawnFile,"a")) == NULL) 
-      {
+      fprintf(spawnReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+                                                                            "Species",
+                                                                            "Age",
+                                                                            "Sex",
+                                                                            "Reach",
+                                                                            "Temperature",
+                                                                            "Flow",
+                                                                            "FlowChange",
+                                                                            "FishLength",
+                                                                            "Condition",
+                                                                            "LastSpawnDate",
+                                                                            "FishSpawnStartDate",
+                                                                            "FishSpawnEndDate",
+                                                                            "ReadyToSpawn");
+  }else if(firstRTSTime == NO){
+     if( (spawnReportPtr = fopen(readyToSpawnFile,"a")) == NULL){
           fprintf(stderr, "ERROR: Trout >>>> printReadyToSpawnRpt >>>> Cannot open %s for writing",readyToSpawnFile);
           fflush(0);
           exit(1);
       }
-   }
-
+  }
   lastSpawnDate = [[self getZone] alloc: 12*sizeof(char)];
   currentTemp = [myCell getTemperature];
-
   currentTime = [self getCurrentTimeT];
+  currentFlow = [myCell getRiverFlow];
+  currentFlowChange = [myCell getFlowChange];
 
-  if(timeLastSpawned > (time_t) 0 ) 
-  {
+  if(timeLastSpawned > (time_t) 0 ){
     strncpy(lastSpawnDate, [timeManager getDateWithTimeT: timeLastSpawned], 12);
-  }
-  else 
-  {
+  }else{
      strncpy(lastSpawnDate, "00/00/0000", (size_t) 12);
   }
+  strcpy(strDataFormat,"%s,%s,%d,%s,%s,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentTemp]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlowChange]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishCondition]);
+  strcat(strDataFormat,",%s,%s,%s,%s\n");
 
-  fprintf(spawnReportPtr,"%-15s%-12s%-4d%-9s%-25s%-12f%-12f%-12f%-12f%-12f%-15s%-20s%-18s%-12s\n",
-                       [timeManager getDateWithTimeT: currentTime],
-                                                 [species getName],
-                                                               age,
-                                                     [sex getName],
-                                            [reach getReachName],
-                                            [myCell getTemperature],
-                                              [myCell getRiverFlow],
-                                            [myCell getFlowChange],
-                                                     fishLength,
-                                                     fishCondition,
-                                                    lastSpawnDate,
-                                                    fishParams->fishSpawnStartDate,
-                                                    fishParams->fishSpawnEndDate,
-                                                    readyTSString);
+  fprintf(spawnReportPtr,strDataFormat,[timeManager getDateWithTimeT: currentTime],
+                                       [species getName],
+                                       age,
+                                       [sex getName],
+                                       [reach getReachName],
+                                       currentTemp,
+                                       currentFlow,
+                                       currentFlowChange,
+                                       fishLength,
+                                       fishCondition,
+                                       lastSpawnDate,
+                                       fishParams->fishSpawnStartDate,
+                                       fishParams->fishSpawnEndDate,
+                                       readyTSString);
 
 
    firstRTSTime = NO;
-
    fclose(spawnReportPtr);
    return self;
-
-   
 } 
 #endif
 
