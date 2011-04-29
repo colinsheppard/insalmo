@@ -1,17 +1,17 @@
-# Model Setup File for SF Eel Trout Model
-# Test runs 2/06
+# Model Setup File for Clear Creek inSALMO
+# Test runs 5/2011
 
 @begin
 
 randGenSeed                  32461
 numberOfSpecies              1
 
-runStartDate                 10/1/2006
-runEndDate                   9/30/2007
-fishOutputFile               LiveFish.csv
-fishMortalityFile            DeadFish.csv
+runStartDate                 10/1/2005
+runEndDate                   9/30/2006
+fishOutputFile               LiveFishOut.csv
+fishMortalityFile            DeadFishOut.csv
 reddMortalityFile            ReddMortality.out
-reddOutputFile               Redds.csv
+reddOutputFile               ReddsOut.csv
 popInitDate                  10/01/2008
 fileOutputFrequency          1
 appendFiles			     0
@@ -24,7 +24,7 @@ tagFishColor                 tomato
 tagCellColor                 DeepPink1
 dryCellColor                 white
 
-siteLatitude                 42
+siteLatitude                 40
 
 juvenileSuperindividualRatio 50
 
