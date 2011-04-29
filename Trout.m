@@ -3435,7 +3435,7 @@ Boston, MA 02111-1307, USA.
 //////////////////////////////////////////////////////////////
 - moveReport: (FishCell *) aCell {
   FILE *mvRptPtr=NULL;
-  const char *mvRptFName = "MoveTest.csv";
+  const char *mvRptFName = "Move_Test_Out.csv";
   static BOOL moveRptFirstTime=YES;     
   double velocity, depth, temp, turbidity, availableDrift, availableSearch;
   double distToHide;
@@ -3589,7 +3589,7 @@ Boston, MA 02111-1307, USA.
 - printReadyToSpawnRpt: (BOOL) readyToSpawn 
 {
   FILE * spawnReportPtr=NULL; 
-  const char* readyToSpawnFile = "Ready_To_Spawn.csv"; 
+  const char* readyToSpawnFile = "Ready_To_Spawn_Out.csv"; 
   static BOOL firstRTSTime=YES;
   char* readyTSString = "NO";
   time_t currentTime = (time_t) 0;
@@ -3687,7 +3687,7 @@ Boston, MA 02111-1307, USA.
 - printSpawnCellRpt: (id <List>) spawnCellList 
 {
   FILE * spawnCellRptPtr=NULL;
-  const char * spawnCellFile = "Spawn_Cell.csv";
+  const char * spawnCellFile = "Spawn_Cell_Out.csv";
   static BOOL spawnCellFirstTime = YES;
   char strDataFormat[150];
   double cellDepth,cellVelocity,cellArea,fracSpawn,depthSuit,velSuit,spawnQuality;

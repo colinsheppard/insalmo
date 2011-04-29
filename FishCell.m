@@ -1111,7 +1111,7 @@ END of OLD CODE */
 
   [self addFish: aFish];
 
-#ifdef FOODAVAILREPORT
+#ifdef FOOD_AVAIL_REPORT
   [self foodAvailAndConInCell: aFish];
 #endif
 
@@ -1843,42 +1843,36 @@ END of OLD CODE */
 }
 
 
-#ifdef FOODAVAILREPORT
+#ifdef FOOD_AVAIL_REPORT
 
 - foodAvailAndConInCell: aFish 
 {
   FILE * foodReportPtr=NULL;
-  const char * foodReportFile = "FoodAvailability.csv";
+  const char * foodReportFile = "Food_Availability_Out.csv";
   char strDataFormat[100];
   char date[12];
   double hourlySearchConRate;
   double hourlyDriftConRate;
-  char sysDateAndTime[35];
-  struct tm *timeStruct;
-  time_t aTime;
+  char * fileMetaData;
 
-
-  if([space getFoodReportFirstTime] == YES) 
-  {
-     if((foodReportPtr = fopen(foodReportFile,"w")) == NULL) 
-     {
+  if([space getFoodReportFirstTime] == YES){
+     if((foodReportPtr = fopen(foodReportFile,"w")) == NULL){
           fprintf(stderr, "ERROR: Cannot open %s for writing",foodReportFile);
           fflush(0);
           exit(1);
      }
-    aTime = time(NULL);
-    timeStruct = localtime(&aTime);
-    strftime(sysDateAndTime, 35, "%a %d-%b-%Y %H:%M:%S", timeStruct) ;
+     fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+     fprintf(foodReportPtr,"\n%s\n\n",fileMetaData);
+     [scratchZone free: fileMetaData];
 
-     fprintf(foodReportPtr, "\nModel Run System Date and Time: %s\n", sysDateAndTime); 
-     fprintf(foodReportPtr,"\n%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
-                                                         "PolyCellNumber",
-                                                         "SearchFoodProd",
-                                                         "DriftFoodProd",
-                                                         "SearchAvail",
-                                                         "Driftavail",
-                                                         "SearchConsumed",
-                                                         "DriftConsumed");
+     fprintf(foodReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+                                                       "PolyCellNumber",
+                                                       "SearchFoodProd",
+                                                       "DriftFoodProd",
+                                                       "SearchAvail",
+                                                       "Driftavail",
+                                                       "SearchConsumed",
+                                                       "DriftConsumed");
      fflush(foodReportPtr);
 
   }

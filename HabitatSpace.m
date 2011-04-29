@@ -198,25 +198,25 @@ Boston, MA 02111-1307, USA.
   //
   // BEGIN REPORT FILES
   //
-  cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Depth_Test.csv") + 1)];
+  cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Cell_Flow_Depth_Test_Out.csv") + 1)];
 
   strcpy(cellDepthReportFile, reachName);
-  strcat(cellDepthReportFile, "Cell_Flow_Depth_Test.csv"); 
+  strcat(cellDepthReportFile, "_Cell_Flow_Depth_Test_Out.csv"); 
 
-  cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Velocity_Test.csv") + 1)];
+  cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Cell_Flow_Velocity_Test_Out.csv") + 1)];
 
   strcpy(cellVelocityReportFile, reachName);
-  strcat(cellVelocityReportFile, "Cell_Flow_Velocity_Test.csv"); 
+  strcat(cellVelocityReportFile, "_Cell_Flow_Velocity_Test_Out.csv"); 
 
-  habitatReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Habitat.rpt") + 1)];
+  habitatReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Habitat_Out.csv") + 1)];
 
   strcpy(habitatReportFile, reachName);
-  strcat(habitatReportFile, "Habitat.rpt"); 
+  strcat(habitatReportFile, "_Habitat_Out.csv"); 
 
-  cellAreaDepthVelReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("CellDepthAreaVelocity.csv") + 1)];
+  cellAreaDepthVelReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Cell_Depth_Area_Velocity_Out.csv") + 1)];
 
   strcpy(cellAreaDepthVelReportFile, reachName);
-  strcat(cellAreaDepthVelReportFile, "CellDepthAreaVelocity.csv"); 
+  strcat(cellAreaDepthVelReportFile, "_Cell_Depth_Area_Velocity_Out.csv"); 
   
   // 
   // END REPORT FILES
@@ -3093,6 +3093,7 @@ Boston, MA 02111-1307, USA.
   double depth;
   char date[12];
   char strDataFormat[100];
+  char * fileMetaData;
 
   if(depthReportFirstWrite == YES) {
       if((reportPtr = fopen(cellDepthReportFile,"w+")) == NULL) {
@@ -3112,7 +3113,10 @@ Boston, MA 02111-1307, USA.
   cellNdx = [polyCellList listBegin: [self getZone]];
 
   if(depthReportFirstWrite == YES){
-    fprintf(reportPtr,"\n%s\n","date,cellNumber,cellFlow,cellDepth");
+    fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+    fprintf(reportPtr,"\n%s\n\n",fileMetaData);
+    [scratchZone free: fileMetaData];
+    fprintf(reportPtr,"%s\n","date,cellNumber,cellFlow,cellDepth");
   }
 
   while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)){
@@ -3151,6 +3155,7 @@ Boston, MA 02111-1307, USA.
   double velocity;
   char date[12];
   char strDataFormat[100];
+  char * fileMetaData;
 
   if(velocityReportFirstWrite == YES) {
       if((reportPtr = fopen(cellVelocityReportFile,"w+")) == NULL) {
@@ -3170,7 +3175,10 @@ Boston, MA 02111-1307, USA.
   cellNdx = [polyCellList listBegin: [self getZone]];
 
   if(velocityReportFirstWrite == YES){
-    fprintf(reportPtr,"\n%s\n","date,cellNumber,cellFlow,cellVelocity");
+    fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+    fprintf(reportPtr,"\n%s\n\n",fileMetaData);
+    [scratchZone free: fileMetaData];
+    fprintf(reportPtr,"%s\n","date,cellNumber,cellFlow,cellVelocity");
   }
 
   while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)){
@@ -3245,7 +3253,7 @@ Boston, MA 02111-1307, USA.
       fileOverWrite = FALSE;
   }
 
-  sprintf(cellFishInfoReportFName, "%s%s", reachName, "CellFishInfo.csv");
+  sprintf(cellFishInfoReportFName, "%s%s", reachName, "_Cell_Fish_Info_Out.csv");
   fprintf(stdout, "HabitatSpace >>>> buildCellFishInfoReporter >>>> cellFishInfoReportFName = %s \n", cellFishInfoReportFName);
   fflush(0);
 
@@ -3400,10 +3408,6 @@ Boston, MA 02111-1307, USA.
   return self;
 }
 
-
-
-
-
 ///////////////////////////////////
 //
 // printHabitatReport
@@ -3412,6 +3416,8 @@ Boston, MA 02111-1307, USA.
 - printHabitatReport 
 {
   BOOL writeFileHeader;
+  char * fileMetaData;
+  char strDataFormat[150];
 
   appendFiles = [modelSwarm getAppendFiles];
   scenario = [modelSwarm getScenario];
@@ -3419,32 +3425,27 @@ Boston, MA 02111-1307, USA.
 
   writeFileHeader =    ((scenario == 1) && (replicate == 1));
 
-  if(habitatRptFilePtr == NULL)
-  {
-      if(habitatReportFirstWrite == YES) 
-      {
-        if((appendFiles == 0) && (scenario == 1) && (replicate == 1))
-        {
-            if((habitatRptFilePtr = fopen(habitatReportFile,"w+")) == NULL)
-            {
+  if(habitatRptFilePtr == NULL){
+      if(habitatReportFirstWrite == YES){
+        if((appendFiles == 0) && (scenario == 1) && (replicate == 1)){
+            if((habitatRptFilePtr = fopen(habitatReportFile,"w+")) == NULL){
                 fprintf(stderr, "ERROR: HabitatSpace >>>> printHabitatReport >>>> Cannot open file %s", habitatReportFile);
                 fflush(0);
                 exit(1);
             }
-        }
-        else  // Not appending files or not first scenario and replicate
-        {
-            if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL)
-            {
+        }else{  // Not appending files or not first scenario and replicate
+            if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL){
                fprintf(stderr, "ERROR: HabitatSpace >>>> printHabitatReport >>>> Cannot open file %s",habitatReportFile);
                fflush(0);
                exit(1);
             }
         }
 
-        if(writeFileHeader)
-        {
-            fprintf(habitatRptFilePtr,"%-12s%-12s%-12s%-20s%-20s%-20s%-20s%-12s%-12s\n", "Scenario",
+        if(writeFileHeader){
+	  fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+	  fprintf(habitatRptFilePtr,"\n%s\n\n",fileMetaData);
+	  [scratchZone free: fileMetaData];
+          fprintf(habitatRptFilePtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,\n", "Scenario",
                                                                   "Replicate",
                                                                   "Date",
                                                                   "DayLength", 
@@ -3457,10 +3458,8 @@ Boston, MA 02111-1307, USA.
         }
       }  // if (habitatReportFirstWrite == YES )
 
-     if(habitatReportFirstWrite == NO) 
-     {
-        if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL)
-        {
+     if(habitatReportFirstWrite == NO){
+        if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL){
            fprintf(stderr, "ERROR: HabitatSpace >>>> printHabitatReport >>>> Cannot open file %s",habitatReportFile);
            fflush(0);
            exit(1);
@@ -3469,23 +3468,33 @@ Boston, MA 02111-1307, USA.
 
   }
 
-  fprintf(habitatRptFilePtr,"%-12d%-12d%-12s%-20f%-20f%-20f%-20f%-12f%-12f\n",scenario,
-                                                                              replicate,
-                                             [timeManager getDateWithTimeT: modelTime_t], 
-                                                                               dayLength, 
-                                                                     yesterdaysRiverFlow, 
-                                                                               riverFlow, 
-                                                                      tomorrowsRiverFlow, 
-                                                                             temperature, 
-                                                                               turbidity);
+  strcpy(strDataFormat,"%d,%d,%s,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dayLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: yesterdaysRiverFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: riverFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: tomorrowsRiverFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temperature]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
+  strcat(strDataFormat,"\n");
+  fprintf(habitatRptFilePtr,strDataFormat,scenario,
+                                          replicate,
+                                          [timeManager getDateWithTimeT: modelTime_t], 
+                                          dayLength, 
+                                          yesterdaysRiverFlow, 
+                                          riverFlow, 
+                                          tomorrowsRiverFlow, 
+                                          temperature, 
+                                          turbidity);
   fflush(habitatRptFilePtr);
   habitatReportFirstWrite = NO;
 
   return self;
 }
-
-
-
 
 
 - printCellAreaDepthVelocityRpt{

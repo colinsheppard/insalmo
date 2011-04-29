@@ -2239,7 +2239,7 @@ char **speciesColor;
 /////////////////////////////////////////////////////////
 - printReddSurvReport { 
     FILE *printRptPtr=NULL;
-    const char * reddSurvFile = "ReddSurvivalTest.csv";
+    const char * reddSurvFile = "Redd_Survival_Test_Out.csv";
     id <ListIndex> reddListNdx;
     id redd;
 
@@ -2933,7 +2933,7 @@ char **speciesColor;
   //
   outmigrantReporter = [BreakoutReporter   createBegin: modelZone
                                              forList: outmigrantList
-                                  withOutputFilename: "OutmigrantRpt.csv"
+                                  withOutputFilename: "Outmigrant_Report_Out.csv"
                          //         withOutputFilename: (char *) fishOutputFile
                                    withFileOverwrite: fileOverWrite];
 
