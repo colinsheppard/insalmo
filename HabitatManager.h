@@ -41,7 +41,7 @@ Boston, MA 02111-1307, USA.
 //
 //#define HABITAT_REPORT_ON
 
-/*#define DEPTH_VEL_RPT*/
+#define DEPTH_VEL_RPT
 
 
 @interface HabitatManager: SwarmObject
