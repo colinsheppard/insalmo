@@ -766,25 +766,19 @@ char **speciesColor;
    //
    // Now, read the fish initialization records and create the fish.
    //
-   while(([fishInitNdx getLoc] != End) && ((fishInitRecord = (SpawnerInitializationRecord *) [fishInitNdx next]) != (SpawnerInitializationRecord *) nil))
-   {
-       if(fishInitRecord->mySpecies != (species = [speciesSymbolList atOffset: fishInitRecord->speciesNdx]))
-       {
+   while(([fishInitNdx getLoc] != End) && ((fishInitRecord = (SpawnerInitializationRecord *) [fishInitNdx next]) != (SpawnerInitializationRecord *) nil)){
+       if(fishInitRecord->mySpecies != (species = [speciesSymbolList atOffset: fishInitRecord->speciesNdx])){
             fprintf(stderr, "ERROR: TroutModelSwarm >>>> createSpawners >>>> incorrect speciesNdx\n");
             fflush(0);
             exit(1);
        }
-
-       if((fishInitRecord->arrivalStartTime > runEndTime) || (fishInitRecord->arrivalEndTime < runStartTime))
-       {
+       if((fishInitRecord->arrivalStartTime > runEndTime) || (fishInitRecord->arrivalEndTime < runStartTime)){
           // Initialization record is not for this year so skip it
           continue;
        }
-            
        aHabitatSpace = [habitatManager getReachWithName: fishInitRecord->reach];
 
-       if(aHabitatSpace == nil)
-       {
+       if(aHabitatSpace == nil){
             //
             // Then skip it and move on
             //
@@ -792,9 +786,7 @@ char **speciesColor;
             fflush(0);
             continue;
        }
-
-       if(fishInitRecord->number != 0) 
-       {
+       if(fishInitRecord->number != 0){
           //
           // This distribution will only be used in this routine
           // and then goes out of scope.
@@ -940,7 +932,7 @@ char **speciesColor;
   fprintf(stdout,"TroutModelSwarm >>>> readFishInitializationFiles >>>> BEGIN\n");
   fflush(0);
 
-   inputFormat =  "%[0-9] %*1[,] \
+  inputFormat =  "%[0-9] %*1[,] \
                    %[a-zA-Z_-0-9] %*1[,] \
                    %[0-9] %*1[,] \
                    %[0-9/] %*1[,] \
@@ -949,10 +941,8 @@ char **speciesColor;
                    %[0-9.] %*1[,] \
                    %[0-9.] %*1[,]";
 
-  for(numSpeciesNdx=0; numSpeciesNdx<numberOfSpecies; numSpeciesNdx++)
-  {
-      if((initFilePtr = fopen(speciesPopFile[numSpeciesNdx], "r")) == NULL) 
-      {
+  for(numSpeciesNdx=0; numSpeciesNdx<numberOfSpecies; numSpeciesNdx++){
+      if((initFilePtr = fopen(speciesPopFile[numSpeciesNdx], "r")) == NULL){
           fprintf(stderr, "ERROR: TroutModelSwarm >>>> readFishInitializationFiles >>>> Error opening %s \n", speciesPopFile[numSpeciesNdx]);
           fflush(0);
           exit(1);
@@ -964,8 +954,7 @@ char **speciesColor;
       fgets(header1,HCOMMENTLENGTH,initFilePtr);
       fgets(header1,HCOMMENTLENGTH,initFilePtr);
 
-      while(EOF != fscanf(initFilePtr, "%s", inputString)) 
-      {
+      while(EOF != fscanf(initFilePtr, "%s", inputString)){
            SpawnerInitializationRecord*  fishRecord;
 
            fishRecord = (SpawnerInitializationRecord *) [modelZone alloc: sizeof(SpawnerInitializationRecord)];
@@ -1014,13 +1003,9 @@ char **speciesColor;
                                            //fishRecord->meanLength,
                                            //fishRecord->stdDevLength);
            //fflush(0);
-
            [spawnerInitializationRecords addLast: (void *) fishRecord];
-
      } //while !EOF
-
      fclose(initFilePtr);
-
   } //for numberOfSpecies
 
   [scratchZone free: header1];
