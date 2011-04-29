@@ -2286,36 +2286,27 @@ char **speciesColor;
 // printReddSurvReport
 //
 /////////////////////////////////////////////////////////
-- printReddSurvReport 
-{ 
+- printReddSurvReport { 
     FILE *printRptPtr=NULL;
-    const char * reddSurvFile = "ReddSurvivalTest.rpt";
+    const char * reddSurvFile = "ReddSurvivalTest.csv";
     id <ListIndex> reddListNdx;
     id redd;
 
-    if((printRptPtr = fopen(reddSurvFile,"w+")) != NULL) 
-    {
-        if([[self getReddRemovedList] getCount] != 0) 
-        {
+    if((printRptPtr = fopen(reddSurvFile,"w+")) != NULL){
+        if([[self getReddRemovedList] getCount] != 0){
             reddListNdx = [reddRemovedList listBegin: modelZone];
 
-            while(([reddListNdx getLoc] != End) && ((redd = [reddListNdx next]) != nil)) 
-            {
+            while(([reddListNdx getLoc] != End) && ((redd = [reddListNdx next]) != nil)){
                [redd printReddSurvReport: printRptPtr];
-
             }
             [reddListNdx drop];
         }
-   }
-   else 
-   {
+   }else{
        fprintf(stderr, "ERROR: TroutModelSwarm >>>> printReddSurvReport >>>> Couldn't open %s\n", reddSurvFile);
        fflush(0);
        exit(1);
    }
-
    fclose(printRptPtr);
-
    return self;
 }
 

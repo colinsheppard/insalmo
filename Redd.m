@@ -23,7 +23,6 @@ Boston, MA 02111-1307, USA.
 
 
 
-
 #include <math.h>
 #import "Redd.h"
 #import  "Trout.h"
@@ -756,12 +755,10 @@ Boston, MA 02111-1307, USA.
 //printReddSurvReport
 //
 /////////////////////////////////////////////////////
-- printReddSurvReport: (FILE *) printRptPtr 
-{
+- printReddSurvReport: (FILE *) printRptPtr {
   id <ListIndex> printNdx;
   id nextString;
   const char *formatString;
-
 
   fprintf(printRptPtr,"\n\n%s %p\n","BEGIN SURVIVAL REPORT for Redd", self);
 
@@ -770,8 +767,7 @@ Boston, MA 02111-1307, USA.
                                                                 cellNumber);
 
   fprintf(printRptPtr,"Redd: %p INITIAL NUMBER OF EGGS: %d\n", self, initialNumberOfEggs);
-
-  formatString = "\n%-12p%-12s%-12s%-12s%-12s%-12s%-12s%-12s%-12s%-12s\n";
+  formatString = "\n%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n";
 
   fprintf(printRptPtr,formatString, "Redd",
                                     "Species",
@@ -784,14 +780,11 @@ Boston, MA 02111-1307, USA.
                                     "HiTemp",
                                     "Superimposition");
 
-
   printNdx = [survPrintList listBegin: [self getZone]];
 
   while( ([printNdx getLoc] != End) && ( (nextString = [printNdx next]) != nil) ) {
-
     fprintf(printRptPtr,"%s",(char *) nextString);
     [[self getZone] free: (void *) nextString];
-
   }
 
   fprintf(printRptPtr,"\n\n%s %p\n","END SURVIVAL REPORT for Redd", self);
@@ -815,23 +808,44 @@ return self;
  {
 
   id printString;
-  const char* formatString;
+  char formatString[150];
+  double temp,flow,depth;
+  
+  temp = [myCell getTemperature];
+  flow = [myCell getRiverFlow];
+  depth = [myCell getPolyCellDepth];
 
   printString  = [[self getZone] alloc: 300*sizeof(char)];
 
-  formatString = "%-12p%-12s%-12f%-12f%-12f%-12f%-12f%-12f%-12f%-12f\n";
+  strcpy(formatString,"%p,%s,");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: temp]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: flow]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: depth]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aDewaterSF]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aScourSF]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aLoTempSF]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aHiTempSF]);
+  strcat(formatString,",");
+  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aSuperimpSF]);
+  strcat(formatString,"\n");
 
-  sprintf((char *)printString,formatString, self  , [species getName],
-                                                  [myCell getTemperature],
-                                                  [myCell getRiverFlow],
-                                                  [myCell getPolyCellDepth],
-                                                  aDewaterSF,
-                                                  aScourSF,
-                                                  aLoTempSF,
-                                                  aHiTempSF,
-                                                  aSuperimpSF);
+  sprintf((char *)printString,formatString,self,
+					    [species getName],
+                                            [myCell getTemperature],
+                                            [myCell getRiverFlow],
+                                            [myCell getPolyCellDepth],
+                                            aDewaterSF,
+                                            aScourSF,
+                                            aLoTempSF,
+                                            aHiTempSF,
+                                            aSuperimpSF);
   [survPrintList addLast: printString];
-
   return self;
 }
 

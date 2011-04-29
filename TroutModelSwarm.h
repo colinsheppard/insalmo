@@ -46,8 +46,8 @@ Boston, MA 02111-1307, USA.
 
 #import "DEBUGFLAGS.h"
 
-//#define REDD_SURV_REPORT
-#define PRINT_CELL_FISH_REPORT
+#define REDD_SURV_REPORT
+/*#define PRINT_CELL_FISH_REPORT*/
 
 struct FishSetupStruct
        {
