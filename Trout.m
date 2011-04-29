@@ -3433,14 +3433,14 @@ Boston, MA 02111-1307, USA.
 // moveReport
 //
 //////////////////////////////////////////////////////////////
-- moveReport: (FishCell *) aCell 
-{
+- moveReport: (FishCell *) aCell {
   FILE *mvRptPtr=NULL;
-  const char *mvRptFName = "MoveTest.rpt";
-  static int mR=0;
+  const char *mvRptFName = "MoveTest.csv";
+  static BOOL moveRptFirstTime=YES;     
   double velocity, depth, temp, turbidity, availableDrift, availableSearch;
   double distToHide;
   char *mySpecies;
+  char strDataFormat[150];
 
   velocity = [aCell getPolyCellVelocity];
   depth    = [aCell getPolyCellDepth];
@@ -3453,11 +3453,9 @@ Boston, MA 02111-1307, USA.
 
   mySpecies = (char *)[[self getSpecies] getName];
 
-  if(mR == 0) 
-  {
-     if((mvRptPtr = fopen(mvRptFName,"w+")) != NULL) 
-     {
-         fprintf(mvRptPtr,"%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s\n",
+  if(moveRptFirstTime == YES){
+     if((mvRptPtr = fopen(mvRptFName,"w+")) != NULL){
+         fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
 							   "SPECIES",
 							   "AGE",
                                                           "VELOCITY",
@@ -3484,56 +3482,94 @@ Boston, MA 02111-1307, USA.
                                                           "ntEnrgyFrBstCll",
                                                           "ERMForBestCell");
          fflush(mvRptPtr);
-         mR++;
+         moveRptFirstTime = NO;
          fclose(mvRptPtr);
-     }
-     else
-     {
+     }else{
          fprintf(stderr, "ERROR: Trout >>>> moveReport >>>> Cannot open %s for writing\n", mvRptFName);
          fflush(0);
          exit(1);
      }
   }
-
-  if((mvRptPtr = fopen(mvRptFName,"a")) == NULL) 
-  {
+  if((mvRptPtr = fopen(mvRptFName,"a")) == NULL){
       fprintf(stderr, "ERROR: Trout >>>> moveReport >>>> Cannot open %s for appending\n", mvRptFName);
       fflush(0);
       exit(1);
   }
 
-  fprintf(mvRptPtr, "%-16s%-16d%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16s%-16E%-16E%-16s%-16E%-16E%-16E\n",
-						   mySpecies,
-						   age,
-                                                   velocity,
-                                                   depth,
-                                                   temp,
-                                                   turbidity,
-                                                   distToHide,
-                                                   availableDrift,
-                                                   availableSearch,
-                                                   fishLength,
-                                                   fishWeight,
-                                                   feedTimeForCell,
-                                                   captureSuccess,
-                                                   potentialHourlyDriftIntake,
-                                                   potentialHourlySearchIntake,
-                                                   cMax,
-                                                   standardResp,
-                                                   activeResp,
-                                                   inShelter,
-                                                   dailyDriftNetEnergy,
-                                                   dailySearchNetEnergy,
-                                                   feedStrategy,
-                                                   nonStarvSurvival,
-                                                   netEnergyForBestCell,
-                                                   expectedMaturity);
+  strcpy(strDataFormat,"%s,%d,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temp]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: distToHide]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableDrift]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableSearch]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishWeight]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: feedTimeForCell]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: captureSuccess]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlyDriftIntake]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlySearchIntake]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cMax]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: standardResp]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: activeResp]);
+  strcat(strDataFormat,",%s,"); // string format for inShelter
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailyDriftNetEnergy]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailySearchNetEnergy]);
+  strcat(strDataFormat,",%s,"); // string format for feedStrategy
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: nonStarvSurvival]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: netEnergyForBestCell]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: expectedMaturity]);
+  strcat(strDataFormat,"\n");
+
+  fprintf(mvRptPtr, strDataFormat,mySpecies,
+				  age,
+				  velocity,
+				  depth,
+				  temp,
+				  turbidity,
+				  distToHide,
+				  availableDrift,
+				  availableSearch,
+				  fishLength,
+				  fishWeight,
+				  feedTimeForCell,
+				  captureSuccess,
+				  potentialHourlyDriftIntake,
+				  potentialHourlySearchIntake,
+				  cMax,
+				  standardResp,
+				  activeResp,
+				  inShelter,
+				  dailyDriftNetEnergy,
+				  dailySearchNetEnergy,
+				  feedStrategy,
+				  nonStarvSurvival,
+				  netEnergyForBestCell,
+				  expectedMaturity);
 
 
   fflush(mvRptPtr);
   fclose(mvRptPtr);
   return self;
-
 }
 
 #endif

@@ -33,7 +33,7 @@ Boston, MA 02111-1307, USA.
 #include "DEBUGFLAGS.h"
 #import "globals.h"
 
-//#define MOVE_REPORT_ON
+#define MOVE_REPORT_ON
 //#define READY_TO_SPAWN_RPT
 //#define SPAWN_CELL_RPT
 
