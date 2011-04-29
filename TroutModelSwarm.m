@@ -772,11 +772,15 @@ char **speciesColor;
             fflush(0);
             exit(1);
        }
+       //fprintf(stdout,"TroutModelSwarm >>>> createSpawners >>>> fishInitRecord->arrivalStartTime = %d , runStartTime,runEndTime = %d, %d\n",
+       //fishInitRecord->arrivalStartTime,runStartTime,runEndTime);
+       //fflush(0);
        if((fishInitRecord->arrivalStartTime > runEndTime) || (fishInitRecord->arrivalEndTime < runStartTime)){
           // Initialization record is not for this year so skip it
           continue;
        }
        aHabitatSpace = [habitatManager getReachWithName: fishInitRecord->reach];
+
 
        if(aHabitatSpace == nil){
             //
@@ -811,8 +815,7 @@ char **speciesColor;
           //
           //  build the population list for this species in this reach
           //
-          for(fishNdx=0; fishNdx<numFishThisYear; fishNdx++)
-          {
+          for(fishNdx=0; fishNdx<numFishThisYear; fishNdx++){
              id newSpawner;
 	     double length = 0.0;
              time_t arrivalTime = 0;
@@ -820,12 +823,9 @@ char **speciesColor;
              //
 	     // set properties of the new Trout
              //
-	     while((length = [doubleNormDist1 getDoubleSample]) <= (0.5)*[doubleNormDist1 getMean])
-             {
-                 ; 
+	     while((length = [doubleNormDist1 getDoubleSample]) <= (0.5)*[doubleNormDist1 getMean]){
+                 ;  // do nothing, just waiting for condition to fail
              }
-
-
 
 	     newSpawner = [self createNewFishWithSpeciesIndex: fishInitRecord->speciesNdx  
                                                          Species: fishInitRecord->mySpecies 
@@ -839,40 +839,27 @@ char **speciesColor;
              [newSpawner setFishFeedingStrategy: SPAWNER];
              [newSpawner setNRep: 1]; // Spawners are not superindividuals
 
-
 	     [spawners addLast: newSpawner];
-
              [newSpawner setReach: aHabitatSpace];
 
-
-
              arrivalTime = -1;
-             {
-                  BOOL arrivalTimeOK = FALSE;
-                  while(!arrivalTimeOK)
-                  {
-                       arrivalTime = (time_t) [arrivalTimeDist getDoubleSample];  
-                       arrivalTimeOK = (fishInitRecord->arrivalStartTime <= arrivalTime) && (arrivalTime <= fishInitRecord->arrivalEndTime);
-                       //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalTimeOK = %d\n", (int) arrivalTimeOK);
-                       //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
-                       //fflush(0);
-     
-                  }
-             }
+	     BOOL arrivalTimeOK = FALSE;
+	     while(!arrivalTimeOK){
+		   arrivalTime = (time_t) [arrivalTimeDist getDoubleSample];  
+		   arrivalTimeOK = (fishInitRecord->arrivalStartTime <= arrivalTime) && (arrivalTime <= fishInitRecord->arrivalEndTime);
+		   fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalTimeOK = %d\n", (int) arrivalTimeOK);
+		   fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
+		   fflush(0);
+	      }
              
              [newSpawner setArrivalTime: arrivalTime];
 
          } // end numFish/Age loop
 
-
 	  // cleanup
 	  [doubleNormDist1 drop];
 
-
-
       }  //if fishInitRecord->number != 0
-   
-
 
   } //while fishInitRecord
 
@@ -885,20 +872,16 @@ char **speciesColor;
 
   [QSort sortObjectsIn:  spawners]; 
 
-  if(1)
-  {
-       id <ListIndex> ndx = [spawners listBegin: scratchZone];
-       id aSpawner = nil;
-       while(([ndx getLoc] != End) && ((aSpawner = [ndx next]) != nil))
-       {
-             time_t arrivalTime = [aSpawner getArrivalTime];
-             fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
-             fflush(0);
+   id <ListIndex> ndx = [spawners listBegin: scratchZone];
+   id aSpawner = nil;
+   while(([ndx getLoc] != End) && ((aSpawner = [ndx next]) != nil))
+   {
+	 time_t arrivalTime = [aSpawner getArrivalTime];
+	 fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
+	 fflush(0);
 
-       }
-       [ndx drop];
-       //exit(0);
-  }  
+   }
+   [ndx drop];
 
    fprintf(stdout,"TroutModelSwarm >>>> createSpawners >>>> END\n");
    fflush(0);
@@ -1576,73 +1559,56 @@ char **speciesColor;
     id aSpawner = nil;
     id <List> activeSpawners = [List create: scratchZone];
     time_t arrivalTime = -1;
-    int arrivalMonth = -1;
-    int arrivalDay = -1;
     id randCellDist = nil;
    
     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> BEGIN\n");
     // fflush(0);
-
     // xprint(spawners);
 
     randCellDist = [UniformIntegerDist create: modelZone
                                     setGenerator: randGen];
 
-    modelMonth =  [timeManager getMonthWithTimeT: modelTime];
-    modelDay = [timeManager getDayOfMonthWithTimeT: modelTime];
-    while(([ndx getLoc] != End) && ((aSpawner = [ndx next]) != nil))
-    {
+    while(([ndx getLoc] != End) && ((aSpawner = [ndx next]) != nil)){
          arrivalTime = [aSpawner getArrivalTime];
-         arrivalMonth = [timeManager getMonthWithTimeT: arrivalTime];
+	 if([timeManager getNumberOfDaysBetween: modelTime and: arrivalTime] == 0){
+	     id reach = nil;
+	     FishCell*  fishCell = (FishCell *) nil;
 
-         if(arrivalMonth == modelMonth)
-         {
-             arrivalDay = [timeManager getDayOfMonthWithTimeT: arrivalTime];
-             if(arrivalDay == modelDay)
-             {
-                 id reach = nil;
-                 FishCell*  fishCell = (FishCell *) nil;
+	     fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %s\n", [timeManager getDateWithTimeT: modelTime]);
+	     fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
+	     //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %d\n", modelTime);
+	     //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %d\n", arrivalTime);
+	     fflush(0);
 
-		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %s\n", [timeManager getDateWithTimeT: modelTime]);
-		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %s\n", [timeManager getDateWithTimeT: arrivalTime]);
-		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> modelDate = %d\n", modelTime);
-		 //fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> arrivalDate = %d\n", arrivalTime);
-		 //fflush(0);
+	     [liveFish addLast: aSpawner];
+	     [activeSpawners addLast: aSpawner];
 
-                 [liveFish addLast: aSpawner];
-                 [activeSpawners addLast: aSpawner];
+	     reach = [aSpawner getReach];
+	     [randCellDist setIntegerMin: 0  setMax: [[reach getPolyCellList] getCount] - 1];
 
-                 reach = [aSpawner getReach];
-                 [randCellDist setIntegerMin: 0
-                                       setMax: [[reach getPolyCellList] getCount] - 1];
+	      while(fishCell == (FishCell *) nil){
+		   int aRandInt = [randCellDist getIntegerSample];
 
-                  while(fishCell == (FishCell *) nil)
-                  {
-                       int aRandInt = [randCellDist getIntegerSample];
-
-                       while(fishCell == nil)
-                       {
-                              aRandInt = [randCellDist getIntegerSample]; 
-                              fishCell = [reach getCellForNewFishWithCellNum: aRandInt];
-                       }
-                       
-               // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> aRandInt = %d\n", aRandInt);
-               // fflush(0);
-                       //if([fishCell getPolyCellDepth] <= 0.0)
-                       if([fishCell getPolyCellDepth] <= ([aSpawner getFishLength] / 2))
-                       {
-                             fishCell = (FishCell *) nil;
-                             continue;
-                       }
-                      
-                       break;
-                  }
-                 
-                  //xprint(liveFish);
-                  //xprint(fishCell);
-                  [aSpawner setCell: fishCell];
-                  [fishCell addFish: aSpawner];
-             }
+		   while(fishCell == nil){
+			  aRandInt = [randCellDist getIntegerSample]; 
+			  fishCell = [reach getCellForNewFishWithCellNum: aRandInt];
+		   }
+		   
+	     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> aRandInt = %d\n", aRandInt);
+	     // fflush(0);
+		   //if([fishCell getPolyCellDepth] <= 0.0)
+		   if([fishCell getPolyCellDepth] <= ([aSpawner getFishLength] / 2)){
+			 fishCell = (FishCell *) nil;
+			 continue;
+		   }
+		  
+		   break;
+	      }
+	     
+	      //xprint(liveFish);
+	      //xprint(fishCell);
+	      [aSpawner setCell: fishCell];
+	      [fishCell addFish: aSpawner];
          }
     }
     [ndx drop];
