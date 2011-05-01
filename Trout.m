@@ -436,11 +436,11 @@ Boston, MA 02111-1307, USA.
   if (isSpawner == YES)
   {
 
-  [aRaster ellipseX0: anX - 2 
-                  Y0: aY - 1 
-                  X1: anX + 2 
-                  Y1: aY + 1 
-               Width: 3 
+  [aRaster fillRectangleX0: anX - 4 
+                  Y0: aY - 2 
+                  X1: anX + 4 
+                  Y1: aY + 2 
+           //    Width: 3 
                Color: myColor];  
   }
   else
