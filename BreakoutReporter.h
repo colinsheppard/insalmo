@@ -169,6 +169,9 @@ typedef struct DataColumnStruct DataColumnWithLabel;
 
 - checkBreakoutSelectorsFor: anObj;
 
++ (char *) reportFileMetaData: (id) aZone;
++ (char *) formatFloatOrExponential: (double) aVal;
+
 - (void) drop;
 
 @end

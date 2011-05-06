@@ -3433,14 +3433,15 @@ Boston, MA 02111-1307, USA.
 // moveReport
 //
 //////////////////////////////////////////////////////////////
-- moveReport: (FishCell *) aCell 
-{
+- moveReport: (FishCell *) aCell {
   FILE *mvRptPtr=NULL;
-  const char *mvRptFName = "MoveTest.rpt";
-  static int mR=0;
+  const char *mvRptFName = "Move_Test_Out.csv";
+  static BOOL moveRptFirstTime=YES;     
   double velocity, depth, temp, turbidity, availableDrift, availableSearch;
   double distToHide;
   char *mySpecies;
+  char *fileMetaData;
+  char strDataFormat[150];
 
   velocity = [aCell getPolyCellVelocity];
   depth    = [aCell getPolyCellDepth];
@@ -3453,11 +3454,12 @@ Boston, MA 02111-1307, USA.
 
   mySpecies = (char *)[[self getSpecies] getName];
 
-  if(mR == 0) 
-  {
-     if((mvRptPtr = fopen(mvRptFName,"w+")) != NULL) 
-     {
-         fprintf(mvRptPtr,"%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s%-16s\n",
+  if(moveRptFirstTime == YES){
+     if((mvRptPtr = fopen(mvRptFName,"w+")) != NULL){
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(mvRptPtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
+       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
 							   "SPECIES",
 							   "AGE",
                                                           "VELOCITY",
@@ -3484,56 +3486,94 @@ Boston, MA 02111-1307, USA.
                                                           "ntEnrgyFrBstCll",
                                                           "ERMForBestCell");
          fflush(mvRptPtr);
-         mR++;
+         moveRptFirstTime = NO;
          fclose(mvRptPtr);
-     }
-     else
-     {
+     }else{
          fprintf(stderr, "ERROR: Trout >>>> moveReport >>>> Cannot open %s for writing\n", mvRptFName);
          fflush(0);
          exit(1);
      }
   }
-
-  if((mvRptPtr = fopen(mvRptFName,"a")) == NULL) 
-  {
+  if((mvRptPtr = fopen(mvRptFName,"a")) == NULL){
       fprintf(stderr, "ERROR: Trout >>>> moveReport >>>> Cannot open %s for appending\n", mvRptFName);
       fflush(0);
       exit(1);
   }
 
-  fprintf(mvRptPtr, "%-16s%-16d%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16E%-16s%-16E%-16E%-16s%-16E%-16E%-16E\n",
-						   mySpecies,
-						   age,
-                                                   velocity,
-                                                   depth,
-                                                   temp,
-                                                   turbidity,
-                                                   distToHide,
-                                                   availableDrift,
-                                                   availableSearch,
-                                                   fishLength,
-                                                   fishWeight,
-                                                   feedTimeForCell,
-                                                   captureSuccess,
-                                                   potentialHourlyDriftIntake,
-                                                   potentialHourlySearchIntake,
-                                                   cMax,
-                                                   standardResp,
-                                                   activeResp,
-                                                   inShelter,
-                                                   dailyDriftNetEnergy,
-                                                   dailySearchNetEnergy,
-                                                   feedStrategy,
-                                                   nonStarvSurvival,
-                                                   netEnergyForBestCell,
-                                                   expectedMaturity);
+  strcpy(strDataFormat,"%s,%d,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temp]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: distToHide]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableDrift]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableSearch]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishWeight]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: feedTimeForCell]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: captureSuccess]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlyDriftIntake]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlySearchIntake]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cMax]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: standardResp]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: activeResp]);
+  strcat(strDataFormat,",%s,"); // string format for inShelter
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailyDriftNetEnergy]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailySearchNetEnergy]);
+  strcat(strDataFormat,",%s,"); // string format for feedStrategy
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: nonStarvSurvival]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: netEnergyForBestCell]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: expectedMaturity]);
+  strcat(strDataFormat,"\n");
+
+  fprintf(mvRptPtr, strDataFormat,mySpecies,
+				  age,
+				  velocity,
+				  depth,
+				  temp,
+				  turbidity,
+				  distToHide,
+				  availableDrift,
+				  availableSearch,
+				  fishLength,
+				  fishWeight,
+				  feedTimeForCell,
+				  captureSuccess,
+				  potentialHourlyDriftIntake,
+				  potentialHourlySearchIntake,
+				  cMax,
+				  standardResp,
+				  activeResp,
+				  inShelter,
+				  dailyDriftNetEnergy,
+				  dailySearchNetEnergy,
+				  feedStrategy,
+				  nonStarvSurvival,
+				  netEnergyForBestCell,
+				  expectedMaturity);
 
 
   fflush(mvRptPtr);
   fclose(mvRptPtr);
   return self;
-
 }
 
 #endif
@@ -3549,89 +3589,91 @@ Boston, MA 02111-1307, USA.
 - printReadyToSpawnRpt: (BOOL) readyToSpawn 
 {
   FILE * spawnReportPtr=NULL; 
-  const char* readyToSpawnFile = "Ready_To_Spawn.rpt"; 
- 
+  const char* readyToSpawnFile = "Ready_To_Spawn_Out.csv"; 
   static BOOL firstRTSTime=YES;
-
   char* readyTSString = "NO";
   time_t currentTime = (time_t) 0;
   double currentTemp;
-
+  double currentFlow;
+  double currentFlowChange;
   char *lastSpawnDate = (char *) NULL;  
+  char strDataFormat[150];
+  char *fileMetaData;
 
   if(readyToSpawn == YES) readyTSString = "YES";
 
-   if(firstRTSTime == YES) 
-   {
-     if( (spawnReportPtr = fopen(readyToSpawnFile,"w+")) == NULL) 
-     {
+   if(firstRTSTime == YES){
+     if( (spawnReportPtr = fopen(readyToSpawnFile,"w+")) == NULL){
           fprintf(stderr, "ERROR: Trout >>>> printReadyToSpawnRpt >>>> Cannot open %s for writing",readyToSpawnFile);
           fflush(0);
           exit(1);
      }
-
-      fprintf(spawnReportPtr,"%-15s%-12s%-4s%-9s%-25s%-12s%-12s%-12s%-12s%-12s%-15s%-20s%-18s%-12s\n","Date",
-                                                                                                 "Species",
-                                                                                                 "Age",
-                                                                                                 "Sex",
-                                                                                                 "Reach",
-                                                                                                 "Temperature",
-                                                                                                 "Flow",
-                                                                                                 "FlowChange",
-                                                                                                "FishLength",
-                                                                                                 "Condition",
-                                                                                                "LastSpawnDate",
-                                                                                                "FishSpawnStartDate",
-                                                                                                "FishSpawnEndDate",
-                                                                                                "ReadyToSpawn");
-  }
-   if(firstRTSTime == NO) 
-   {
-     if( (spawnReportPtr = fopen(readyToSpawnFile,"a")) == NULL) 
-      {
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(spawnReportPtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
+      fprintf(spawnReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+                                                                            "Species",
+                                                                            "Age",
+                                                                            "Sex",
+                                                                            "Reach",
+                                                                            "Temperature",
+                                                                            "Flow",
+                                                                            "FlowChange",
+                                                                            "FishLength",
+                                                                            "Condition",
+                                                                            "LastSpawnDate",
+                                                                            "FishSpawnStartDate",
+                                                                            "FishSpawnEndDate",
+                                                                            "ReadyToSpawn");
+  }else if(firstRTSTime == NO){
+     if( (spawnReportPtr = fopen(readyToSpawnFile,"a")) == NULL){
           fprintf(stderr, "ERROR: Trout >>>> printReadyToSpawnRpt >>>> Cannot open %s for writing",readyToSpawnFile);
           fflush(0);
           exit(1);
       }
-   }
-
+  }
   lastSpawnDate = [[self getZone] alloc: 12*sizeof(char)];
   currentTemp = [myCell getTemperature];
-
   currentTime = [self getCurrentTimeT];
+  currentFlow = [myCell getRiverFlow];
+  currentFlowChange = [myCell getFlowChange];
 
-  if(timeLastSpawned > (time_t) 0 ) 
-  {
+  if(timeLastSpawned > (time_t) 0 ){
     strncpy(lastSpawnDate, [timeManager getDateWithTimeT: timeLastSpawned], 12);
-  }
-  else 
-  {
+  }else{
      strncpy(lastSpawnDate, "00/00/0000", (size_t) 12);
   }
+  strcpy(strDataFormat,"%s,%s,%d,%s,%s,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentTemp]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlowChange]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishCondition]);
+  strcat(strDataFormat,",%s,%s,%s,%s\n");
 
-  fprintf(spawnReportPtr,"%-15s%-12s%-4d%-9s%-25s%-12f%-12f%-12f%-12f%-12f%-15s%-20s%-18s%-12s\n",
-                       [timeManager getDateWithTimeT: currentTime],
-                                                 [species getName],
-                                                               age,
-                                                     [sex getName],
-                                            [reach getReachName],
-                                            [myCell getTemperature],
-                                              [myCell getRiverFlow],
-                                            [myCell getFlowChange],
-                                                     fishLength,
-                                                     fishCondition,
-                                                    lastSpawnDate,
-                                                    fishParams->fishSpawnStartDate,
-                                                    fishParams->fishSpawnEndDate,
-                                                    readyTSString);
+  fprintf(spawnReportPtr,strDataFormat,[timeManager getDateWithTimeT: currentTime],
+                                       [species getName],
+                                       age,
+                                       [sex getName],
+                                       [reach getReachName],
+                                       currentTemp,
+                                       currentFlow,
+                                       currentFlowChange,
+                                       fishLength,
+                                       fishCondition,
+                                       lastSpawnDate,
+                                       fishParams->fishSpawnStartDate,
+                                       fishParams->fishSpawnEndDate,
+                                       readyTSString);
 
 
    firstRTSTime = NO;
-
    fclose(spawnReportPtr);
    return self;
-
-   
 } 
 #endif
 
@@ -3645,69 +3687,83 @@ Boston, MA 02111-1307, USA.
 - printSpawnCellRpt: (id <List>) spawnCellList 
 {
   FILE * spawnCellRptPtr=NULL;
-  const char * spawnCellFile = "Spawn_Cell.rpt";
+  const char * spawnCellFile = "Spawn_Cell_Out.csv";
   static BOOL spawnCellFirstTime = YES;
+  char strDataFormat[150];
+  double cellDepth,cellVelocity,cellArea,fracSpawn,depthSuit,velSuit,spawnQuality;
+  char * fileMetaData;
 
   id <ListIndex> cellListNdx=nil;
   id  aCell=nil;
 
-  if(spawnCellFirstTime == YES) 
-  {
-      if((spawnCellRptPtr = fopen(spawnCellFile,"w+")) == NULL) 
-      {
+  if(spawnCellFirstTime == YES){
+      if((spawnCellRptPtr = fopen(spawnCellFile,"w+")) == NULL){
           fprintf(stderr, "ERROR: Trout >>>> printSpawnCellRpt >>>> Cannot open report file %s for writing", spawnCellFile);
           fflush(0);
           exit(1);
       }
-
-       fprintf(spawnCellRptPtr,"%-15s%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n","FishID",
-                                                                            "Depth",
-                                                                            "Velocity",
-                                                                            "Area",
-                                                                            "fracSpawn",
-                                                                            "DepthSuit",
-                                                                            "VelSuit",
-                                                                            "spawnQuality");
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(spawnCellRptPtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
+      fprintf(spawnCellRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,\n","FishID",
+                                                           "Depth",
+                                                           "Velocity",
+                                                           "Area",
+                                                           "fracSpawn",
+                                                           "DepthSuit",
+                                                           "VelSuit",
+                                                           "spawnQuality");
+  }
+  if(spawnCellFirstTime == NO){
+	if((spawnCellRptPtr = fopen(spawnCellFile,"a")) == NULL) 
+	{
+	    fprintf(stderr, "ERROR: Trout >>>> printSpawnCellRpt >>>> Cannot open report file %s for writing\n", spawnCellFile);
+	    fflush(0);
+	    exit(1);
+	}
   }
 
-     if(spawnCellFirstTime == NO) 
-     {
-          if((spawnCellRptPtr = fopen(spawnCellFile,"a")) == NULL) 
-          {
-              fprintf(stderr, "ERROR: Trout >>>> printSpawnCellRpt >>>> Cannot open report file %s for writing\n", spawnCellFile);
-              fflush(0);
-              exit(1);
-          }
-     }
+  cellListNdx = [spawnCellList listBegin: [self getZone]];
 
-     cellListNdx = [spawnCellList listBegin: [self getZone]];
+  while(([cellListNdx getLoc] != End) && ((aCell = [cellListNdx next]) != nil)){
+    cellDepth	  = [aCell getPolyCellDepth];
+    cellVelocity  = [aCell getPolyCellVelocity];
+    cellArea	  = [aCell getPolyCellArea];
+    fracSpawn	  = [aCell getCellFracSpawn];
+    depthSuit	  = [self getSpawnDepthSuitFor: [aCell getPolyCellDepth] ];
+    velSuit	  = [self getSpawnVelSuitFor: [aCell getPolyCellVelocity]];
+    spawnQuality  = [self getSpawnQuality: aCell];
+    strcpy(strDataFormat,"%p,");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellDepth]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellVelocity]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellArea]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fracSpawn]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depthSuit]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velSuit]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: spawnQuality]);
+    strcat(strDataFormat,"\n");
+    fprintf(spawnCellRptPtr,strDataFormat,self,
+					  cellDepth, 
+					  cellVelocity, 
+					  cellArea, 
+					  fracSpawn, 
+					  depthSuit, 
+					  velSuit, 
+					  spawnQuality); 
+  }  
+  [cellListNdx drop];
 
-     while(([cellListNdx getLoc] != End) && ((aCell = [cellListNdx next]) != nil)) 
-    {
-    
-       fprintf(spawnCellRptPtr,"%-15p%-15f%-15f%-15f%-15f%-15f%-15f%-15f\n", self,
-                                                                             [aCell getPolyCellDepth],
-                                                                             [aCell getPolyCellVelocity],
-                                                                             [aCell getArea],
-                                                                             [aCell getCellFracSpawn],
-                                                                             [self getSpawnDepthSuitFor: [aCell getPolyCellDepth] ],
-                                                                             [self getSpawnVelSuitFor: [aCell getPolyCellVelocity]],
-                                                                             [self getSpawnQuality: aCell]); 
-
-      
-    }  
- 
-
-   [cellListNdx drop];
-   
-   if(spawnCellRptPtr != NULL)
-   {
-      fclose(spawnCellRptPtr);
-   }
-
-   spawnCellFirstTime = NO;
-
-   return self;
+  if(spawnCellRptPtr != NULL){
+    fclose(spawnCellRptPtr);
+  }
+  spawnCellFirstTime = NO;
+  return self;
 }
 #endif
 
@@ -3718,8 +3774,7 @@ Boston, MA 02111-1307, USA.
 // Added SFR 1/14/2011
 //
 ////////////////////////////////////////////////////////
-- outmigrate 
-{
+- outmigrate {
     size_t strLen = strlen("Outmigration") + 1;
 
     [model addToNewOutmigrants: self ];
@@ -3736,16 +3791,14 @@ Boston, MA 02111-1307, USA.
 
 
 
-- (void) drop
-{
+- (void) drop {
      [spawnDist drop]; 
      [dieDist drop];
 
      [destCellList drop];
      destCellList = nil; 
 
-     if(deathCausedBy != NULL)
-     {
+     if(deathCausedBy != NULL){
          [troutZone free: deathCausedBy];
          deathCausedBy = NULL;
      }

@@ -198,25 +198,25 @@ Boston, MA 02111-1307, USA.
   //
   // BEGIN REPORT FILES
   //
-  cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Depth_Test.rpt") + 1)];
+  cellDepthReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Cell_Flow_Depth_Test_Out.csv") + 1)];
 
   strcpy(cellDepthReportFile, reachName);
-  strcat(cellDepthReportFile, "Cell_Flow_Depth_Test.rpt"); 
+  strcat(cellDepthReportFile, "_Cell_Flow_Depth_Test_Out.csv"); 
 
-  cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Cell_Flow_Velocity_Test.rpt") + 1)];
+  cellVelocityReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Cell_Flow_Velocity_Test_Out.csv") + 1)];
 
   strcpy(cellVelocityReportFile, reachName);
-  strcat(cellVelocityReportFile, "Cell_Flow_Velocity_Test.rpt"); 
+  strcat(cellVelocityReportFile, "_Cell_Flow_Velocity_Test_Out.csv"); 
 
-  habitatReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("Habitat.rpt") + 1)];
+  habitatReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Habitat_Out.csv") + 1)];
 
   strcpy(habitatReportFile, reachName);
-  strcat(habitatReportFile, "Habitat.rpt"); 
+  strcat(habitatReportFile, "_Habitat_Out.csv"); 
 
-  cellAreaDepthVelReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("CellDepthAreaVelocity.rpt") + 1)];
+  cellAreaDepthVelReportFile = (char *) [habitatZone alloc: (strlen(reachName) + strlen("_Cell_Depth_Area_Velocity_Out.csv") + 1)];
 
   strcpy(cellAreaDepthVelReportFile, reachName);
-  strcat(cellAreaDepthVelReportFile, "CellDepthAreaVelocity.rpt"); 
+  strcat(cellAreaDepthVelReportFile, "_Cell_Depth_Area_Velocity_Out.csv"); 
   
   // 
   // END REPORT FILES
@@ -2686,135 +2686,6 @@ Boston, MA 02111-1307, USA.
 
 
 
-/*
-
-//////////////////////////////////////////////////////////
-//
-// getAdjacentCells
-//
-/////////////////////////////////////////////////////////
-- getAdjacentCells: refCell 
-{
-    double adjacentX,adjacentY;
-    id <List> listOfAdjacentCells = nil;
-    id cell;
-
-    //fprintf(stdout, "HabitatSpace >>>> getAdjacentCells >>>> BEGIN\n");
-    //fflush(0);
-
-    listOfAdjacentCells = [refCell getListOfAdjacentCells];
-
-    if(listOfAdjacentCells == nil)
-    {
-         fprintf(stderr, "ERROR: HabitatSpace >>>>> getAdjacentCells >>>> listOfAdjacentCells is nil\n");
-         fflush(0);
-         exit(1);
-    }
-
-    adjacentX = [[refCell getMidPoint] getElement: XCOORDINATE];
-    adjacentY = [[refCell getBoundary][0] getElement: YCOORDINATE] - 1;
-
-    if((cell = [self _getCellContainingFloatX: adjacentX floatY: adjacentY]) != nil) 
-    {
-        [listOfAdjacentCells addLast: cell];
-    }
-
-
-    adjacentX = [[refCell getMidPoint] getElement: XCOORDINATE];
-    adjacentY = [[refCell getBoundary][2] getElement: YCOORDINATE] + 1;
-
-    if((cell = [self _getCellContainingFloatX: adjacentX floatY: adjacentY]) != nil) 
-    {
-      [listOfAdjacentCells addLast: cell];
-    }
-    
-    adjacentX = [[refCell getBoundary][0] getElement: XCOORDINATE] - 1;
-    adjacentY = [[refCell getMidPoint] getElement: YCOORDINATE];
-
-    if((cell = [self _getCellContainingFloatX: adjacentX floatY: adjacentY]) != nil) 
-    {
-      [listOfAdjacentCells addLast: cell];
-    }
-
-
-    adjacentX = [[refCell getBoundary][1] getElement: XCOORDINATE] + 1;
-    adjacentY = [[refCell getMidPoint] getElement: YCOORDINATE];
-
-    if( (cell = [self _getCellContainingFloatX: adjacentX floatY: adjacentY]) != nil)
-    {
-      [listOfAdjacentCells addLast: cell];
-    }
-
-    //fprintf(stdout, "HabitatSpace >>>> getAdjacentCells >>>> END\n");
-    //fflush(0);
-
-    return listOfAdjacentCells;
-}
-
-*/
-
-/*
-/////////////////////////////////////////////////////////////////////////////
-//
-// getCellContainingFloatX
-//
-/////////////////////////////////////////////////////////////////////////////
-- _getCellContainingFloatX: (double) probedX floatY: (double) probedY 
-{
-  Cell* transectCell0=nil;
-  Cell* cellOnTransect=nil;
-  int xNdx=LARGEINT;
-  int yNdx=LARGEINT;
-  double thisProbedX = probedX;
-  double thisProbedY = probedY;
-
-  //
-  // Determine what cell covers that (x,y) point
-  // first find the right transect
-  //
-
-  //
-  // I modified this and the cell methods to include containsDoubleX containsDoubleY
-  // 2/5/04
-  //
-
-
-  xNdx = 0L;
-  while((xNdx < xsize) && 
-          (((transectCell0 = [self getObjectAtX: xNdx Y: 0L]) == nil) 
-            || ([transectCell0 containsDoubleX: (double) thisProbedX] == NO))) 
-  {
-
-      xNdx++;
-  }
-
-  if((transectCell0 == nil) || (xNdx >= xsize) || (xNdx == LARGEINT)) 
-  {
-      return nil;
-  }
-  
-  //
-  // Then find the right cell within the transect
-  //
-  yNdx = 0L;
-  while((yNdx < ysize) && 
-          (((cellOnTransect = [self getObjectAtX: xNdx Y: yNdx]) == nil) ||
-           ([cellOnTransect containsDoubleY: (double) thisProbedY] == NO))) 
-  {
-     yNdx++;
-  }
-
-  if((cellOnTransect == nil) || (yNdx >= ysize) || (yNdx == LARGEINT))
-  {
-      return nil;
-  }
-
-  return cellOnTransect;
-}
-*/
-
-
-
 ////////////////////////////////////////
 //
 // getUpstreamCells
@@ -3213,253 +3084,129 @@ Boston, MA 02111-1307, USA.
 }
 
 
-
-
 - printCellDepthReport 
 {
-    return self;
-}
-
-- printCellVelocityReport 
-{
-    return self;
-}
-
-
-/*
-
-Broken with the utm cells
-
-- printCellDepthReport 
-{
- 
   FILE * reportPtr=NULL;
-
-  BOOL loopFirstTime=YES;
-
-  char * printString=(char *) NULL;
-  char * print1String=(char *) NULL;
-  char * print2String=(char *) NULL;
 
   id <ListIndex> cellNdx;
   id nextCell;
-  int currTransect=1;
-  int transect;
-  int cellNo;
+  int cellNumber;
   double myRiverFlow;
   double depth;
-  char * cellNo1String=(char *) NULL;
-  char * cellNo2String=(char *) NULL;
-  char * cellPrintString=(char *) NULL;
+  char date[12];
+  char strDataFormat[100];
+  char * fileMetaData;
 
-
-  
-
-
-
-  if(depthReportFirstWrite == YES) 
-  {
-      if((reportPtr = fopen(cellDepthReportFile,"w+")) == NULL) 
-      {
+  if(depthReportFirstWrite == YES) {
+      if((reportPtr = fopen(cellDepthReportFile,"w+")) == NULL) {
            fprintf(stderr, "ERROR: HabitatSpace >>>> printCellDepthReport  >>>> Cannot open file %s",cellDepthReportFile);
            fflush(0);
            exit(1);
       }
-
-      fprintf(reportPtr, "%-6s%-12s%-12s\n","TSEC", "RiverFlow", "CellDepths:");
       fflush(reportPtr);
   }
-
-
-  if(depthReportFirstWrite == NO) 
-  {
-    if((reportPtr = fopen(cellDepthReportFile,"a")) == NULL)
-    {
+  if(depthReportFirstWrite == NO) {
+    if((reportPtr = fopen(cellDepthReportFile,"a")) == NULL){
         fprintf(stderr, "ERROR: HabitatSpace >>>> printCellDepthReport  >>>> Cannot open file %s",cellDepthReportFile);
         fflush(0);
         exit(1);
     }
   }
+  cellNdx = [polyCellList listBegin: [self getZone]];
 
-  print1String = (char *) [[self getZone] alloc: 300*sizeof(char)];
-  print2String = (char *) [[self getZone] alloc: 300*sizeof(char)];
+  if(depthReportFirstWrite == YES){
+    fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+    fprintf(reportPtr,"\n%s\n\n",fileMetaData);
+    [scratchZone free: fileMetaData];
+    fprintf(reportPtr,"%s\n","date,cellNumber,cellFlow,cellDepth");
+  }
 
-  cellNo1String = (char *) [[self getZone] alloc: 300*sizeof(char)];
-  cellNo2String = (char *) [[self getZone] alloc: 300*sizeof(char)];
+  while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)){
+    cellNumber   = [nextCell getPolyCellNumber];
+    myRiverFlow = [nextCell getRiverFlow];
+    depth    = [nextCell getPolyCellDepth];
 
-  cellNdx = [listOfCells listBegin: [self getZone]];
- 
-  //fprintf(reportPtr,"\nThe number of cells = %d \n", [listOfCells getCount]);
+    strncpy(date, [timeManager getDateWithTimeT: [[nextCell getSpace] getModelTime]],12);
+    strcpy(strDataFormat,"%s,%d,");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
+    strcat(strDataFormat,"\n");
 
-  while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)) 
-  {
-     transect = [nextCell getTransect];
-     cellNo   = [nextCell getCellNo];
-     myRiverFlow = [nextCell getRiverFlow];
-     depth    = [nextCell getDepth];
-
-    if(loopFirstTime == YES) 
-    {
-       sprintf(cellNo1String,"%-18c",' ');
-       sprintf(print1String,"%-6d%-12f", transect, myRiverFlow);
-       loopFirstTime = NO;
-    }
-
-    if(currTransect == transect) 
-    {
-        sprintf(cellNo2String,"%-12d",cellNo);
-        sprintf(print2String,"%-12f", depth);
-        cellPrintString = strcat(cellNo1String,cellNo2String);
-        printString = strcat(print1String, print2String);
-        continue;
-    }
-
-    //fprintf(reportPtr,"%s\n",cellPrintString);
-
-    fprintf(reportPtr,"%s\n",printString);
-
-    currTransect = transect;
-
-    sprintf(print1String,"%-6d%-12f", transect,myRiverFlow);
-    sprintf(print2String,"%-12f", depth);
-    sprintf(cellNo1String,"%-18c",' ');
-    sprintf(cellNo2String,"%-12d",cellNo);
-    cellPrintString = strcat(cellNo1String, cellNo2String);
-    printString = strcat(print1String, print2String);
-
- } //while
-
-      
-  //fprintf(reportPtr,"%s\n",cellPrintString);
-
-  fprintf(reportPtr,"%s\n",printString);
+    fprintf(reportPtr,strDataFormat, date,
+				     cellNumber,
+				     myRiverFlow,
+				     depth);
+  } //while
   fflush(0);
-  
-  [[self getZone] free: print1String];
-  [[self getZone] free: print2String];
-  [[self getZone] free: cellNo1String];
-  [[self getZone] free: cellNo2String];
-
   [cellNdx drop];
   fclose(reportPtr);
-
   depthReportFirstWrite = NO;
 
   return self;
 }
-*/
-
-
-/*
-
-Broken with the UTM cells
 
 - printCellVelocityReport 
 {
- 
   FILE * reportPtr=NULL;
-  //const char *fileName = "Cell_Flow_Velocity_Test.rpt";
-
-  //static BOOL velocityReportFirstWrite = YES;
-  BOOL loopFirstTime=YES;
-
-  char * printString=(char *) NULL;
-  char * print1String=(char *) NULL;
-  char * print2String=(char *) NULL;
 
   id <ListIndex> cellNdx;
   id nextCell;
-  int currTransect=1;
-  int transect;
-  int cellNo;
+  int cellNumber;
   double myRiverFlow;
   double velocity;
-  char * cellNo1String=(char *) NULL;
-  char * cellNo2String=(char *) NULL;
-  char * cellPrintString=(char *) NULL;
+  char date[12];
+  char strDataFormat[100];
+  char * fileMetaData;
 
   if(velocityReportFirstWrite == YES) {
-    if( (reportPtr = fopen(cellVelocityReportFile,"w+")) == NULL ) {
-      [InternalError raiseEvent:"ERROR: Cannot open file %s",cellVelocityReportFile];
-    }
-  fprintf(reportPtr,"%-6s%-12s%-12s\n","TSEC", "RiverFlow", "CellVelocities:");
+      if((reportPtr = fopen(cellVelocityReportFile,"w+")) == NULL) {
+           fprintf(stderr, "ERROR: HabitatSpace >>>> printCellVelocityReport  >>>> Cannot open file %s",cellVelocityReportFile);
+           fflush(0);
+           exit(1);
+      }
+      fflush(reportPtr);
   }
-
-
   if(velocityReportFirstWrite == NO) {
-    if( (reportPtr = fopen(cellVelocityReportFile,"a")) == NULL )
-    [InternalError raiseEvent:"ERROR: Cannot open file %s",cellVelocityReportFile];
+    if((reportPtr = fopen(cellVelocityReportFile,"a")) == NULL){
+        fprintf(stderr, "ERROR: HabitatSpace >>>> printCellVelocityReport  >>>> Cannot open file %s",cellVelocityReportFile);
+        fflush(0);
+        exit(1);
+    }
+  }
+  cellNdx = [polyCellList listBegin: [self getZone]];
+
+  if(velocityReportFirstWrite == YES){
+    fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+    fprintf(reportPtr,"\n%s\n\n",fileMetaData);
+    [scratchZone free: fileMetaData];
+    fprintf(reportPtr,"%s\n","date,cellNumber,cellFlow,cellVelocity");
   }
 
-  print1String = (char *) [[self getZone] alloc: 300*sizeof(char)];
-  print2String = (char *) [[self getZone] alloc: 300*sizeof(char)];
+  while(([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil)){
+    cellNumber   = [nextCell getPolyCellNumber];
+    myRiverFlow = [nextCell getRiverFlow];
+    velocity    = [nextCell getPolyCellVelocity];
 
-  cellNo1String = (char *) [[self getZone] alloc: 300*sizeof(char)];
-  cellNo2String = (char *) [[self getZone] alloc: 300*sizeof(char)];
+    strncpy(date, [timeManager getDateWithTimeT: [[nextCell getSpace] getModelTime]],12);
+    strcpy(strDataFormat,"%s,%d,");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
+    strcat(strDataFormat,",");
+    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
+    strcat(strDataFormat,"\n");
 
-  cellNdx = [listOfCells listBegin: [self getZone]];
- 
-  //fprintf(reportPtr,"\nThe number of cells = %d \n", [listOfCells getCount]);
+    fprintf(reportPtr,strDataFormat, date,
+				     cellNumber,
+				     myRiverFlow,
+				     velocity);
+  } //while
+  fflush(0);
+  [cellNdx drop];
+  fclose(reportPtr);
+  velocityReportFirstWrite = NO;
 
-  while( ([cellNdx getLoc] != End) && ( (nextCell = [cellNdx next]) != nil) ) {
-  
-
-       transect = [nextCell getTransect];
-       cellNo   = [nextCell getCellNo];
-       myRiverFlow = [nextCell getRiverFlow];
-       velocity    = [nextCell getCellVelocity];
-
-   if(loopFirstTime == YES) {
-      sprintf(cellNo1String,"%-18c",' ');
-      sprintf(print1String,"%-6d%-12f", transect, myRiverFlow);
-      loopFirstTime = NO;
-   }
-
-   if(currTransect == transect) {
-
-       sprintf(cellNo2String,"%-12d",cellNo);
-       sprintf(print2String,"%-12f", velocity);
-       cellPrintString = strcat(cellNo1String,cellNo2String);
-       printString = strcat(print1String, print2String);
-       continue;
-   }
-
-  fprintf(reportPtr,"%s\n",cellPrintString);
-
-  fprintf(reportPtr,"%s\n",printString);
-
-  currTransect = transect;
-
-  sprintf(print1String,"%-6d%-12f", transect,myRiverFlow);
-  sprintf(print2String,"%-12f", velocity);
-  sprintf(cellNo1String,"%-18c",' ');
-  sprintf(cellNo2String,"%-12d",cellNo);
-  cellPrintString = strcat(cellNo1String, cellNo2String);
-  printString = strcat(print1String, print2String);
-
- }
-
-      
-fprintf(reportPtr,"%s\n",cellPrintString);
-
-fprintf(reportPtr,"%s\n",printString);
-fflush(0);
-
-[[self getZone] free: print1String];
-[[self getZone] free: print2String];
-[[self getZone] free: cellNo1String];
-[[self getZone] free: cellNo2String];
-
-
-[cellNdx drop];
-fclose(reportPtr);
-
-velocityReportFirstWrite = NO;
-
-return self;
+  return self;
 }
-
-*/
 
 ///////////////////////////////////////
 //
@@ -3508,7 +3255,7 @@ return self;
       fileOverWrite = FALSE;
   }
 
-  sprintf(cellFishInfoReportFName, "%s%s", reachName, "CellFishInfo.csv");
+  sprintf(cellFishInfoReportFName, "%s%s", reachName, "_Cell_Fish_Info_Out.csv");
   fprintf(stdout, "HabitatSpace >>>> buildCellFishInfoReporter >>>> cellFishInfoReportFName = %s \n", cellFishInfoReportFName);
   fflush(0);
 
@@ -3663,10 +3410,6 @@ return self;
   return self;
 }
 
-
-
-
-
 ///////////////////////////////////
 //
 // printHabitatReport
@@ -3675,6 +3418,8 @@ return self;
 - printHabitatReport 
 {
   BOOL writeFileHeader;
+  char * fileMetaData;
+  char strDataFormat[150];
 
   appendFiles = [modelSwarm getAppendFiles];
   scenario = [modelSwarm getScenario];
@@ -3682,32 +3427,27 @@ return self;
 
   writeFileHeader =    ((scenario == 1) && (replicate == 1));
 
-  if(habitatRptFilePtr == NULL)
-  {
-      if(habitatReportFirstWrite == YES) 
-      {
-        if((appendFiles == 0) && (scenario == 1) && (replicate == 1))
-        {
-            if((habitatRptFilePtr = fopen(habitatReportFile,"w+")) == NULL)
-            {
+  if(habitatRptFilePtr == NULL){
+      if(habitatReportFirstWrite == YES){
+        if((appendFiles == 0) && (scenario == 1) && (replicate == 1)){
+            if((habitatRptFilePtr = fopen(habitatReportFile,"w+")) == NULL){
                 fprintf(stderr, "ERROR: HabitatSpace >>>> printHabitatReport >>>> Cannot open file %s", habitatReportFile);
                 fflush(0);
                 exit(1);
             }
-        }
-        else  // Not appending files or not first scenario and replicate
-        {
-            if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL)
-            {
+        }else{  // Not appending files or not first scenario and replicate
+            if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL){
                fprintf(stderr, "ERROR: HabitatSpace >>>> printHabitatReport >>>> Cannot open file %s",habitatReportFile);
                fflush(0);
                exit(1);
             }
         }
 
-        if(writeFileHeader)
-        {
-            fprintf(habitatRptFilePtr,"%-12s%-12s%-12s%-20s%-20s%-20s%-20s%-12s%-12s\n", "Scenario",
+        if(writeFileHeader){
+	  fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+	  fprintf(habitatRptFilePtr,"\n%s\n\n",fileMetaData);
+	  [scratchZone free: fileMetaData];
+          fprintf(habitatRptFilePtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,\n", "Scenario",
                                                                   "Replicate",
                                                                   "Date",
                                                                   "DayLength", 
@@ -3720,10 +3460,8 @@ return self;
         }
       }  // if (habitatReportFirstWrite == YES )
 
-     if(habitatReportFirstWrite == NO) 
-     {
-        if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL)
-        {
+     if(habitatReportFirstWrite == NO){
+        if((habitatRptFilePtr = fopen(habitatReportFile,"a")) == NULL){
            fprintf(stderr, "ERROR: HabitatSpace >>>> printHabitatReport >>>> Cannot open file %s",habitatReportFile);
            fflush(0);
            exit(1);
@@ -3732,15 +3470,28 @@ return self;
 
   }
 
-  fprintf(habitatRptFilePtr,"%-12d%-12d%-12s%-20f%-20f%-20f%-20f%-12f%-12f\n",scenario,
-                                                                              replicate,
-                                             [timeManager getDateWithTimeT: modelTime_t], 
-                                                                               dayLength, 
-                                                                     yesterdaysRiverFlow, 
-                                                                               riverFlow, 
-                                                                      tomorrowsRiverFlow, 
-                                                                             temperature, 
-                                                                               turbidity);
+  strcpy(strDataFormat,"%d,%d,%s,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dayLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: yesterdaysRiverFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: riverFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: tomorrowsRiverFlow]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temperature]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
+  strcat(strDataFormat,"\n");
+  fprintf(habitatRptFilePtr,strDataFormat,scenario,
+                                          replicate,
+                                          [timeManager getDateWithTimeT: modelTime_t], 
+                                          dayLength, 
+                                          yesterdaysRiverFlow, 
+                                          riverFlow, 
+                                          tomorrowsRiverFlow, 
+                                          temperature, 
+                                          turbidity);
   fflush(habitatRptFilePtr);
   habitatReportFirstWrite = NO;
 
@@ -3748,37 +3499,29 @@ return self;
 }
 
 
-
-
-
-- printCellAreaDepthVelocityRpt
-{
+- printCellAreaDepthVelocityRpt{
 
  FILE *depthVelPtr=NULL;
+ char openFmt[1];
+ char * fileMetaData;
 
- if(depthVelRptFirstTime == YES) 
- {
-   if( (depthVelPtr = fopen(cellAreaDepthVelReportFile, "w")) == NULL) 
-   {
-       fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
-       fflush(0);
-       exit(1);
-   }
+ if(depthVelRptFirstTime == YES){
+   openFmt[0] = 'w';
+ }else{
+   openFmt[0] = 'a';
+ }
+ if( (depthVelPtr = fopen(cellAreaDepthVelReportFile, openFmt)) == NULL){
+     fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
+     fflush(0);
+     exit(1);
+ }
+ if(depthVelRptFirstTime == YES){
+    fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+    fprintf(depthVelPtr,"\n%s\n\n",fileMetaData);
+    [scratchZone free: fileMetaData];
  }
 
-
- if(depthVelRptFirstTime == NO) 
- {
-     if( (depthVelPtr = fopen(cellAreaDepthVelReportFile,"a")) == NULL) 
-     {
-          fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
-          fflush(0);
-          exit(1);
-     }
- }
-
- //[utmCellList forEach: M(depthVelReport:) : (id) depthVelPtr];
-
+ [polyCellList forEach: M(depthVelReport:) : (id) depthVelPtr];
 
  fclose(depthVelPtr);
  depthVelRptFirstTime = NO;
@@ -3935,245 +3678,6 @@ return self;
 {
     return -1;
 }
-
-
-
-/*
-//////////////////////////////////////////////////////////////////
-//
-// isThereABarrierTo
-//
-// returns 0 if there is a barrier upstream of myCell
-//         1 if there is a barrier downstream 
-//        -1 if there is no barrier
-//
-/////////////////////////////////////////////////////////////////
-- (int) isThereABarrierTo: aDestCell from: myCell 
-{
-  id aBarrier=nil;
-  int barrierNdx;
-
-  double myMidX;
-  double destMidX; 
-  double barrierX;
-
-  id destCellReach = [aDestCell getReach];
-  id myCellReach = [myCell getReach];
-
-  int barrierVal = -1;         // This needs to be initialized to -1
-                              
-  if(myCellReach != self) 
-  {
-      fprintf(stderr, "ERROR: HabitatSpace >>>> isThereABarrierTo >>>> myCellReach is not self\n");
-      fflush(0);
-      exit(1);
-  }
-
-
-  if(myCellReach == destCellReach)
-  {
-      if(barrierCount != 0 ) 
-      {
-
-          myMidX   = [[myCell getMidPoint] getElement: XCOORDINATE];
-          destMidX = [[aDestCell getMidPoint] getElement: XCOORDINATE];
-
-            for(barrierNdx = 0; barrierNdx < barrierCount; barrierNdx++) 
-            {
-                aBarrier = [barrierList atOffset: barrierNdx];
-
-                if(aBarrier == nil) continue;
-
-                barrierX = [aBarrier getBarrierX];
-
-                if( (myMidX < barrierX) && (barrierX <= destMidX) ) 
-                {
-                      barrierVal = 0;   //barrier is upstream to myCell
-                      break;
-                }
-                else if( (myMidX > barrierX) && (barrierX >= destMidX) ) 
-                {
-                      barrierVal = 1;   //barrier is downstream to myCell
-                      break;
-                }
-
-            } // for barrierNdx
-       } //if barrierCount
-
-       return barrierVal;
-   }
-
-   //
-   // aDestCell is in a different reach than myCell -
-   // so look at both reaches
-   // Return 0 if there are any upstream barriers in either reach,
-   // else return 1 if there are any downstream barriers in either reach
-   //
-   else if([habDownstreamLinksToUS contains: destCellReach])
-   {
-        if([myCellReach hasBarrierBetweenDownstreamEndAnd: myCell] == YES)
-        {
-            return 1;
-        }
-
-        if([destCellReach hasBarrierBetweenUpstreamEndAnd: aDestCell] == YES)
-        {
-            return 1;
-        }
-
-        return -1;
-   }
-
-   else if([habDownstreamLinksToDS contains: destCellReach])
-   {
-        if([myCellReach hasBarrierBetweenDownstreamEndAnd: myCell] == YES)
-        {
-            barrierVal = 1;
-        }
-
-        if([destCellReach hasBarrierBetweenDownstreamEndAnd: aDestCell] == YES)
-        {
-            barrierVal = 0;
-        }
-
-        return barrierVal;
-   }
-
-   else if([habUpstreamLinksToDS contains: destCellReach])
-   {
-        if([myCellReach hasBarrierBetweenUpstreamEndAnd: myCell] == YES)
-        {
-           return 0;
-        }
-
-        if([destCellReach hasBarrierBetweenDownstreamEndAnd: aDestCell] == YES)
-        {
-           return 0;
-        }
-
-        return -1;
-
-   }
-
-   else if([habUpstreamLinksToUS contains: destCellReach])
-   {
-
-        if([myCellReach hasBarrierBetweenUpstreamEndAnd: myCell] == YES)
-        {
-            return 0;
-        }
-
-        if([destCellReach hasBarrierBetweenUpstreamEndAnd: aDestCell] == YES)
-        {
-            return 1;
-        }
-        
-        return -1;
-
-   }
-
-   else
-   {
-       fprintf(stderr, "ERROR: HabitatSpace >>>> isThereABarrierTo >>>> aDestCell was not foundd in any of the linked reaches\n");
-       fflush(0);
-       exit(1);
-   }
-
-  //
-  // We should never reach this point in the execution of the code
-  //
-  fprintf(stderr, "ERROR: HabitatSpace >>>> isThereABarrierTo >>>> barrierVal\n");
-  fflush(0);
-  exit(1);
-
-  return barrierVal;
-}
-
-*/
-
-
-/*
-- (BOOL) hasBarrierBetweenDownstreamEndAnd: aCell
-{
-
-    double cellMidX;
-    int barrierNdx;
-
-    if([listOfCells contains: aCell] == NO)
-    {
-        [InternalError raiseEvent: "ERROR: HabitatSpace >>>> hasBarrierBetweenDownstreamEndAnd >>>> aCell has to be in the habitat space executing this method\n"];
-    }
-
-    if(barrierCount == 0) return NO;
-
-    cellMidX = [[aCell getMidPoint] getElement: XCOORDINATE];
-
-    for(barrierNdx = 0; barrierNdx < barrierCount; barrierNdx++)
-    { 
-       id aBarrier = [barrierList atOffset: barrierNdx];
-       double barrierX;
-
-       if(aBarrier == nil) continue;
-
-       barrierX = [aBarrier getBarrierX];
-
-       if(cellMidX > barrierX)
-       {
-          return YES; // barrier is down stream of aCell
-       } 
-    } 
-       
-    return NO;
-
-}
-*/
-
-
-
-/*
-- (BOOL) hasBarrierBetweenUpstreamEndAnd: aCell
-{
-
-    double cellMidX;
-    int barrierNdx;
-
-    if([listOfCells contains: aCell] == NO)
-    {
-        [InternalError raiseEvent: "ERROR: HabitatSpace >>>> hasBarrierBetweenUpstreamEndAnd >>>> aCell has to be in the habitat space executing this method\n"];
-    }
-
-    if(barrierCount == 0) return NO;
-
-    cellMidX = [[aCell getMidPoint] getElement: XCOORDINATE];
-
-    for(barrierNdx = 0; barrierNdx < barrierCount; barrierNdx++)
-    { 
-       id aBarrier = [barrierList atOffset: barrierNdx];
-       double barrierX;
-
-       if(aBarrier == nil) continue;
-
-       barrierX = [aBarrier getBarrierX];
-
-       if(cellMidX < barrierX)
-       {
-          return YES; // barrier is upstream of aCell
-       }
-  
-    } 
-       
-
-    return NO;
-
-}
-
-*/
-
-
-
-
-
-
 
 
 
@@ -4334,233 +3838,6 @@ return self;
   return self;
 
 }
-
-
-//////////////////////////////////////////////////////////
-//
-// openAreaVelocityFile
-//
-//////////////////////////////////////////////////////////
-- openAreaVelocityFile: (char *) aFileName 
-{
-  int maxBinNumber= (unsigned) floor(velocityHistoMaxVelocity/depthBinWidth);
-  int i;
-
-  if([modelSwarm getAppendFiles] == NO) 
-  {
-      if((areaVelocityFileStream = fopen(aFileName, "w")) == NULL) 
-      {
-          fprintf(stderr, "ERROR: HabitatSpace >>>> openAreaVelocityFile >>>> Cannot open file %s\n", aFileName);
-          fflush(0);
-          exit(1);
-      }
-
-      fprintf(areaVelocityFileStream, "%-14s%-10s%-11s","Date", "Scenario", "Replicate");
-      fflush(0);
-
-      for(i=0;i < maxBinNumber; i++) 
-      {
-          fprintf(areaVelocityFileStream, areaVelocityHistoFmtStr ,(i+1)*velocityBinWidth);
-          fflush(0);
-
-      } //for
-
-      fprintf(areaVelocityFileStream, ">");
-      fprintf(areaVelocityFileStream, areaVelocityHistoFmtStr ,maxBinNumber*velocityBinWidth);
-      fprintf(areaVelocityFileStream, "\n");
-      fflush(0);
-
-  }
-  else 
-  {
-       if(([modelSwarm getScenario] == 1) && ([modelSwarm getReplicate] == 1)) 
-       {
-            if((areaVelocityFileStream = fopen(aFileName, "w")) == NULL) 
-            {
-                fprintf(stderr, "ERROR: HabitatSpace >>>> openAreaVelocityFile >>>> Cannot open %s\n", aFileName);
-                fflush(0);
-                exit(1);
-            }
-
-            fprintf(areaVelocityFileStream, "%-14s%-10s%-11s","Date", "Scenario", "Replicate");
-            fflush(0);
-
-            for(i=0;i < maxBinNumber; i++) 
-            {
-                fprintf(areaVelocityFileStream, areaVelocityHistoFmtStr ,(i+1)*velocityBinWidth);
-                fflush(0);
-            }
-
-            fprintf(areaVelocityFileStream, ">");
-            fprintf(areaVelocityFileStream, areaVelocityHistoFmtStr ,maxBinNumber*velocityBinWidth);
-            fprintf(areaVelocityFileStream, "\n");
-            fflush(0);
-       }
-       else 
-       {
-           if((areaVelocityFileStream = fopen(aFileName, "a")) == NULL) 
-           {
-               fprintf(stderr, "ERROR: HabitatSpace >>>> openAreaVelocityFile >>>> Cannot open %s\n", aFileName);
-               fflush(0);
-               exit(1);
-           }
-       }
-   }
-
-  return self;
-
-}
-  
-
-//////////////////////////////////////////////////////////
-//
-// printAreaDepthHisto
-//
-//////////////////////////////////////////////////////////
-- printAreaDepthHisto {
-  /*
-  id <ListIndex> cellNdx;
-  id cell=nil;
-
-  double cellDepth;
-  double cellArea;
-
-  int depthBinNumber;
-  int maxBinNumber= (unsigned) floor(depthHistoMaxDepth/depthBinWidth);
-  int depthAreaBin[maxBinNumber + 1];
-  int i;
-
-  for(i=0;i <= maxBinNumber;i++) {
-
-     depthAreaBin[i] = 0.0;
-
-  }
-
-  cellNdx = [utmCellList listBegin: habitatZone];
-
-  while( ([cellNdx getLoc] != End) && ((cell = [cellNdx next]) != nil) ) {
-     cellDepth = [cell getPolyCellDepth];
-     cellArea = [cell getPolyCellArea];
-
-     if( (cellDepth > 0.0) && (cellDepth < depthHistoMaxDepth) ) {
-         depthBinNumber = (unsigned) floor(cellDepth/depthBinWidth);
-         depthAreaBin[depthBinNumber] += (int) cellArea;
-     }
-     else if(cellDepth > depthHistoMaxDepth) {
-
-         depthAreaBin[maxBinNumber] += (int) cellArea;
-
-     }
-
-
-  }
-
-  [cellNdx drop];
-  
-  scenario = [modelSwarm getScenario];
-  replicate = [modelSwarm getReplicate];
-
-  fprintf(areaDepthFileStream, "%-14s",[timeManager getDateWithTimeT: modelTime_t]);
-  fprintf(areaDepthFileStream, "%-10d%-11d",scenario, replicate);
-  fflush(0);
-  
-  for(i=0;i <= maxBinNumber; i++) {
-
-    fprintf(areaDepthFileStream, areaDepthHistoFmtStr ,depthAreaBin[i]);
-    fflush(0);
-
-  }
-
-  fprintf(areaDepthFileStream,"\n");
-  fflush(0);
-  */
-
-  return self;
-
-}
-
-
-//////////////////////////////////////////////////////////
-//
-//
-//
-//////////////////////////////////////////////////////////
-
-- printAreaVelocityHisto 
-{
-  /*
-  id <ListIndex> cellNdx;
-  id cell=nil;
-
-  double cellVelocity;
-  double cellArea;
-
-  int velocityBinNumber;
-  int maxBinNumber= (unsigned) floor(velocityHistoMaxVelocity/velocityBinWidth);
-  int velocityAreaBin[maxBinNumber + 1];
-  int i;
-
-  for(i=0;i <= maxBinNumber;i++) {
-
-     velocityAreaBin[i] = 0.0;
-
-  }
-
-  cellNdx = [utmCellList listBegin: habitatZone];
-
-  while( ([cellNdx getLoc] != End) && ((cell = [cellNdx next]) != nil) ) {
-     cellVelocity = [cell getPolyCellVelocity];
-     cellArea = [cell getPolyCellArea];
-
-     if( (cellVelocity > 0.0) && (cellVelocity < velocityHistoMaxVelocity) ) {
-         velocityBinNumber = (int) floor(cellVelocity/velocityBinWidth);
-         velocityAreaBin[velocityBinNumber] += (int) cellArea;
-     }
-     else if(cellVelocity > velocityHistoMaxVelocity) {
-
-         velocityAreaBin[maxBinNumber] += (int) cellArea;
-
-     }
-
-
-  }
-
-  [cellNdx drop];
-  
-  scenario = [modelSwarm getScenario];
-  replicate = [modelSwarm getReplicate];
-
-  fprintf(areaVelocityFileStream, "%-14s",[timeManager getDateWithTimeT: modelTime_t]);
-  fprintf(areaVelocityFileStream, "%-10d%-11d",scenario, replicate);
-  fflush(0);
-  
-  for(i=0;i <= maxBinNumber; i++) {
-
-    fprintf(areaVelocityFileStream, areaVelocityHistoFmtStr, velocityAreaBin[i]);
-    fflush(0);
-
-  }
-
-  fprintf(areaVelocityFileStream,"\n");
-  fflush(0);
-  */
-
-  return self;
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -496,13 +496,6 @@ long int maxYCoordinate;
 - setAreaDepthHistoFmtStr: (char *) aFmtStr;
 - setAreaVelocityHistoFmtStr: (char *) aFmtStr;
 
-- openAreaDepthFile: (char *) aFileName;
-- openAreaVelocityFile: (char *) aFileName;
-
-- printAreaDepthHisto;
-- printAreaVelocityHisto;
-
-
 //
 // CLEANUP
 //

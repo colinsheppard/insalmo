@@ -24,11 +24,13 @@ Boston, MA 02111-1307, USA.
 
 
 
+#include <string.h>
+
 #import "HabitatSpace.h"
 #import "Trout.h"
-
 #import "FishCell.h"
 #import "Redd.h"
+#import "BreakoutReporter.h"
 
 @implementation FishCell
 
@@ -1109,7 +1111,7 @@ END of OLD CODE */
 
   [self addFish: aFish];
 
-#ifdef FOODAVAILREPORT
+#ifdef FOOD_AVAIL_REPORT
   [self foodAvailAndConInCell: aFish];
 #endif
 
@@ -1841,31 +1843,37 @@ END of OLD CODE */
 }
 
 
-#ifdef FOODAVAILREPORT
+#ifdef FOOD_AVAIL_REPORT
 
 - foodAvailAndConInCell: aFish 
 {
   FILE * foodReportPtr=NULL;
-  const char * foodReportFile = "FoodAvailability.rpt";
+  const char * foodReportFile = "Food_Availability_Out.csv";
+  char strDataFormat[100];
   char date[12];
+  double hourlySearchConRate;
+  double hourlyDriftConRate;
+  char * fileMetaData;
 
-  if([space getFoodReportFirstTime] == YES) 
-  {
-     if((foodReportPtr = fopen(foodReportFile,"w")) == NULL) 
-     {
+  if([space getFoodReportFirstTime] == YES){
+     if((foodReportPtr = fopen(foodReportFile,"w")) == NULL){
           fprintf(stderr, "ERROR: Cannot open %s for writing",foodReportFile);
           fflush(0);
           exit(1);
      }
+     fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+     fprintf(foodReportPtr,"\n%s\n\n",fileMetaData);
+     [scratchZone free: fileMetaData];
 
-     fprintf(foodReportPtr,"\n%-15s%-16s%-16s%-16s%-16s%-16s%-16s%-16s\n","Date",
-                                                                          "PolyCellNumber",
-                                                                          "SearchFoodProd",
-                                                                          "DriftFoodProd",
-                                                                          "SearchAvail",
-                                                                          "Driftavail",
-                                                                          "SearchConsumed",
-                                                                          "DriftConsumed");
+     fprintf(foodReportPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s\n","Date",
+                                                       "ReachName",
+                                                       "PolyCellNumber",
+                                                       "SearchFoodProd",
+                                                       "DriftFoodProd",
+                                                       "SearchAvail",
+                                                       "Driftavail",
+                                                       "SearchConsumed",
+                                                       "DriftConsumed");
      fflush(foodReportPtr);
 
   }
@@ -1879,16 +1887,37 @@ END of OLD CODE */
           exit(1);
       }
 
-      strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
+      hourlySearchConRate = [aFish getHourlySearchConRate];
+      hourlyDriftConRate = [aFish getHourlyDriftConRate];
 
-      fprintf(foodReportPtr,"%-15s%-16d%-16E%-16E%-16E%-16E%-16E%-16E\n", date,
-                                                                          polyCellNumber,
-                                                                          searchHourlyCellTotal,
-                                                                          driftHourlyCellTotal,
-                                                                          hourlyAvailSearchFood,
-                                                                          hourlyAvailDriftFood,
-                                                                          [aFish getHourlySearchConRate],
-                                                                          [aFish getHourlyDriftConRate]);
+      strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
+      strcpy(strDataFormat,"%s,%s,%d,");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: searchHourlyCellTotal]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: driftHourlyCellTotal]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailSearchFood]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailDriftFood]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlySearchConRate]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyDriftConRate]);
+      strcat(strDataFormat,"\n");
+
+      //fprintf(stdout, "FishCell >>>> foodAvailAndConInCell >>> format of line = %s \n", strDataFormat);
+      //fflush(0);
+      //exit(1);
+
+      fprintf(foodReportPtr,strDataFormat, date,
+					  [[self getSpace] getReachName],
+                                           polyCellNumber,
+                                           searchHourlyCellTotal,
+                                           driftHourlyCellTotal,
+                                           hourlyAvailSearchFood,
+                                           hourlyAvailDriftFood,
+                                           hourlySearchConRate,
+                                           hourlyDriftConRate);
 
      fflush(foodReportPtr);
   }
@@ -1912,36 +1941,42 @@ END of OLD CODE */
 // depthVelReport
 //
 /////////////////////////////////////////
-- depthVelReport: (FILE *) depthVelPtr 
-{
+- depthVelReport: (FILE *) depthVelPtr {
     char date[12];
+    char strDataFormat[100];
+    double theFlow;
 
-    if([space getDepthVelRptFirstTime] == YES) 
-    {
-         fprintf(depthVelPtr,"%-15s%-15s%-7s%-16s%-16s%-16s\n", "Date",
-                                                                "Flow",
-                                                                "PolyCellNumber",
-                                                                "PolyCellArea",
-                                                                "PolyCellDepth",
-                                                                "PolyCellVelocity");
+    if([space getDepthVelRptFirstTime] == YES){
+         fprintf(depthVelPtr,"%s,%s,%s,%s,%s,%s\n", "Date",
+                                                    "Flow",
+                                                    "PolyCellNumber",
+                                                    "PolyCellArea",
+                                                    "PolyCellDepth",
+                                                    "PolyCellVelocity");
          fflush(depthVelPtr);
-
     }
+    if(polyCellDepth != 0){
+      theFlow = [space getRiverFlow];
+      strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
+      strcpy(strDataFormat,"%s,");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: theFlow]);
+      strcat(strDataFormat,",%d,");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellArea]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellDepth]);
+      strcat(strDataFormat,",");
+      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellVelocity]);
+      strcat(strDataFormat,"\n");
 
-    if(polyCellDepth != 0) 
-    {
-         strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
-
-         fprintf(depthVelPtr,"%-15s%-15f%-7d%-16f%-16f%-16f\n", date,
-                                                               [space getRiverFlow],
-                                                               polyCellNumber,
-                                                               polyCellArea,
-                                                               polyCellDepth,
-                                                               polyCellVelocity);
+      fprintf(depthVelPtr,strDataFormat, date,
+                                         theFlow,
+                                         polyCellNumber,
+                                         polyCellArea,
+                                         polyCellDepth,
+                                         polyCellVelocity);
+      fflush(depthVelPtr);
     }
-         
     [space setDepthVelRptFirstTime: NO];
-
     return self;
 }
 

@@ -1561,7 +1561,33 @@ Boston, MA 02111-1307, USA.
 
 }
 
++ (char *) reportFileMetaData: (id) aZone {
+  char* sysDateAndTime = (char *) [(id <Zone>)aZone alloc: (size_t) 55];
+  struct tm *timeStruct;
+  time_t aTime;
+  aTime = time(NULL);
+  timeStruct = localtime(&aTime);
+  strftime(sysDateAndTime, 55, "Model Run System Date and Time: %a %d-%b-%Y %H:%M:%S", timeStruct);
+  return sysDateAndTime;
+}
+    
++ (char *) formatFloatOrExponential: (double) aVal{
+	int sigFigsKept = 4;
 
+	if(aVal == 0.0){
+	   return "%f";
+	}else if(aVal < 0.0){
+	    if(log10(-aVal) < -(sigFigsKept-1)){
+		   return "%E";
+	    }else{
+		   return "%f";
+	    }
+	}else if(log10(aVal) < -(sigFigsKept-1)){
+	   return "%E";
+	}else{
+	   return "%f";
+	}
+}
     
 
 - (void) drop

@@ -40,7 +40,7 @@ Boston, MA 02111-1307, USA.
 
 #import "PolyCell.h"
 
-//#define FOODAVAILREPORT
+//#define FOOD_AVAIL_REPORT
 
 
 @interface FishCell : PolyCell
@@ -225,7 +225,7 @@ Boston, MA 02111-1307, USA.
 - (void) updateDSCellHourlyTotal;
 - (void) resetAvailHourlyTotal;
 
-#ifdef FOODAVAILREPORT
+#ifdef FOOD_AVAIL_REPORT
 - foodAvailAndConInCell: aFish;
 #endif
 
