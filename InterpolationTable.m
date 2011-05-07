@@ -137,26 +137,28 @@ Boston, MA 02111-1307, USA.
   double* xValue = (double *) nil;
   double* yValue = (double *) nil;
 
-  for(ndx = 0; ndx < funcArrayMax; ndx++)
-  {
-      xValue = (double *) [xValues atOffset: funcArrayMax];
-      yValue = (double *) [yValues atOffset: funcArrayMax];
+  if(xValues!=nil && yValues !=nil){
+    for(ndx = 0; ndx < funcArrayMax; ndx++)
+    {
+	xValue = (double *) [xValues atOffset: funcArrayMax];
+	yValue = (double *) [yValues atOffset: funcArrayMax];
+	
+	if(xValue != nil)[interpolationZone free: xValue];
+	if(yValue != nil)[interpolationZone free: yValue];
       
-      [interpolationZone free: xValue];
-      [interpolationZone free: yValue];
-    
-      xValue = (void *) nil;
-      yValue = (void *) nil;
+	xValue = (void *) nil;
+	yValue = (void *) nil;
 
+    }
+
+    [xValues drop];
+    [yValues drop]; 
+
+    xValues = nil;
+    yValues = nil;
   }
 
-  [xValues drop];
-  [yValues drop]; 
-
-  xValues = nil;
-  yValues = nil;
-
-  [interpolationZone drop];
+  if(interpolationZone!=nil)[interpolationZone drop];
 
   useLogs = NO;
 
@@ -538,29 +540,28 @@ Boston, MA 02111-1307, USA.
    //fprintf(stdout, "InterpolationTable >>>> drop >>>> BEGIN\n");
    //fflush(0);
 
-   for(ndx = 0; ndx < funcArrayMax; ndx++)
-   {
-       xValue = (double *) [xValues atOffset: ndx];
-       yValue = (double *) [yValues atOffset: ndx];
-      
-       [interpolationZone free: xValue];
-       [interpolationZone free: yValue];
-     
-       xValue = (void *) nil;
-       yValue = (void *) nil;
+  if(xValues!=nil || yValues !=nil){
+     for(ndx = 0; ndx < funcArrayMax; ndx++)
+     {
+	 xValue = (double *) [xValues atOffset: ndx];
+	 yValue = (double *) [yValues atOffset: ndx];
+	
+	 if(xValue!=nil)[interpolationZone free: xValue];
+	 if(yValue!=nil)[interpolationZone free: yValue];
+       
+	 xValue = (void *) nil;
+	 yValue = (void *) nil;
 
-   }
+     }
 
-   [xValues drop];
-   [yValues drop]; 
+    if(xValues!=nil)[xValues drop];
+    if(yValues!=nil)[yValues drop]; 
+  }
 
    xValues = nil;
    yValues = nil;
 
-   if(interpolationZone != nil)
-   {
-      [interpolationZone drop];
-   }
+   if(interpolationZone != nil)[interpolationZone drop];
 
    [super drop];
 

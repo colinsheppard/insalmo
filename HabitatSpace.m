@@ -27,6 +27,7 @@ Boston, MA 02111-1307, USA.
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 #import <math.h>
 #import <random.h>
 #import <simtoolsgui.h>
@@ -1191,267 +1192,205 @@ Boston, MA 02111-1307, USA.
 
 ///////////////////////////////////////////
 //
+// scrubString
+//
+// This function returns copy of toScrub allocated to aZone where any characters in ignoredCharacters are 
+// removed.
+// 
+// Example usage:
+//  token = [HabitatSpace scrubString: strtok(inputString,delimiters) withZone: scratchZone withIgnoredCharacters: ignoredCharacters];
+//
+///////////////////////////////////////////
++ (char *) scrubString: (char *) toScrub withZone: (id) aZone withIgnoredCharacters: (char *) ignoredCharacters {
+  char * cleanedString = (char *) [(id <Zone>)aZone alloc: sizeof(toScrub)];
+  char * foundSubstr;
+  char aChar;
+  int toScrubNdx=0,cleanedNdx = 0;
+
+  if(toScrub==NULL)return NULL;
+  while((aChar=toScrub[toScrubNdx++])!='\0'){
+    //fprintf(stdout, "HabitatSpace >>>> scrubString >>>> %c == %s ???\n",aChar,ignoredCharacters);
+    //fflush(0);
+    foundSubstr = strstr(&(aChar),ignoredCharacters);
+    if(foundSubstr==NULL){
+      cleanedString[cleanedNdx++] = aChar;
+    }
+  }
+  return cleanedString;
+}
+
+///////////////////////////////////////////
+//
+// unQuote
+//
+// This function alters the string argument if the string has double quotes at the front and end, 
+// the double quotes are removed.
+//
+///////////////////////////////////////////
++ (void) unQuote: (char *) toScrub {
+  int i;
+
+  if(toScrub==NULL)return;
+  if(toScrub[0]=='"' && toScrub[strlen(toScrub)-1] == '"'){
+    for(i=1;i<=strlen(toScrub)-2;i++){
+      toScrub[i-1] = toScrub[i];
+    }
+    toScrub[i-1] = '\0';
+  }
+  return;
+}
+
+///////////////////////////////////////////
+//
 // createPolyInterpolationTables;
 //
 ///////////////////////////////////////////
 - createPolyInterpolationTables {
-   FILE* dataFPTR = NULL;
-   int strArraySize = 1501;
-   char inputString[strArraySize];
-   int length = strlen(inputString);
-   int i;
-   int j= 0;
-   char c = 'a';
-   char aNum[25];
-   int numberOfFlows = 0;
-   int maxFlowsInFile = 100;
-   double* flow = NULL;
-   int flowNdx = 0;
-   int numPolyId = 0;
-
-   fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> BEGIN\n");
-   fflush(0);
-
-   if((dataFPTR = fopen(hydraulicFile, "r")) == NULL){
-        fprintf(stderr, "ERROR: HabitatSpace >>>> readPolyInterpolatorFiles >>>> unable to open %s for reading\n", hydraulicFile);
-        fflush(0);
-        exit(1);
-   }
-
-   (void) fgets(inputString, strArraySize, dataFPTR);
-   (void) fgets(inputString, strArraySize, dataFPTR);
-   (void) fgets(inputString, strArraySize, dataFPTR);
-   fclose(dataFPTR);
-
-    fprintf(stdout, "%s\n", inputString);
+  FILE* dataPtr = NULL;
+  int strArraySize = 1501;
+  char inputString[strArraySize];
+  char delimiters[5] = " \t\n,";
+  char * token;
+  int numFlowsInFile=0,flowDataPos,polyID,flowNdx;
+  double * flows;
+  double depth,velocity;
+  id <InterpolationTable> depthInterpolator = nil,velocityInterpolator = nil;
+  PolyCell* polyCell = nil;
+  
+  fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> BEGIN\n");
+  fflush(0);
+  if((dataPtr = fopen(hydraulicFile, "r")) == NULL){
+    fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> unable to open %s for reading\n", hydraulicFile);
     fflush(0);
-    length = strlen(inputString);
-    for(i = 0; i < length; i++){
-        c = inputString[i];
+    exit(1);
+  }
 
-        if(isalpha(c) && numberOfFlows==0){
-		aNum[j++] = c;
-            continue;
-        }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // First count the number of flows in the hydraulic file
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  (void) fgets(inputString, strArraySize, dataPtr);  // header line 1 skipped
+  (void) fgets(inputString, strArraySize, dataPtr);  // header line 2 skipped
+  flowDataPos = ftell(dataPtr);			     // save position of flow data for rewind later
+  (void) fgets(inputString, strArraySize, dataPtr);  // read line with flow data
 
-        if(isspace(c)){
-            aNum[j] = '\0';
-	    //fprintf(stdout, "%s\n", aNum);
-	    //fflush(0);
-            if(isdigit(aNum[0])){
-                numberOfFlows++;
-            }else if(numberOfFlows==0){
-		if(strcmp(aNum
-		    fprintf(stdout, "%s\n", aNum);
-		    fflush(0);
-	    }
-            j = 0;
-	    aNum[j] = '\0';
-            continue;
-        }
-        aNum[j] = c;
-        j++;
-    } 
+  // Throw fit if first token of this line is not one of the following (case insensitive) flows|flow|flows:|flow:
+  token =  strtok(inputString,delimiters);
+  [HabitatSpace unQuote: token];
+  if(!isalpha(token[0]) || 
+      !(toupper(token[0])=='F' &&
+	toupper(token[1])=='L' &&
+	toupper(token[2])=='O' &&
+	toupper(token[3])=='W')){
+    fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Unrecognized token \"%s\" on line 3 of Hydraulic File: %s \n", token,hydraulicFile);
+    fflush(0);
+    exit(1);
+  }
+  token =  strtok(NULL,delimiters);
+  [HabitatSpace unQuote: token];
+  while(token != NULL){
+    numFlowsInFile++;
+    token =  strtok(NULL,delimiters);
+    [HabitatSpace unQuote: token];
+  }
 
-    //fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> numberofFlows = %d\n", numberOfFlows);
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Now allocate and fill the double array to store the flow values, check along the way to ensure flows are in order of increasing magnitude
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  flows = (double *) [habitatZone alloc: numFlowsInFile*sizeof(double)];
+  fseek(dataPtr,flowDataPos,SEEK_SET);		    // rewind to read flow data again
+  (void) fgets(inputString, strArraySize, dataPtr); // read line with flow data
+  token = strtok(inputString,delimiters);
+  token = strtok(NULL,delimiters);
+  flowNdx = 0;
+  while(token != NULL){
+    [HabitatSpace unQuote: token];
+    flows[flowNdx++] = atof(token);
+    if(flowNdx>1 && flows[flowNdx-1]<flows[flowNdx-2]){
+      fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Flows not in order of increasing magnitude, first offending values are: %f, %f \n", flows[flowNdx-2],flows[flowNdx-1]);
+      fflush(0);
+      exit(1);
+    }
+    token = strtok(NULL,delimiters);
+  }
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Now start reading the hydraulic data, inserting into interpolation tables associated with the appropriate cell
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  (void) fgets(inputString, strArraySize, dataPtr); // skip line with column names 
+  while(feof(dataPtr) == 0){
+    inputString[0] = '\0';
+    (void) fgets(inputString, strArraySize, dataPtr); 
+    if((token =  strtok(inputString,delimiters))==NULL) continue;
+    [HabitatSpace unQuote: token];
+    // Find the poly cell associated with the first token
+    polyID = atoi(token);
+    if(polyID<=0){ // atoi returns 0 if it cannot parse the string to an integer and non-positive values are also illegal
+      fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Illegal poly-id specified: %s \n", token); fflush(0); exit(1);
+    }
+    //fprintf(stdout, "polyId = %d\n", polyID);
     //fflush(0);
-    flow = (double *) [habitatZone alloc: maxFlowsInFile*sizeof(double)];
-    for(i = 0; i < length; i++){
-        c = inputString[i];
+    polyCell = nil;
+    polyCell = [self getCellWithCellNum: polyID];
+    if(polyCell == nil){
+      fprintf(stderr, "ERROR: HabitatSpace >>>> reachName >>>> %s >>>> createPolyInterpolationTables >>>> no cell with polyID %d\n",reachName, polyID);
+      fflush(0);
+      exit(1);
+    }
 
-        if(isalpha(c)){
-            continue;
-        }
+    // Initialize counters and interpolators
+    flowNdx = 0;
+    depthInterpolator    = [InterpolationTable create: habitatZone];
+    velocityInterpolator = [InterpolationTable create: habitatZone];
+    [velocityInterpolator addX: 0.0 Y: 0.0];
 
-        if(isspace(c)){
-           aNum[j] = '\0';
-           if(isdigit(aNum[0])){
-               flow[flowNdx] = atof(aNum); 
-               //fprintf(stdout, "%f\n", flow[flowNdx]);
-               //fflush(0);
-               flowNdx++;
-           }
-           j = 0;
-           aNum[0] = '\0';
-           continue;
-       }
+    [polyCell setDepthInterpolator: depthInterpolator];
+    [polyCell setVelocityInterpolator: velocityInterpolator];
 
-       aNum[j] = c;
-       j++;
-   } 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Read the depth and velocity values, checking to make sure we haven't hit the end of the line and reacting appropriately if a 
+    // negative or illegal value is found
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    while(flowNdx<numFlowsInFile){
+      token = strtok(NULL,delimiters);
+      [HabitatSpace unQuote: token];
+      if(token==NULL){
+	fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Expected a depth value, found end of line for cell %d in file: %s, this is due to a mismatch between the number of flows and the number of depth/velocity values for this cell in the hydraulic file.\n", polyID,hydraulicFile); fflush(0); exit(1);
+      }else if(token[0]=='\0'){
+	continue;
+      }
+      depth = atof(token);
+      if(depth<0.0)depth=0.0;
 
-   //
-   // Now read in the actual data
-   //
-   {
-       int polyId = 0;
-       double aVal = 0.0;
-       int flushNdx = 0;
-       PolyCell* polyCell = nil;
-       int i = 0;
-       int setInterpolatorData = 0;
-       id <InterpolationTable> depthInterpolator = nil;
-       id <InterpolationTable> velocityInterpolator = nil;
-       int numDepths = 0;
-       int numVelocities = 0;
-       
-       if((dataFPTR = fopen(hydraulicFile, "r")) == NULL){
-            fprintf(stderr, "ERROR: HabitatSpace >>>> readPolyInterpolatorFiles >>>> unable to open %s for reading\n", hydraulicFile);
-            fflush(0);
-            exit(1);
-       }
-       (void) fgets(inputString, strArraySize, dataFPTR);
-       (void) fgets(inputString, strArraySize, dataFPTR);
-       (void) fgets(inputString, strArraySize, dataFPTR);
-       (void) fgets(inputString, strArraySize, dataFPTR);
+      [depthInterpolator addX: flows[flowNdx]
+			 Y: 100.0*depth];
+      token = strtok(NULL,delimiters);
+      [HabitatSpace unQuote: token];
+      if(token==NULL){
+	fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Expected a velocity value, found end of line for cell %d in file: %s, this is due to a mismatch between the number of flows and the number of depth/velocity values for this cell in the hydraulic file. \n", polyID, hydraulicFile); fflush(0); exit(1);
+      }
+      velocity = atof(token);
+      if(velocity<0.0){
+	fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Illegal velocity value, %f, for cell %d in file: %s \n", velocity,polyID, hydraulicFile); fflush(0); exit(1);
+      }	
+      [velocityInterpolator addX: flows[flowNdx]
+			 Y: 100.0*velocity];
+      flowNdx++;
+    }
+    
+    // Check to make sure there aren't any other data on the line
+    if((token = strtok(NULL,delimiters))!=NULL){
+	fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> Expected end of line, found data \"%s\" for cell %d in file: %s, this is due to a mismatch between the number of flows and the number of depth/velocity values for this cell in the hydraulic file.\n",token, polyID, hydraulicFile); fflush(0); exit(1);
+    }
+  }
+    
+  [polyCellList forEach: M(checkVelocityInterpolator)];
+  [polyCellList forEach: M(checkDepthInterpolator)];
 
-         while(feof(dataFPTR) == 0){
-               numPolyId++;
-               (void) fgets(inputString, strArraySize, dataFPTR);
+  fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> END\n");
+  fflush(0);
+  fclose(dataPtr);
 
-               if(feof(dataFPTR) == 1) break;
-                   //fprintf(stdout, "i = %d   %d\n", i, feof(dataFPTR));
-                   //fprintf(stdout, "i = %d   %s\n", i, inputString);
-                   //i++;
-                   //continue;
-
-               length = strlen(inputString);
-               j = 0;
-	       //fprintf(stdout, "strlen(inputString) = %d",length);
-	       //fflush(0);
-               for(i = 0; i < length; i++){
-                   c = inputString[i];
-
-		   //fprintf(stdout, "Now read in the actual data >>>> c = %c, setInterpolatorData = %d, i = %d\n", c, setInterpolatorData,i);
-		   //fflush(0);
-
-                   if(isalpha(c)){
-                       continue;
-                   }
-                  
-                   if(isspace(c)){
-                      aNum[j] = '\0';
-                      if(strchr(aNum, '.')){
-                          flushNdx = 0;
-                          if(isdigit(aNum[0]) || aNum[0] == '-'){
-                              aVal = atof(aNum);
-                              //fprintf(stdout, "%f\n", aVal);
-                              //fflush(0);
-                          }
-                          for(flushNdx = 0; flushNdx < 25; flushNdx++){
-                               aNum[flushNdx] = '\0';
-                          }
-                          if(setInterpolatorData == 0){
-                              setInterpolatorData = 1;
-                          }
-                      }else if(aNum[0] == '0'){
-                            aVal = atof(aNum);
-                            //fprintf(stdout, "%f\n", aVal);
-                            //fflush(0);
-                            for(flushNdx = 0; flushNdx < 25; flushNdx++){
-                                 aNum[flushNdx] = '\0';
-                            }
-                            if(setInterpolatorData == 0){
-                                setInterpolatorData = 1;
-                            }
-                      }else if(isdigit(aNum[0]) && (aNum[0] != '0')){
-                              //
-                              // check the previously created and poulated interpolators
-                              //
-                              if(setInterpolatorData != 0){
-				      //fprintf(stdout, "check interpolators >>>> polyId = %d\n", polyId);
-				      //fflush(0);
-				      //[depthInterpolator printSelf];
-				      //[velocityInterpolator printSelf];
-				      //exit(1);
-
-                                    if(numDepths != numberOfFlows){
-                                         fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> number of depth reads is not equal to the number of flows\n");
-                                         fflush(0);
-                                         exit(1);
-                                    }
-                                    if(numVelocities != numberOfFlows){
-                                         fprintf(stderr, "ERROR: HabitatSpace >>>> createPolyInterpolationTables >>>> number of velocity reads is not equal to the number of flows\n");
-                                         fflush(0);
-                                         exit(1);
-                                    }
-                              }
-                              polyId = atoi(aNum);
-                              //fprintf(stdout, "polyId = %d\n", polyId);
-                              //fflush(0);
-                              flowNdx = 0;
-                              polyCell = nil;
-                              polyCell = [self getCellWithCellNum: polyId];
-                              if(polyCell == nil){
-                                    fprintf(stderr, "ERROR: HabitatSpace >>>> reachName >>>> %s >>>> createPolyInterpolationTables >>>> no cell with polyId %d\n",reachName, polyId);
-                                    fflush(0);
-                                    exit(1);
-                              }
-
-                              depthInterpolator    = [InterpolationTable create: habitatZone];
-                              velocityInterpolator = [InterpolationTable create: habitatZone];
-                              [polyCell setDepthInterpolator: depthInterpolator]; 
-                              [polyCell setVelocityInterpolator: velocityInterpolator];
-                              [velocityInterpolator addX: 0 
-                                                       Y: 0.0];
-                              setInterpolatorData = 0;
-                              numDepths = 0;
-                              numVelocities = 0;
-                      }
-                      if(setInterpolatorData == 1 && numDepths<numberOfFlows){
-                           //set the depth interpolator data
-			   //xprint(depthInterpolator);
-
-                           if(aVal <= 0.0){
-                               aVal = 0.0;
-                           }
-			      //fprintf(stdout, "set depth interpolator data >>>> polyId = %d\tflow = %f\taVal = %f\tnumDepths = %d\n", polyId,flow[flowNdx],aVal*100.0,numDepths+1);
-			      //fflush(0);
-
-                           [depthInterpolator addX: flow[flowNdx]
-                                                 Y: 100.0*aVal];
-                           setInterpolatorData = 2;
-                           numDepths++;
-			   //[depthInterpolator printSelf];
-                      }else if(setInterpolatorData == 2 && numVelocities<numberOfFlows){
-                           // set the velocity interpolator data
-			   //xprint(velocityInterpolator);
-			      //fprintf(stdout, "set velocity interpolator data >>>> polyId = %d\tflow = %f\taVal = %f\tnumVelocities = %d\n", polyId,flow[flowNdx],aVal*100.0,numVelocities+1);
-			      //fflush(0);
-
-                           [velocityInterpolator addX: flow[flowNdx]
-                                                    Y: 100.0*aVal];
-                           setInterpolatorData = 1;
-                           flowNdx++;
-                           numVelocities++;
-			   //[velocityInterpolator printSelf];
-                      }
-                      j = 0;
-                      aNum[0] = '\0';
-                      continue;
-                  }
-                  aNum[j] = c;
-                  j++;
-              } 
-       }
-       //fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> numPolyId = %d\n", numPolyId);
-       //fflush(0);
-   }
-   //
-   // Check to see if each cell has the interpolation tables
-   //   
-   [polyCellList forEach: M(checkVelocityInterpolator)];
-   [polyCellList forEach: M(checkDepthInterpolator)];
-
-   fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> END\n");
-   fflush(0);
-
-   fclose(dataFPTR);
-
-   //exit(0);
-   return self;
 }
-
 
 //////////////////////////////////////////////////////////
 //
@@ -1521,39 +1460,27 @@ Boston, MA 02111-1307, USA.
 
 ///////////////////////////////////////////////////
 //
-// getCellWothCellNum
+// getCellWithCellNum
 //
 //////////////////////////////////////////////////
-- (FishCell *) getCellWithCellNum: (int) aCellNum
-{
-     FishCell* fishCell = nil;
-     id <ListIndex> ndx = nil;
+- (FishCell *) getCellWithCellNum: (int) aCellNum{
+  FishCell* fishCell = nil;
+  id <ListIndex> ndx = nil;
 
-     //fprintf(stdout, "HabitatSpace >>>> getCellWithCellNum >>>> BEGIN\n");
-     //fflush(0);
+  //fprintf(stdout, "HabitatSpace >>>> getCellWithCellNum >>>> BEGIN\n");
+  //fflush(0);
 
-     ndx = [polyCellList listBegin: scratchZone];
+  ndx = [polyCellList listBegin: scratchZone];
+  while([ndx getLoc] != End && ((fishCell = [ndx next]) != nil)){
+    if([fishCell getPolyCellNumber] == aCellNum)break;
+    fishCell = nil;
+  }
+  [ndx drop];
 
-     //fprintf(stdout, "HabitatSpace >>>> getCellWithCellNum >>>> aCellNum = %d\n", aCellNum);
-     //fflush(0);
+  //fprintf(stdout, "HabitatSpace >>>> getCellWithCellNum >>>> END\n");
+  //fflush(0);
 
-     while([ndx getLoc] != End && ((fishCell = [ndx next]) != nil))
-     {
-              if([fishCell getPolyCellNumber] == aCellNum)
-              {
-                    break;
-              }
-
-              fishCell = nil;
-
-     }
-
-     [ndx drop];
-
-     //fprintf(stdout, "HabitatSpace >>>> getCellWithCellNum >>>> END\n");
-     //fflush(0);
-
-     return fishCell;
+  return fishCell;
 }
 
 ////////////////////////////////

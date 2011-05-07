@@ -496,6 +496,11 @@ long int maxYCoordinate;
 - setAreaDepthHistoFmtStr: (char *) aFmtStr;
 - setAreaVelocityHistoFmtStr: (char *) aFmtStr;
 
+// STRING FUNCTIONS
+
++ (char *) scrubString: (char *) toScrub withZone: (id) aZone withIgnoredCharacters: (char *) ignoredCharacters;
++ (void) unQuote: (char *) toScrub;
+
 //
 // CLEANUP
 //

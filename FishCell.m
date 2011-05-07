@@ -2048,7 +2048,7 @@ END of OLD CODE */
 {
   if(velocityInterpolator == nil)
   {
-      fprintf(stdout, "FishCell >>>> checkVelocityInterpolator >>>> velocityInterpolator is nil in polyCell = %d in reach = %s\n", polyCellNumber, [reach getReachName]);
+      fprintf(stdout, "FishCell >>>> checkVelocityInterpolator >>>> velocityInterpolator is nil in polyCell = %d in reach = %s, this is likely due to missing data in the reach's hydraulic input file.\n", polyCellNumber, [reach getReachName]);
       fflush(0);
       exit(1);
   }
