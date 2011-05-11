@@ -470,10 +470,10 @@ Boston, MA 02111-1307, USA.
 
        for(spaceCount = 0; spaceCount < numberOfSpaces; spaceCount++)
        {
-            id <ZoomRaster> polyWorldRaster = nil;
+            id <Raster> polyWorldRaster = nil;
             id habitatSpace = [habSpaceList atOffset: spaceCount];
              
-            polyWorldRaster = [ZoomRaster createBegin: obsZone];
+            polyWorldRaster = [Raster createBegin: obsZone];
             [polyWorldRaster setWindowGeometryRecordName: [habitatSpace getReachName]];
             polyWorldRaster = [polyWorldRaster createEnd];
             [polyWorldRaster enableDestroyNotification: self
@@ -513,7 +513,6 @@ Boston, MA 02111-1307, USA.
             polyRasterX = [habitatSpace getPolyPixelsX];
             polyRasterY = [habitatSpace getPolyPixelsY];
             polyRasterSize = (polyRasterX >= polyRasterY ? polyRasterX : polyRasterY )/rasterResolution;
-            [polyWorldRaster setZoomFactor: rasterZoomFactor];
 
             fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> polyRasterX = %d\n", polyRasterX);
             fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> polyRasterY = %d\n", polyRasterY);
@@ -779,7 +778,7 @@ Boston, MA 02111-1307, USA.
 ///////////////////////////////////
 - switchColorRepFor: aHabitatSpace
 {
-  id <ZoomRaster> habitatRaster = nil;
+  id <Raster> habitatRaster = nil;
   id <Colormap> habitatColormap;
 
   fprintf(stdout, "TroutObserverSwarm >>>> switchColorRep >>>> BEGIN\n");
@@ -904,7 +903,7 @@ Boston, MA 02111-1307, USA.
 /////////////////////////////////////////////////////////
 - updateTkEventsFor: aHabitatSpace
 {
-    id <ZoomRaster> habitatRaster = nil;
+    id <Raster> habitatRaster = nil;
 
    //fprintf(stdout, "TroutObserverSwarm >>>> updateTkEvents >>>> BEGIN\n");
    //fflush(0); 

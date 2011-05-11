@@ -8,11 +8,10 @@ rasterColorVariable         depth
 takeRasterPictures          NO
 
 rasterResolution            20
-rasterResolutionX           40
-rasterResolutionY           40
-rasterZoomFactor            1
-maxShadeVelocity 	         200
-maxShadeDepth 	         150
+rasterResolutionX           50
+rasterResolutionY           50
+maxShadeVelocity 	   200
+maxShadeDepth 	           150
 
 @end
 
