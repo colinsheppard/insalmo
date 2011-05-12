@@ -254,7 +254,6 @@ long int maxYCoordinate;
   unsigned int polyPixelsX;
   unsigned int polyPixelsY;
 
-  int polyRasterResolution;
   int polyRasterResolutionX;
   int polyRasterResolutionY;
   char polyRasterColorVariable[25];
@@ -342,8 +341,7 @@ long int maxYCoordinate;
 //
 - setPolyCellGeomFile: (char *) aFile;
 - setHydraulicFile: (char *) aFile;
--    setPolyRasterResolution: (int) aPolyRasterResolution
-    setPolyRasterResolutionX: (int) aPolyRasterResolutionX
+-   setPolyRasterResolutionX: (int) aPolyRasterResolutionX
     setPolyRasterResolutionY: (int) aPolyRasterResolutionY
      setRasterColorVariable: (char *) aRasterColorVariable
           setShadeColorMax: (double) aShadeColorMax;

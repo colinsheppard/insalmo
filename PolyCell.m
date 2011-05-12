@@ -363,17 +363,6 @@ Boston, MA 02111-1307, USA.
 // setRaster* 
 //
 ///////////////////////////////////////////
-- setPolyRasterResolution: (int) aResolution 
-{
-  polyRasterResolution = aResolution;
-  return self;
-}
-
-
-- (int) getPolyRasterResolution 
-{
-  return polyRasterResolution;
-}
 
 - setPolyRasterResolutionX: (int) aResolutionX 
 {

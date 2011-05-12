@@ -724,13 +724,11 @@ Boston, MA 02111-1307, USA.
 // setPolyRasterResolution
 //
 /////////////////////////////////////////////////////
--    setPolyRasterResolution: (int) aPolyRasterResolution
-    setPolyRasterResolutionX: (int) aPolyRasterResolutionX
+-   setPolyRasterResolutionX: (int) aPolyRasterResolutionX
     setPolyRasterResolutionY: (int) aPolyRasterResolutionY
       setRasterColorVariable: (char *) aRasterColorVariable
             setShadeColorMax: (double) aShadeColorMax
 {
-    polyRasterResolution = aPolyRasterResolution;
     polyRasterResolutionX = aPolyRasterResolutionX;
     polyRasterResolutionY = aPolyRasterResolutionY;
 
@@ -1060,9 +1058,9 @@ Boston, MA 02111-1307, USA.
 
     [polyCellList forEach: M(createPolyPoints)]; 
 
-    if((polyRasterResolution <= 0) || (polyRasterResolutionX <= 0) || (polyRasterResolutionY <= 0))
+    if((polyRasterResolutionX <= 0) || (polyRasterResolutionY <= 0))
     {
-        fprintf(stdout, "ERROR: HabitatSpace >>>> createPolyCells >>>> check utmRasterResolution variables\n");
+        fprintf(stdout, "ERROR: HabitatSpace >>>> createPolyCells >>>> a rasterResolution variable is negative\n");
         fflush(0);
         exit(1);
     }
@@ -1082,9 +1080,8 @@ Boston, MA 02111-1307, USA.
               id <List> polyPointList = nil;
 
               //
-              // set the ZoomRaster raster variables
+              // set the raster variables
               //
-              [polyCell  setPolyRasterResolution: polyRasterResolution];
               [polyCell setPolyRasterResolutionX: polyRasterResolutionX];
               [polyCell setPolyRasterResolutionY: polyRasterResolutionY];
 

@@ -207,12 +207,10 @@ char **speciesColor;
 // setPolyRasterResolution
 //
 /////////////////////////////////////////////////////////////
--    setPolyRasterResolution:  (int) aRasterResolution
-    setPolyRasterResolutionX:  (int) aRasterResolutionX
+-   setPolyRasterResolutionX:  (int) aRasterResolutionX
     setPolyRasterResolutionY:  (int) aRasterResolutionY
   setPolyRasterColorVariable:  (char *) aRasterColorVariable
 {
-     polyRasterResolution = aRasterResolution;
      polyRasterResolutionX = aRasterResolutionX;
      polyRasterResolutionY = aRasterResolutionY;
      strncpy(polyRasterColorVariable, aRasterColorVariable, 35);
@@ -360,8 +358,7 @@ char **speciesColor;
   //
   // Moved from instantiateObjects 
   //
-  [habitatManager  setPolyRasterResolution:  polyRasterResolution
-                  setPolyRasterResolutionX:  polyRasterResolutionX
+  [habitatManager setPolyRasterResolutionX:  polyRasterResolutionX
                   setPolyRasterResolutionY:  polyRasterResolutionY
                     setRasterColorVariable:   polyRasterColorVariable
                           setShadeColorMax:  shadeColorMax];

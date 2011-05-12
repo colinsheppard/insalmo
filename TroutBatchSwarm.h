@@ -58,7 +58,6 @@ Boston, MA 02111-1307, USA.
   // building of the utm cells. These variables are
   // read in by the ObjectLoader in the create method.
   // 
-  int    rasterResolution;
   int    rasterResolutionX;
   int    rasterResolutionY;
   char*  rasterColorVariable;

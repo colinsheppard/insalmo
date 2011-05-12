@@ -92,7 +92,6 @@ typedef struct FishSetupStruct SpawnerInitializationRecord;
   //
   // POLY Cell Display
   //
-  int    polyRasterResolution;
   int    polyRasterResolutionX;
   int    polyRasterResolutionY;
   char   polyRasterColorVariable[35];
@@ -314,8 +313,7 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 - buildObjectsWith: theColormaps
            andWith: (double) aShadeColorMax;
 
--    setPolyRasterResolution:  (int) aRasterResolution
-    setPolyRasterResolutionX:  (int) aRasterResolutionX
+-    setPolyRasterResolutionX:  (int) aRasterResolutionX
     setPolyRasterResolutionY:  (int) aRasterResolutionY
   setPolyRasterColorVariable:  (char *) aRasterColorVariable;
 

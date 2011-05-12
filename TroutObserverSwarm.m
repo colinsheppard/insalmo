@@ -311,8 +311,7 @@ Boston, MA 02111-1307, USA.
 
   [ObjectLoader load: troutModelSwarm fromFileNamed: "Model.Setup"];
 
-   [troutModelSwarm setPolyRasterResolution:  rasterResolution
-                   setPolyRasterResolutionX:  rasterResolutionX
+   [troutModelSwarm setPolyRasterResolutionX:  rasterResolutionX
                    setPolyRasterResolutionY:  rasterResolutionY 
                  setPolyRasterColorVariable:  rasterColorVariable];
   //troutModelSwarm->rasterResolution = rasterResolution;
@@ -343,11 +342,11 @@ Boston, MA 02111-1307, USA.
 {
   int ndx;
 
-  fprintf(stdout, "TroutObeserverSwarm >>>> buildObjects >>>> BEGIN\n");
+  fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> BEGIN\n");
   fflush(0);
 
 
-  if((rasterResolution <= 0) || (rasterResolutionX <= 0) || (rasterResolutionY <= 0))
+  if((rasterResolutionX <= 0) || (rasterResolutionY <= 0))
   {
      fprintf(stderr, "TroutObserverSwarm >>>> buildObjects >>>> one of the rasterResolution parameters is <= zero\n");
      fflush(0);
@@ -436,8 +435,7 @@ Boston, MA 02111-1307, USA.
 
    //build model Objects and set the fish color in the ModelSwarm
    //
-   [troutModelSwarm setPolyRasterResolution:  rasterResolution
-                   setPolyRasterResolutionX:  rasterResolutionX
+   [troutModelSwarm setPolyRasterResolutionX:  rasterResolutionX
                    setPolyRasterResolutionY:  rasterResolutionY 
                  setPolyRasterColorVariable:  rasterColorVariable];
 
@@ -512,11 +510,10 @@ Boston, MA 02111-1307, USA.
 
             polyRasterX = [habitatSpace getPolyPixelsX];
             polyRasterY = [habitatSpace getPolyPixelsY];
-            polyRasterSize = (polyRasterX >= polyRasterY ? polyRasterX : polyRasterY )/rasterResolution;
 
-            fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> polyRasterX = %d\n", polyRasterX);
-            fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> polyRasterY = %d\n", polyRasterY);
-            fflush(0);
+            //fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> polyRasterX = %d\n", polyRasterX);
+            //fprintf(stdout, "TroutObserverSwarm >>>> buildObjects >>>> polyRasterY = %d\n", polyRasterY);
+            //fflush(0);
 
             [polyWorldRaster setWidth: polyRasterX/rasterResolutionX Height: polyRasterY/rasterResolutionY];
 

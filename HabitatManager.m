@@ -385,24 +385,22 @@ Boston, MA 02111-1307, USA.
 // setPolyRasterResolution
 //
 /////////////////////////////////////////////////////
--    setPolyRasterResolution: (int) aPolyRasterResolution
-    setPolyRasterResolutionX: (int) aPolyRasterResolutionX
+-   setPolyRasterResolutionX: (int) aPolyRasterResolutionX
     setPolyRasterResolutionY: (int) aPolyRasterResolutionY
      setRasterColorVariable:  (char *) aRasterColorVariable
            setShadeColorMax:  (double) aShadeColorMax
 {
 
-    fprintf(stdout, "HabitatManager >>>>  setPolyRasterResolution >>>> BEGIN\n");
-    fflush(0);
+  //  fprintf(stdout, "HabitatManager >>>>  setPolyRasterResolution >>>> BEGIN\n");
+  //  fflush(0);
 
-    polyRasterResolution = aPolyRasterResolution;
     polyRasterResolutionX = aPolyRasterResolutionX;
     polyRasterResolutionY = aPolyRasterResolutionY;
     strncpy(polyRasterColorVariable, aRasterColorVariable, 35);
            shadeColorMax = aShadeColorMax; 
 
-    fprintf(stdout, "HabitatManager >>>>  setPolyRasterResolution >>>> END\n");
-    fflush(0);
+  //  fprintf(stdout, "HabitatManager >>>>  setPolyRasterResolution >>>> END\n");
+  //  fflush(0);
 
     return self;
 }
@@ -660,11 +658,10 @@ Boston, MA 02111-1307, USA.
      // Poly Cells BEGIN
      //
   
-     [habitatSpace setPolyRasterResolution: polyRasterResolution
-                  setPolyRasterResolutionX: polyRasterResolutionX
-                  setPolyRasterResolutionY: polyRasterResolutionY
-                    setRasterColorVariable: polyRasterColorVariable
-                          setShadeColorMax: shadeColorMax];
+     [habitatSpace setPolyRasterResolutionX: polyRasterResolutionX
+                   setPolyRasterResolutionY: polyRasterResolutionY
+                     setRasterColorVariable: polyRasterColorVariable
+                           setShadeColorMax: shadeColorMax];
 
      [habitatSpace buildPolyCells];
 

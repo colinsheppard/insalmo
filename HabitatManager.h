@@ -75,7 +75,6 @@ id <List> habitatSpaceList;
 id <ListIndex> habitatSpaceNdx;
 
 char* rasterColorVariable;
-int rasterResolution;
 int rasterResolutionX;
 int rasterResolutionY;
 
@@ -83,7 +82,6 @@ int rasterResolutionY;
 //  
 //  Poly CELLS
 //  
-int polyRasterResolution;
 int polyRasterResolutionX;
 int polyRasterResolutionY;
 char polyRasterColorVariable[35];
@@ -116,8 +114,7 @@ double shadeColorMax;
 - setFishParamsMap: (id <Map>) aMap;
 
 
--    setPolyRasterResolution: (int) aPolyRasterResolution
-    setPolyRasterResolutionX: (int) aPolyRasterResolutionX
+-   setPolyRasterResolutionX: (int) aPolyRasterResolutionX
     setPolyRasterResolutionY: (int) aPolyRasterResolutionY
      setRasterColorVariable:  (char *) aRasterColorVariable
            setShadeColorMax:  (double) aShadeColorMax;

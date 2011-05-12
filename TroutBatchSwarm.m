@@ -115,8 +115,7 @@ Boston, MA 02111-1307, USA.
   obsZone = [Zone create: [self getZone]];
   troutModelSwarm = [TroutModelSwarm create: obsZone];
 
-   [troutModelSwarm setPolyRasterResolution:  rasterResolution
-                   setPolyRasterResolutionX:  rasterResolutionX
+   [troutModelSwarm setPolyRasterResolutionX:  rasterResolutionX
                    setPolyRasterResolutionY:  rasterResolutionY 
                  setPolyRasterColorVariable:  rasterColorVariable];
   //troutModelSwarm->rasterResolution  = rasterResolution;

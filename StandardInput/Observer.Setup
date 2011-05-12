@@ -7,7 +7,6 @@
 rasterColorVariable         depth
 takeRasterPictures          NO
 
-rasterResolution            20
 rasterResolutionX           50
 rasterResolutionY           50
 maxShadeVelocity 	   200
