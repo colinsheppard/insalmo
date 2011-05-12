@@ -523,7 +523,7 @@ char **speciesColor;
   while(([clrMapNdx getLoc] != End) && ((aColorMap = [clrMapNdx next]) != nil))
   {
      [aColorMap setColor: FISH_COLOR 
-                  ToName: [observerSwarm getTagFishColor]];
+                  ToName: "white"];
   }
 
   fishColorMap = [Map create: modelZone];

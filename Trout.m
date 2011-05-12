@@ -479,10 +479,10 @@ Boston, MA 02111-1307, USA.
   [self setFishColor: (Color) TAG_FISH_COLOR];
   [model updateTkEventsFor: reach];
 
-  fprintf(stdout, "Trout >>>> tagFish >>>> color = %s\n", [model getTagFishColor]);
+  //fprintf(stdout, "Trout >>>> tagFish >>>> color = %s\n", [model getTagFishColor]);
   fprintf(stdout, "Trout >>>> tagFish >>>> trout = %p\n", self);
-  fprintf(stdout, "Trout >>>> tagFish >>>> END\n");
-  fflush(0);
+  //fprintf(stdout, "Trout >>>> tagFish >>>> END\n");
+  //fflush(0);
   return self;
 }
 
