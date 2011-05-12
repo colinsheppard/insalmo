@@ -123,9 +123,9 @@ Boston, MA 02111-1307, USA.
 [probeMap addProbe: [probeLibrary getProbeForVariable: "polyCellNumber"
                       inClass: [PolyCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "polyCellDepth"
-                      inClass: [PolyCell class]]];
+                      inClass: [FishCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "polyCellVelocity"
-                      inClass: [PolyCell class]]];
+                      inClass: [FishCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "numberOfFish"
                       inClass: [FishCell class]]];
    [probeMap addProbe: [probeLibrary getProbeForVariable: "numberOfRedds"

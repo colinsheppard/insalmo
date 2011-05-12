@@ -53,6 +53,8 @@ Boston, MA 02111-1307, USA.
 
   id myRandGen;
 
+  double polyCellDepth;
+  double polyCellVelocity;
   int numberOfSpecies;
   int numberOfFish;
   int numberOfRedds;
@@ -65,6 +67,9 @@ Boston, MA 02111-1307, USA.
   id <Map> survMgrReddMap;
   id <Symbol> ANIMAL;
   id <Symbol> HABITAT;
+
+  id <InterpolationTable> velocityInterpolator;
+  id <InterpolationTable> depthInterpolator;
 
   double cellFracSpawn;
   double cellAvailableGravelArea;
@@ -126,6 +131,17 @@ Boston, MA 02111-1307, USA.
 - setRandGen: aRandGen;
 - getRandGen;
 
+-  setVelocityInterpolator: (id <InterpolationTable>) aVelocityInterpolator;
+-  (id <InterpolationTable>) getVelocityInterpolator;
+- checkVelocityInterpolator;
+-  setDepthInterpolator: (id <InterpolationTable>) aDepthInterpolator;
+-  (id <InterpolationTable>) getDepthInterpolator;
+- checkDepthInterpolator;
+
+- updatePolyCellDepthWith: (double) aFlow;
+- (double) getPolyCellDepth;
+- updatePolyCellVelocityWith: (double) aFlow;
+- (double) getPolyCellVelocity;
 
 - setFishParamsMap: (id <Map>) aMap;
 
@@ -239,10 +255,6 @@ Boston, MA 02111-1307, USA.
 
 - (double) getHabDriftConc;
 - (double) getHabSearchProd;
-
-
-
-- (double) getCellVelocity;
 
 - setShadeColorMax: (double) aShadeColorMax;
 - toggleColorRep: (double) aShadeColorMax;

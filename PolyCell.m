@@ -44,9 +44,6 @@ Boston, MA 02111-1307, USA.
   polyCell->numPolyCoords = 0;
   polyCell->numCornerCoords = 0;
 
-  polyCell->velocityInterpolator = nil;
-  polyCell->depthInterpolator = nil;
-
 
   polyCell->forSurePolyPoint = nil;
   polyCell->polyCellError = NO;
@@ -402,84 +399,6 @@ Boston, MA 02111-1307, USA.
 
 
 
-////////////////////////////////////////////////
-//
-// setVelocityInterpolator
-//
-////////////////////////////////////////////////
--  setVelocityInterpolator: (id <InterpolationTable>) aVelocityInterpolator
-{
-    velocityInterpolator = aVelocityInterpolator;
-    return self;
-}
-
-
-////////////////////////////////////////////////////
-//
-// getVelocityInterpolator
-//
-////////////////////////////////////////////////////
--  (id <InterpolationTable>) getVelocityInterpolator
-{
-   return velocityInterpolator;
-}
-
-
-/////////////////////////////////////////////
-//
-// checkVelocityInterpolator
-//
-////////////////////////////////////////////
-- checkVelocityInterpolator
-{
-  if(velocityInterpolator == nil)
-  {
-      fprintf(stdout, "PolyCell >>>> checkVelocityInterpolator >>>> velocityInterpolator is nil in polyCell = %d\n", polyCellNumber);
-      fflush(0);
-      exit(1);
-  }
-  return self;
-}
-
-////////////////////////////////////////////////
-//
-// setDepthInterpolator
-//
-////////////////////////////////////////////////
--  setDepthInterpolator: (id <InterpolationTable>) aDepthInterpolator
-{
-    depthInterpolator = aDepthInterpolator;
-    return self;
-}
-/////////////////////////////////////////////////////
-//
-// getDepthInterpolator
-//
-/////////////////////////////////////////////////////
--  (id <InterpolationTable>) getDepthInterpolator
-{
-    return depthInterpolator;
-}
-
-
-/////////////////////////////////////////////
-//
-// checkDepthInterpolator
-//
-////////////////////////////////////////////
-- checkDepthInterpolator
-{
-  if(depthInterpolator == nil)
-  {
-      fprintf(stdout, "PolyCell >>>> checkDepthInterpolator >>>> depthInterpolator is nil in polyCell = %d\n", polyCellNumber);
-      fflush(0);
-      exit(1);
-  }
-  return self;
-}
-
-
-
 /////////////////////////////////////
 //
 // createPolyCellPixels
@@ -785,82 +704,6 @@ Boston, MA 02111-1307, USA.
     return listOfAdjacentCells;
 }
 
-
-///////////////////////////////
-//
-// updatePolyCellDepth
-//
-///////////////////////////////
-- updatePolyCellDepthWith: (double) aFlow
-{
-   polyCellDepth = [depthInterpolator getValueFor: aFlow];
-
-   return self;
-}
-
-
-///////////////////////////////
-//
-// getPolyCellDepth
-//
-//////////////////////////////
-- (double) getPolyCellDepth
-{
-   /*
-   if(polyCellDepth < 0.0)
-   {
-         fprintf(stderr, "ERROR: PolyCell >>>> %d  reach = %s flow = %f >>>> getPolyCellDepth >>>> polyCellDepth is negative\n");
-         fprintf(stderr, "ERROR: PolyCell >>>> getPolyCellDepth >>>> polyCellDepth is negative\n");
-         fprintf(stderr, "ERROR: PolyCell >>>> getPolyCellDepth >>>> polyCellDepth is negative\n");
-         fflush(0);
-         //exit(1);
-   }
-   */
-   if(polyCellDepth < 0.0)  { polyCellDepth = 0.0; }
-
-
-   return polyCellDepth;
-}
-
-
-//////////////////////////////
-//
-// updatePolyCellVelocity
-//
-//////////////////////////////
-- updatePolyCellVelocityWith: (double) aFlow
-{
-   polyCellVelocity = [velocityInterpolator getValueFor: aFlow];
-   if(polyCellVelocity < 0.0)  { polyCellVelocity = 0.0; }
-
-/*
-   if(polyCellVelocity < 0.0)
-   {
-         fprintf(stderr, "ERROR: PolyCell >>>> updatePolyCellVelocityWith >>>> polyCellVelocity is negative\n");
-         fflush(0);
-         exit(1);
-   }
-*/
-
-   return self;
-}
-
-
-////////////////////////////////////
-//
-// getPolyCellVelocity
-//
-////////////////////////////////////
-- (double) getPolyCellVelocity
-{
-   if(polyCellVelocity < 0.0)
-   {
-         fprintf(stderr, "ERROR: PolyCell >>>> getPolyCellVelocity >>>> polyCellVelocity is negative\n");
-         fflush(0);
-         exit(1);
-   }
-    return polyCellVelocity;
-}
 
 //////////////////////////////////////////////////////////////////////////////
 //
