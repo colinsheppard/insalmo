@@ -1255,7 +1255,7 @@ Boston, MA 02111-1307, USA.
   double * flows;
   double depth,velocity;
   id <InterpolationTable> depthInterpolator = nil,velocityInterpolator = nil;
-  PolyCell* polyCell = nil;
+  FishCell* polyCell = nil;
   
   fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> BEGIN\n");
   fflush(0);
@@ -1389,6 +1389,8 @@ Boston, MA 02111-1307, USA.
   fprintf(stdout, "HabitatSpace >>>> createPolyInterpolationTables >>>> END\n");
   fflush(0);
   fclose(dataPtr);
+
+  return self;
 
 }
 
@@ -2785,14 +2787,27 @@ Boston, MA 02111-1307, USA.
 {
    id <ListIndex> ndx = [polyCellList listBegin: scratchZone];
    FishCell* fishCell = nil;
+   id <InterpolationTable> anInterpolator = [[polyCellList getFirst] getVelocityInterpolator];
 
    //fprintf(stdout, "HabitatSpace >>>> updateFishCells >>>> BEGIN\n");
    //fflush(0);
 
+   if(anInterpolator == nil)
+    {
+        fprintf(stdout, "ERROR: HabitatSpace >>>> updateFishCell >>>> anInterpolator is nil\n");
+        fflush(0);
+        exit(1);
+    }
+
+  int interpolationIndex = [anInterpolator getTableIndexFor: riverFlow];
+  double interpFraction = [anInterpolator getInterpFractionFor: riverFlow];
+
    while(([ndx getLoc] != End) && ((fishCell = [ndx next]) != nil))
    {
-       [fishCell updatePolyCellDepthWith: riverFlow];
-       [fishCell updatePolyCellVelocityWith: riverFlow];
+       [fishCell updateDepthAndVelocityWithTableIndex: interpolationIndex 
+                                         withInterpFraction: interpFraction];
+
+//       [fishCell updatePolyCellVelocityWith: riverFlow];
        [fishCell calcCellAvailableGravelArea];
    }
 

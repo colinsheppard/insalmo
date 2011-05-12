@@ -465,7 +465,8 @@ END of OLD CODE */
 
 ///////////////////////////////
 //
-// updatePolyCellDepth
+// updatePolyCellDepth  -- 
+// This is no longer used; instead: updateDepthAndVelocityWithTableIndex:.
 //
 ///////////////////////////////
 - updatePolyCellDepthWith: (double) aFlow
@@ -501,7 +502,8 @@ END of OLD CODE */
 
 //////////////////////////////
 //
-// updatePolyCellVelocity
+// updatePolyCellVelocity  --
+// This is no longer used; instead: updateDepthAndVelocityWithTableIndex:.
 //
 //////////////////////////////
 - updatePolyCellVelocityWith: (double) aFlow
@@ -519,6 +521,28 @@ END of OLD CODE */
 
    return self;
 }
+
+
+//////////////////////////////
+//
+// updateDepthAndVelocityWithTableIndex:
+//
+//////////////////////////////
+- updateDepthAndVelocityWithTableIndex: (double) anInterpolationIndex 
+                  withInterpFraction: (double) anInterpFraction
+
+{
+ 
+   polyCellVelocity = [velocityInterpolator getValueWithTableIndex: anInterpolationIndex 
+                                         withInterpFraction: anInterpFraction];
+
+   polyCellDepth = [depthInterpolator getValueWithTableIndex: anInterpolationIndex
+                                   withInterpFraction: anInterpFraction];
+
+   return self;
+}
+
+
 
 
 

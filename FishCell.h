@@ -138,9 +138,12 @@ Boston, MA 02111-1307, USA.
 -  (id <InterpolationTable>) getDepthInterpolator;
 - checkDepthInterpolator;
 
-- updatePolyCellDepthWith: (double) aFlow;
+//- updatePolyCellDepthWith: (double) aFlow;
+//- updatePolyCellVelocityWith: (double) aFlow;
+- updateDepthAndVelocityWithTableIndex: (double) anInterpolationIndex 
+                  withInterpFraction: (double) anInterpFraction;
+
 - (double) getPolyCellDepth;
-- updatePolyCellVelocityWith: (double) aFlow;
 - (double) getPolyCellVelocity;
 
 - setFishParamsMap: (id <Map>) aMap;
