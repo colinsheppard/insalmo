@@ -139,6 +139,10 @@ Boston, MA 02111-1307, USA.
 
   id <Object2dDisplay> polyCellDisplay;	        // display the trout
 
+  char* tagFishColor;
+  char* tagCellColor;
+  char* dryCellColor;
+
   double shadeColorMax;
   int maxShadeDepth;
   int maxShadeVelocity;
@@ -188,6 +192,10 @@ Boston, MA 02111-1307, USA.
 - (id <Swarm>) getModelSwarm;
 
 //- (id <Raster>) getWorldRaster;
+
+- (char *) getTagFishColor;
+- (char *) getDryCellColor;
+- (char *) getTagCellColor;
 
 
 

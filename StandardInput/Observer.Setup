@@ -12,6 +12,10 @@ rasterResolutionY           50
 maxShadeVelocity 	   200
 maxShadeDepth 	           150
 
+tagFishColor                 tomato
+tagCellColor                 DeepPink1
+dryCellColor                 white
+
 @end
 
 

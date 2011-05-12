@@ -515,23 +515,23 @@ char **speciesColor;
   id <MapIndex> clrMapNdx = [theColormaps mapBegin: scratchZone];
   id <Colormap> aColorMap = nil;
 
-  fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> BEGIN\n");
-  fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> tagFishColor = %s \n", tagFishColor);
-  xprint(theColormaps);
-  fflush(0);
+  //fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> BEGIN\n");
+  //fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> tagFishColor = %s \n", theTagFishColor);
+  //xprint(theColormaps);
+  //fflush(0);
 
   while(([clrMapNdx getLoc] != End) && ((aColorMap = [clrMapNdx next]) != nil))
   {
      [aColorMap setColor: FISH_COLOR 
-                  ToName: tagFishColor];
+                  ToName: [observerSwarm getTagFishColor]];
   }
 
   fishColorMap = [Map create: modelZone];
 
   FISH_COLOR++;
 
-  fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> FISH_COLOR = %d\n", FISH_COLOR);
-  fflush(0);
+  //fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> FISH_COLOR = %d\n", FISH_COLOR);
+  //fflush(0);
 
 
   speciesNdx = [speciesSymbolList listBegin: scratchZone];
@@ -539,14 +539,14 @@ char **speciesColor;
   {
       long* thisFishColor = [modelZone alloc: sizeof(long)];
       *thisFishColor = FISH_COLOR++;
-  fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> in while >>>> FISH_COLOR = %d\n", FISH_COLOR);
-  fflush(0);
+  //fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> in while >>>> FISH_COLOR = %d\n", FISH_COLOR);
+  //fflush(0);
 
       [clrMapNdx setLoc: Start];
      
       while(([clrMapNdx getLoc] != End) && ((aColorMap = [clrMapNdx next]) != nil))
       {
-            xprint(aColorMap);
+          //  xprint(aColorMap);
             [aColorMap setColor: FISH_COLOR 
                          ToName: speciesColor[speciesIDX]];
       }
@@ -563,8 +563,8 @@ char **speciesColor;
   [speciesNdx drop];
   [clrMapNdx drop];
 
-  fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> END\n");
-  fflush(0);
+  //fprintf(stdout, "TroutModelSwarm >>>> setFishColormap >>>> END\n");
+  //fflush(0);
 
 
   //exit(0);
@@ -2752,36 +2752,6 @@ char **speciesColor;
 - (id <Symbol>) getOutmigrationSymbol
 {
    return outmigrationSymbol;
-}
-
-/////////////////////////////////////////////
-//
-// getTagCellColor
-//
-////////////////////////////////////////////
-- (char *) getTagCellColor
-{
-  return tagCellColor;
-}
-
-/////////////////////////////////////////////
-//
-// getDryCellColor
-//
-////////////////////////////////////////////
-- (char *) getDryCellColor
-{
-  return dryCellColor;
-}
-
-/////////////////////////////////////////////
-//
-// getTagFishColor
-//
-////////////////////////////////////////////
-- (char *) getTagFishColor
-{
-   return tagFishColor;
 }
 
 //////////////////////////////////////////////////////

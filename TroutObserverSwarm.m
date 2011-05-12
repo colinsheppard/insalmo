@@ -422,15 +422,15 @@ Boston, MA 02111-1307, USA.
 
   [depthColormap setColor: POLYBOUNDARYCOLOR ToName: "black"];
   [depthColormap setColor: POLYINTERIORCOLOR ToName: "blue"];
-  [depthColormap setColor: TAG_CELL_COLOR ToName: [troutModelSwarm getTagCellColor]];
-  [depthColormap setColor: DRY_CELL_COLOR ToName: [troutModelSwarm getDryCellColor]];
-  [depthColormap setColor: TAG_FISH_COLOR ToName: [troutModelSwarm getTagFishColor]];
+  [depthColormap setColor: TAG_CELL_COLOR ToName: tagCellColor];
+  [depthColormap setColor: DRY_CELL_COLOR ToName: dryCellColor];
+  [depthColormap setColor: TAG_FISH_COLOR ToName: tagFishColor];
 
   [velocityColormap setColor: POLYBOUNDARYCOLOR ToName: "black"];
   [velocityColormap setColor: POLYINTERIORCOLOR ToName: "yellow"];
-  [velocityColormap setColor: TAG_CELL_COLOR ToName: [troutModelSwarm getTagCellColor]];
-  [velocityColormap setColor: DRY_CELL_COLOR ToName: [troutModelSwarm getDryCellColor]];
-  [velocityColormap setColor: TAG_FISH_COLOR ToName: [troutModelSwarm getTagFishColor]];
+  [velocityColormap setColor: TAG_CELL_COLOR ToName: tagCellColor];
+  [velocityColormap setColor: DRY_CELL_COLOR ToName: dryCellColor];
+  [velocityColormap setColor: TAG_FISH_COLOR ToName: tagFishColor];
   
 
    //build model Objects and set the fish color in the ModelSwarm
@@ -986,6 +986,38 @@ Boston, MA 02111-1307, USA.
 
 
   return self;
+}
+
+
+
+/////////////////////////////////////////////
+//
+// getTagCellColor
+//
+////////////////////////////////////////////
+- (char *) getTagCellColor
+{
+  return tagCellColor;
+}
+
+/////////////////////////////////////////////
+//
+// getDryCellColor
+//
+////////////////////////////////////////////
+- (char *) getDryCellColor
+{
+  return dryCellColor;
+}
+
+/////////////////////////////////////////////
+//
+// getTagFishColor
+//
+////////////////////////////////////////////
+- (char *) getTagFishColor
+{
+   return tagFishColor;
 }
 
 

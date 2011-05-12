@@ -66,6 +66,11 @@ Boston, MA 02111-1307, USA.
   double shadeColorMax;
   int maxShadeDepth;
   int maxShadeVelocity;
+
+  char* tagFishColor;
+  char* tagCellColor;
+  char* dryCellColor;
+
 @public
   int modelNumber;
 
