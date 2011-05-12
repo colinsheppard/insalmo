@@ -3525,8 +3525,10 @@ Boston, MA 02111-1307, USA.
 ////////////////////////////////////////////////
 //
 // buildBarriersFromList
+// Not used because this version of model does not allow barriers
 //
 ////////////////////////////////////////////////
+/*
 - buildBarriersFromList: (id <List>) aBarrierXList
 {
 
@@ -3562,7 +3564,7 @@ Boston, MA 02111-1307, USA.
 
   return self;
 }
-
+*/
 
 //////////////////////////////////////////////////////////////////
 //

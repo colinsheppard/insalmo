@@ -265,9 +265,19 @@ Boston, MA 02111-1307, USA.
            [habitatSetup setCellHabVarsFile: reachVar];
         }
          
+        if(strcmp(reachVarName, "barrierX") == 0)
+        {
+               fprintf(stderr, "ERROR: HabitatManager >>>> readReachSetupFile >>>> Reach.Setup\nSorry, no barriers allowed in this version\n");
+               fflush(0);
+               exit(1);
+        }
+         
         if(strcmp(reachVarName, "reachFlow") == 0)
         {
-           PolyInputData* polyInputData = [PolyInputData create: habManagerZone];
+               fprintf(stderr, "ERROR: HabitatManager >>>> readReachSetupFile >>>> Reach.Setup\nNo reachFlow input in this version\n");
+               fflush(0);
+               exit(1);
+          /* PolyInputData* polyInputData = [PolyInputData create: habManagerZone];
 
            double reachFlow = atof(reachVar);
 
@@ -283,7 +293,7 @@ Boston, MA 02111-1307, USA.
            {
                fprintf(stderr, "ERROR: HabitatManager >>>> readReachSetupFile >>>> Reach.Setup velocity and depth files out of order\n");
                fflush(0);
-               exit(1);
+               exit(1);  
            }
            [polyInputData  setPolyVelocityDataFile: reachVar];;
 
@@ -304,6 +314,7 @@ Boston, MA 02111-1307, USA.
            // Now add this to the list of poly input data objects
            //
            [[habitatSetup getListOfPolyInputData] addLast: polyInputData];
+           */
         }
          
         //fprintf(stdout,"reachVarName %s\n", reachVarName);

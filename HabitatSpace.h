@@ -30,7 +30,7 @@ Boston, MA 02111-1307, USA.
 #import "BreakoutReporter.h"
 #import "TimeManagerProtocol.h"
 #import "TimeSeriesInputManagerP.h"
-#import "Barrier.h"
+//#import "Barrier.h"
 #import "math.h"
 #import "InterpolationTableP.h"
 #import "SolarManagerP.h"

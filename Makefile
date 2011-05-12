@@ -20,8 +20,6 @@ OBJECTS=Trout.o \
         ExperBatchSwarm.o \
         TroutBatchSwarm.o \
 \
-	Barrier.o \
-\
         FallChinook.o \
 \
         HabitatManager.o \
@@ -85,8 +83,6 @@ TimeManager.o : TimeManager.[hm]
 #
 ExperBatchSwarm.o : ExperBatchSwarm.[hm]
 TroutBatchSwarm.o : TroutBatchSwarm.[hm]
-#
-Barrier.o : Barrier.[hm]
 #
 FallChinook.o : FallChinook.[hm] DEBUGFLAGS.h
 #
