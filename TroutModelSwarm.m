@@ -2271,117 +2271,98 @@ char **speciesColor;
 //
 //////////////////////////////////////////////////
 - openReddSummaryFilePtr {
+  char * formatString = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n";
+  char * fileMetaData;
 
-  char* formatString = "%-12s%-12s%-21s%-15s%-15s%-12s%-12s%-25s%-12s%-12s%-21s%-12s%-12s%-12s%-12s%-12s%-12s%-12s\n";
 
   if(reddSummaryFilePtr == NULL) {
 
-     if ((appendFiles == NO) && (scenario == 1) && (replicate == 1))
-     {
-        if((reddSummaryFilePtr = fopen(reddOutputFile,"w")) == NULL ) 
-        {
-             fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for writing\n",reddOutputFile);
-             fflush(0);
-             exit(1);
-        }
-          fprintf(reddSummaryFilePtr,"\n");
-          fprintf(reddSummaryFilePtr,"SYSTEM TIME:  %s\n", [timeManager getSystemDateAndTime]);
-          fprintf(reddSummaryFilePtr,formatString, "Scenario",
-                                                   "Replicate",
-                                                   "ReddID",
-                                                   "SpawnerLength",
-                                                   "SpawnerWeight",
-                                                   "SpawnerAge",
-                                                   "Species",
-                                                   "Reach",
-                                                   "CellNo",
-                                                   "CreateDate",
-                                                   "InitialNumberOfEggs",
-                                                   "EmptyDate",
-                                                   "Dewatering",
-                                                   "Scouring",
-                                                   "LowTemp",
-                                                   "HiTemp",
-                                                   "Superimp",
-                                                   "FryEmerged"); 
+    if ((appendFiles == NO) && (scenario == 1) && (replicate == 1)){
+      if((reddSummaryFilePtr = fopen(reddOutputFile,"w")) == NULL ){
+            fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for writing\n",reddOutputFile);
+            fflush(0);
+            exit(1);
+       }
+       fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+       fprintf(reddSummaryFilePtr,"\n%s\n\n",fileMetaData);
+       [scratchZone free: fileMetaData];
 
-     }
-     else if ((scenario == 1) && (replicate == 1) && (appendFiles == YES))
-     {
-        if( (reddSummaryFilePtr = fopen(reddOutputFile,"a")) == NULL ) 
-        {
-             fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for writing\n",reddOutputFile);
-             fflush(0);
-             exit(1);
-        }
-          fprintf(reddSummaryFilePtr,"\n");
-          fprintf(reddSummaryFilePtr,"SYSTEM TIME:  %s\n", [timeManager getSystemDateAndTime]);
-          fprintf(reddSummaryFilePtr,formatString, "Scenario",
-                                                   "Replicate",
-                                                   "ReddID",
-                                                   "SpawnerLength",
-                                                   "SpawnerWeight",
-                                                   "SpawnerAge",
-                                                   "Species",
-                                                   "Reach",
-                                                   "CellNo",
-                                                   "CreateDate",
-                                                   "InitialNumberOfEggs",
-                                                   "EmptyDate",
-                                                   "Dewatering",
-                                                   "Scouring",
-                                                   "LowTemp",
-                                                   "HiTemp",
-                                                   "Superimp",
-                                                   "FryEmerged"); 
+	fprintf(reddSummaryFilePtr,formatString, "Scenario",
+						 "Replicate",
+						 "ReddID",
+						 "SpawnerLength",
+						 "SpawnerWeight",
+						 "SpawnerAge",
+						 "Species",
+						 "Reach",
+						 "CellNo",
+						 "CreateDate",
+						 "InitialNumberOfEggs",
+						 "EmptyDate",
+						 "Dewatering",
+						 "Scouring",
+						 "LowTemp",
+						 "HiTemp",
+						 "Superimp",
+						 "FryEmerged"); 
+    }else if ((scenario == 1) && (replicate == 1) && (appendFiles == YES)){
+      if( (reddSummaryFilePtr = fopen(reddOutputFile,"a")) == NULL ) {
+	fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for writing\n",reddOutputFile);
+	fflush(0);
+	exit(1);
+      }
+      fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
+      fprintf(reddSummaryFilePtr,"\n%s\n\n",fileMetaData);
+      [scratchZone free: fileMetaData];
 
-     }
-     else // Not the first replicate or scenario, so no header
-     {
-         if((reddSummaryFilePtr = fopen(reddOutputFile,"a")) == NULL ) 
-         {
-             fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for appending\n",reddOutputFile);
-             fflush(0);
-             exit(1);
-         }
-     }
-
-
-
-
+      fprintf(reddSummaryFilePtr,formatString, "Scenario",
+					   "Replicate",
+					   "ReddID",
+					   "SpawnerLength",
+					   "SpawnerWeight",
+					   "SpawnerAge",
+					   "Species",
+					   "Reach",
+					   "CellNo",
+					   "CreateDate",
+					   "InitialNumberOfEggs",
+					   "EmptyDate",
+					   "Dewatering",
+					   "Scouring",
+					   "LowTemp",
+					   "HiTemp",
+					   "Superimp",
+					   "FryEmerged"); 
+    }else{ // Not the first replicate or scenario, so no header
+	   if((reddSummaryFilePtr = fopen(reddOutputFile,"a")) == NULL ){
+	       fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for appending\n",reddOutputFile);
+	       fflush(0);
+	       exit(1);
+	   }
+    }
   }
-
-   if(reddSummaryFilePtr == NULL)
-   {
-       fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for writing\n",reddOutputFile);
-       fflush(0);
-       exit(1);
-   }
-
-   return self;
+  if(reddSummaryFilePtr == NULL){
+     fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>> Cannot open %s for writing\n",reddOutputFile);
+     fflush(0);
+     exit(1);
+  }
+  return self;
 
 }
-
 
 ///////////////////////////////////
 //
 // getReddSummaryFilePtr 
 //
 /////////////////////////////////// 
-- (FILE *) getReddSummaryFilePtr 
-{
-   if(reddSummaryFilePtr == NULL)
-   {
+- (FILE *) getReddSummaryFilePtr {
+   if(reddSummaryFilePtr == NULL){
        fprintf(stderr, "ERROR: TroutModelSwarm >>>> openReddSummaryFilePtr >>>>  file %s is not open\n",reddOutputFile);
        fflush(0);
        exit(1);
    }
-    
    return reddSummaryFilePtr;
 }
-
-
-
 
 //////////////////////////////////////////////////////////
 //

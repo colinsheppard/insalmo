@@ -857,7 +857,7 @@ return self;
 ///////////////////////////////////////////////////////
 - createReddSummaryStr 
 {
-  char* formatString = "%-12d%-12d%-21p%-15f%-15f%-12d%-12s%-25s%-12d%-12s%-21d%-12s%-12d%-12d%-12d%-12d%-12d%-12d\n";
+  char strDataFormat[150];
 
   char reddCreateDate[12];
   char emptyDate[12];
@@ -871,8 +871,7 @@ return self;
                                            + numberOfEggsLostToHiTemp
                                            + numberOfEggsLostToSuperimp);
 
-  if(summaryString == NULL)
-  {
+  if(summaryString == NULL){
       summaryString = (char *) [[self getZone] alloc: 300*sizeof(char)];
   }
 
@@ -881,7 +880,13 @@ return self;
   
   strncpy(reachName, [reach getReachName], (size_t) 25);
 
-  sprintf(summaryString, formatString, [model getScenario],  
+  strcpy(strDataFormat,"%d,%d,%p,");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: spawnerLength]);
+  strcat(strDataFormat,",");
+  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: spawnerWeight]);
+  strcat(strDataFormat,",%d,%s,%s,%d,%s,%d,%s,%d,%d,%d,%d,%d,%d\n");
+
+  sprintf(summaryString, strDataFormat, [model getScenario],  
                                        [model getReplicate],
                                        self,
                                        spawnerLength,
@@ -899,8 +904,6 @@ return self;
                                        numberOfEggsLostToHiTemp,
                                        numberOfEggsLostToSuperimp,
                                        fryEmerged);
-
-
   return self;
 
 }
@@ -910,28 +913,23 @@ return self;
 // printReddSummary
 //
 ////////////////////////////////////////////////////////////
-- printReddSummary 
-{
+- printReddSummary {
   FILE* fptr = [model getReddSummaryFilePtr];
 
-  if(fptr == NULL) 
-  {
+  if(fptr == NULL) {
       fprintf(stderr, "ERROR: Redd >>>> printReddSummary >>>> The FILE pointer is %p\n", fptr);
       fflush(0);
       exit(1);
   }
 
-
   fprintf(fptr,"%s",summaryString);
   fflush(0);
 
-  if(summaryString != NULL)
-  {
+  if(summaryString != NULL){
       [[self getZone] free: summaryString];
   }
  
   return self;
-
 }
 
 
