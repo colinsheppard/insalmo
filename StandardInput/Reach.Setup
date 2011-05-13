@@ -12,7 +12,7 @@ habUpstreamJunctionNumber         1
 
 
 cellGeomFile                      ClearCreek3A-Geom.Data
-cellHydraulicFile                 ClearCreek3A-Hyd.Data
+cellHydraulicFile                 ClearCreek3A-Hyd.csv
 flowFile                          ClearCreekAtIgo-Flow.csv
 temperatureFile                   ClearCreekReach3-Temp.csv
 turbidityFile                     ClearCreekReach3-Turbidity.csv
@@ -30,7 +30,7 @@ habUpstreamJunctionNumber         2
 
 
 cellGeomFile                      ClearCreek3C-Geom.Data
-cellHydraulicFile                 ClearCreek3C-Hyd.Data
+cellHydraulicFile                 ClearCreek3C-Hyd.csv
 flowFile                          ClearCreekAtIgo-Flow.csv
 temperatureFile                   ClearCreekReach3-Temp.csv
 turbidityFile                     ClearCreekReach3-Turbidity.csv
