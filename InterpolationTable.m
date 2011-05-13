@@ -143,8 +143,8 @@ Boston, MA 02111-1307, USA.
 	xValue = (double *) [xValues atOffset: funcArrayMax];
 	yValue = (double *) [yValues atOffset: funcArrayMax];
 	
-	if(xValue != NULL)[interpolationZone free: xValue];
-	if(yValue != NULL)[interpolationZone free: yValue];
+	if(xValue != nil)[interpolationZone free: xValue];
+	if(yValue != nil)[interpolationZone free: yValue];
       
 	xValue = (void *) nil;
 	yValue = (void *) nil;
@@ -546,8 +546,8 @@ Boston, MA 02111-1307, USA.
 	 xValue = (double *) [xValues atOffset: ndx];
 	 yValue = (double *) [yValues atOffset: ndx];
 	
-	 if(xValue!=NULL)[interpolationZone free: xValue];
-	 if(yValue!=NULL)[interpolationZone free: yValue];
+	 if(xValue!=nil)[interpolationZone free: xValue];
+	 if(yValue!=nil)[interpolationZone free: yValue];
        
 	 xValue = (void *) nil;
 	 yValue = (void *) nil;
