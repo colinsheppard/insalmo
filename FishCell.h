@@ -140,8 +140,11 @@ Boston, MA 02111-1307, USA.
 
 //- updatePolyCellDepthWith: (double) aFlow;
 //- updatePolyCellVelocityWith: (double) aFlow;
-- updateDepthAndVelocityWithTableIndex: (double) anInterpolationIndex 
-                  withInterpFraction: (double) anInterpFraction;
+
+- updateWithDepthTableIndex: (int) depthInterpolationIndex
+        depthInterpFraction: (double) depthInterpFraction
+              velTableIndex: (int) velInterpolationIndex
+          velInterpFraction: (double) velInterpFraction;
 
 - (double) getPolyCellDepth;
 - (double) getPolyCellVelocity;

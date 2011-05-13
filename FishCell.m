@@ -466,7 +466,7 @@ END of OLD CODE */
 ///////////////////////////////
 //
 // updatePolyCellDepth  -- 
-// This is no longer used; instead: updateDepthAndVelocityWithTableIndex:.
+// This is no longer used; instead: updateWithDepthTableIndex:
 //
 ///////////////////////////////
 - updatePolyCellDepthWith: (double) aFlow
@@ -503,7 +503,7 @@ END of OLD CODE */
 //////////////////////////////
 //
 // updatePolyCellVelocity  --
-// This is no longer used; instead: updateDepthAndVelocityWithTableIndex:.
+// This is no longer used; instead: updateWithDepthTableIndex:
 //
 //////////////////////////////
 - updatePolyCellVelocityWith: (double) aFlow
@@ -525,19 +525,27 @@ END of OLD CODE */
 
 //////////////////////////////
 //
-// updateDepthAndVelocityWithTableIndex:
+// updateWithDepthTableIndex:
 //
 //////////////////////////////
-- updateDepthAndVelocityWithTableIndex: (double) anInterpolationIndex 
-                  withInterpFraction: (double) anInterpFraction
-
-{
+- updateWithDepthTableIndex: (int) depthInterpolationIndex
+        depthInterpFraction: (double) depthInterpFraction
+              velTableIndex: (int) velInterpolationIndex
+          velInterpFraction: (double) velInterpFraction
+  {
  
-   polyCellVelocity = [velocityInterpolator getValueWithTableIndex: anInterpolationIndex 
-                                         withInterpFraction: anInterpFraction];
+    polyCellVelocity = 
+      [velocityInterpolator getValueWithTableIndex: velInterpolationIndex 
+                                withInterpFraction: velInterpFraction];
 
-   polyCellDepth = [depthInterpolator getValueWithTableIndex: anInterpolationIndex
-                                   withInterpFraction: anInterpFraction];
+    polyCellDepth = 
+      [depthInterpolator getValueWithTableIndex: depthInterpolationIndex
+                             withInterpFraction: depthInterpFraction];
+
+   if (polyCellDepth < 0.0)
+    {
+      polyCellDepth = 0.0;   // This can happen at flows less than lowest in hydraulic input
+    }
 
    return self;
 }
