@@ -2023,8 +2023,10 @@ Boston, MA 02111-1307, USA.
          {
                //
                // remove self from model
+               // bestDest is needed in outmigrateFrom
+               // so we can write output on movement from there.
                //
-               [self outmigrate];
+               [self outmigrateFrom: bestDest];
                //[bestDest removeFish: self]; 
          }
 
@@ -3770,11 +3772,11 @@ Boston, MA 02111-1307, USA.
 
 ////////////////////////////////////////////////////////
 //
-// outmigrate
+// outmigrateFrom:
 // Added SFR 1/14/2011
 //
 ////////////////////////////////////////////////////////
-- outmigrate {
+- outmigrateFrom: (FishCell *) bestDest {
     size_t strLen = strlen("Outmigration") + 1;
 
     [model addToNewOutmigrants: self ];
@@ -3786,6 +3788,26 @@ Boston, MA 02111-1307, USA.
  // deathCausedBy = "Outmigration";  // This makes 'drop' fail.
     deathCausedBy = (char *) [troutZone alloc: strLen*sizeof(char)];
     strncpy(deathCausedBy, "Outmigration", strLen);
+
+    //PRINT THE MOVE REPORT AFTER GETTING VARIABLES FOR BEST CELL
+    #ifdef MOVE_REPORT_ON
+    feedStrategy = "OUTMIG";
+    feedTimeForCell = [self calcFeedTimeAt: bestDest];
+    standardResp = [self calcStandardRespirationAt: bestDest];
+    activeResp = -1.0; // Cannot be determined easily for outmigrants
+    inShelter = "UNK"; // Cannot be determined easily for outmigrants
+    captureSuccess = [self calcCaptureSuccess: bestDest];
+    potentialHourlyDriftIntake = [self calcDriftIntake: bestDest];
+    potentialHourlySearchIntake = [self calcSearchIntake: bestDest];
+    dailyDriftNetEnergy = [self calcDailyDriftNetEnergy: bestDest];
+    dailySearchNetEnergy = [self calcDailySearchNetEnergy: bestDest];
+    netEnergyForBestCell = [self calcNetEnergyForCell: bestDest];
+    expectedMaturity = [self expectedMaturityAt: bestDest];
+    nonStarvSurvival = [bestDest getTotalKnownNonStarvSurvivalProbFor: self];
+
+    [self moveReport: bestDest];
+    #endif
+
     return self;
 }
 
