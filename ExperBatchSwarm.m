@@ -247,6 +247,13 @@ Boston, MA 02111-1307, USA.
            {
               fprintf(stdout, "ParameterManager >>>> instanceName = %s >>>> BEGIN\n", varValue);
               fflush(0);
+
+              if((strncmp(varValue, "None", strlen("NONE")) != 0) ||
+                 (strncmp(varValue, "none", strlen("NONE")) != 0))
+              {
+                 strcpy(varValue, "NONE");
+              }
+
               if(strncmp(varValue, "NONE", strlen("NONE")) != 0)
               {
                   id <Symbol> anInstanceName = nil;
