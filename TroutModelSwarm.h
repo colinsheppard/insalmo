@@ -153,6 +153,7 @@ const char*  fishOutputFile;
 const char*  fishMortalityFile;
 const char*  reddMortalityFile;
 const char*  reddOutputFile;
+const char*  outmigrantOutputFile;
 //char* popInitDate;  NOT USED FOR SALMON
 int          fileOutputFrequency;
 char*        movementRule;
