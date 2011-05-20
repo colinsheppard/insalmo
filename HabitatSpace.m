@@ -3207,7 +3207,7 @@ Boston, MA 02111-1307, USA.
   fprintf(stdout, "HabitatSpace >>>> buildCellFishInfoReporter >>>> cellFishInfoReportFName = %s \n", cellFishInfoReportFName);
   fflush(0);
 
-  cellFishInfoReporter = [BreakoutReporter   createBegin: habitatZone
+  cellFishInfoReporter = [BreakoutReporter   createBeginWithCSV: habitatZone
                                              forList: cellFishList
                                   withOutputFilename: (char *) cellFishInfoReportFName
                                    withFileOverwrite: fileOverWrite];

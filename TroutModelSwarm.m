@@ -2779,7 +2779,7 @@ char **speciesColor;
   //
   // Fish mortality reporter
   //
-  fishMortalityReporter = [BreakoutReporter   createBegin: modelZone
+  fishMortalityReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                                   forList: deadFish
                                        //withOutputFilename: "FishMortality.rpt"
                                        withOutputFilename: (char *) fishMortalityFile
@@ -2825,7 +2825,7 @@ char **speciesColor;
   //
   // Live fish reporter
   //
-  liveFishReporter = [BreakoutReporter   createBegin: modelZone
+  liveFishReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                              forList: liveFish
                                   //withOutputFilename: "LiveFish.rpt"
                                   withOutputFilename: (char *) fishOutputFile
@@ -2879,7 +2879,7 @@ char **speciesColor;
   //
   // Outmigrant reporter
   //
-  outmigrantReporter = [BreakoutReporter   createBegin: modelZone
+  outmigrantReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                              forList: outmigrantList
                                   withOutputFilename: "Outmigrant_Report_Out.csv"
                          //         withOutputFilename: (char *) fishOutputFile

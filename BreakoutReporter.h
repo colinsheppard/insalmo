@@ -120,13 +120,13 @@ typedef struct DataColumnStruct DataColumnWithLabel;
 
 }
 
-+          createBegin: aZone
++          createBeginWithFixedColumns: aZone
                forList: (id <List>) aListOfObj
     withOutputFilename: (char *) aFileName
      withFileOverwrite: (BOOL) aBool
        withColumnWidth: (int) aColumnWidth;
 
-+          createBegin: aZone
++          createBeginWithCSV: aZone
                forList: (id <List>) aListOfObj
     withOutputFilename: (char *) aFileName
      withFileOverwrite: (BOOL) aBool;

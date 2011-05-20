@@ -35,7 +35,7 @@ Boston, MA 02111-1307, USA.
 
 
 
-+          createBegin: aZone
++          createBeginWithFixedColumns: aZone
                forList: (id <List>) aListOfObj
     withOutputFilename: (char *) aFileName
      withFileOverwrite: (BOOL) aBool
@@ -126,7 +126,7 @@ Boston, MA 02111-1307, USA.
 }
 
 
-+          createBegin: aZone
++          createBeginWithCSV: aZone
                forList: (id <List>) aListOfObj
     withOutputFilename: (char *) aFileName
      withFileOverwrite: (BOOL) aBool
