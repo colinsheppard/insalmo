@@ -3075,11 +3075,13 @@ Boston, MA 02111-1307, USA.
     depth    = [nextCell getPolyCellDepth];
 
     strncpy(date, [timeManager getDateWithTimeT: [[nextCell getSpace] getModelTime]],12);
-    strcpy(strDataFormat,"%s,%d,");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
-    strcat(strDataFormat,"\n");
+    strcpy(strDataFormat,"%s,%d,%E,%E\n");
+    //Following for pretty print
+    //strcpy(strDataFormat,"%s,%d,");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
+    //strcat(strDataFormat,"\n");
 
     fprintf(reportPtr,strDataFormat, date,
 				     cellNumber,
@@ -3137,11 +3139,13 @@ Boston, MA 02111-1307, USA.
     velocity    = [nextCell getPolyCellVelocity];
 
     strncpy(date, [timeManager getDateWithTimeT: [[nextCell getSpace] getModelTime]],12);
-    strcpy(strDataFormat,"%s,%d,");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
-    strcat(strDataFormat,"\n");
+    strcpy(strDataFormat,"%s,%d,%E,%E\n");
+    //or pretty print
+    //strcpy(strDataFormat,"%s,%d,");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: myRiverFlow]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
+    //strcat(strDataFormat,"\n");
 
     fprintf(reportPtr,strDataFormat, date,
 				     cellNumber,
@@ -3418,19 +3422,21 @@ Boston, MA 02111-1307, USA.
 
   }
 
-  strcpy(strDataFormat,"%d,%d,%s,");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dayLength]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: yesterdaysRiverFlow]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: riverFlow]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: tomorrowsRiverFlow]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temperature]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
-  strcat(strDataFormat,"\n");
+  strcpy(strDataFormat,"%d,%d,%s,%E,%E,%E,%E,%E,%E\n");
+  //pretty print
+  //strcpy(strDataFormat,"%d,%d,%s,");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dayLength]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: yesterdaysRiverFlow]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: riverFlow]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: tomorrowsRiverFlow]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temperature]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
+  //strcat(strDataFormat,"\n");
   fprintf(habitatRptFilePtr,strDataFormat,scenario,
                                           replicate,
                                           [timeManager getDateWithTimeT: modelTime_t], 
@@ -3459,7 +3465,7 @@ Boston, MA 02111-1307, USA.
    openFmt[0] = 'a';
  }
  if( (depthVelPtr = fopen(cellAreaDepthVelReportFile, openFmt)) == NULL){
-     fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing\n", cellAreaDepthVelReportFile);
+     fprintf(stderr, "ERROR: Cell >>>> printCellAreaDepthVelocityRpt >>>> Cannot open %s for writing, open format=%s\n", cellAreaDepthVelReportFile,openFmt);
      fflush(0);
      exit(1);
  }
