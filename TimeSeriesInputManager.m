@@ -812,13 +812,24 @@ Boston, MA 02111-1307, USA.
    //
    // Check the input filename to see if it is a .csv file
    //
-   if(strstr((const char *) inputFileName, ".csv") != NULL){
+  if((inputFP = fopen(inputFileName, "r")) != NULL){
+    fgets(tempString, 200, inputFP);
+    fgets(tempString, 200, inputFP);
+    fgets(tempString, 200, inputFP);
+    fgets(tempString, 200, inputFP);
+    if(strchr(tempString,',')!=NULL){
        CSV = YES;
-   } 
+    }
+    fclose(inputFP);
+  }else{
+    fprintf(stderr,  "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> Unable to open time series input file  %s\n", inputFileName);
+    fflush(0);
+    exit(1);
+  }
 
-   //fprintf(stdout, "TimeSeriesInputManager >>>>  readInputRecords >>>> CSV = %d\n", (int) CSV);
-   //fflush(0);
-   //exit(0);
+  //fprintf(stdout, "TimeSeriesInputManager >>>>  readInputRecords >>>> CSV = %d, file=%s \n", (int) CSV, inputFileName);
+  //fflush(0);
+  //exit(0);
 
   numRecords = 0;
 
