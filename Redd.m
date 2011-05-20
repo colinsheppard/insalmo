@@ -817,23 +817,25 @@ return self;
 
   printString  = [[self getZone] alloc: 300*sizeof(char)];
 
-  strcpy(formatString,"%p,%s,");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: temp]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: flow]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: depth]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aDewaterSF]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aScourSF]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aLoTempSF]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aHiTempSF]);
-  strcat(formatString,",");
-  strcat(formatString,[BreakoutReporter formatFloatOrExponential: aSuperimpSF]);
-  strcat(formatString,"\n");
+  strcpy(formatString,"%p,%s,%E,%E,%E,%E,%E,%E,%E,%E\n");
+  //pretty print
+  //strcpy(formatString,"%p,%s,");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: temp]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: flow]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: depth]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: aDewaterSF]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: aScourSF]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: aLoTempSF]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: aHiTempSF]);
+  //strcat(formatString,",");
+  //strcat(formatString,[BreakoutReporter formatFloatOrExponential: aSuperimpSF]);
+  //strcat(formatString,"\n");
 
   sprintf((char *)printString,formatString,self,
 					    [species getName],

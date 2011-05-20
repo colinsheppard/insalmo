@@ -3502,49 +3502,51 @@ Boston, MA 02111-1307, USA.
       exit(1);
   }
 
-  strcpy(strDataFormat,"%s,%d,");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temp]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: distToHide]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableDrift]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableSearch]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishWeight]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: feedTimeForCell]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: captureSuccess]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlyDriftIntake]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlySearchIntake]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cMax]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: standardResp]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: activeResp]);
-  strcat(strDataFormat,",%s,"); // string format for inShelter
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailyDriftNetEnergy]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailySearchNetEnergy]);
-  strcat(strDataFormat,",%s,"); // string format for feedStrategy
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: nonStarvSurvival]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: netEnergyForBestCell]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: expectedMaturity]);
-  strcat(strDataFormat,"\n");
+  strcpy(strDataFormat,"%s,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
+  //pretty print
+  //strcpy(strDataFormat,"%s,%d,");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depth]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: temp]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: turbidity]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: distToHide]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableDrift]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: availableSearch]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishWeight]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: feedTimeForCell]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: captureSuccess]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlyDriftIntake]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: potentialHourlySearchIntake]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cMax]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: standardResp]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: activeResp]);
+  //strcat(strDataFormat,",%s,"); // string format for inShelter
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailyDriftNetEnergy]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: dailySearchNetEnergy]);
+  //strcat(strDataFormat,",%s,"); // string format for feedStrategy
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: nonStarvSurvival]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: netEnergyForBestCell]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: expectedMaturity]);
+  //strcat(strDataFormat,"\n");
 
   fprintf(mvRptPtr, strDataFormat,mySpecies,
 				  age,
@@ -3645,17 +3647,19 @@ Boston, MA 02111-1307, USA.
   }else{
      strncpy(lastSpawnDate, "00/00/0000", (size_t) 12);
   }
-  strcpy(strDataFormat,"%s,%s,%d,%s,%s,");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentTemp]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlow]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlowChange]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
-  strcat(strDataFormat,",");
-  strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishCondition]);
-  strcat(strDataFormat,",%s,%s,%s,%s\n");
+  strcpy(strDataFormat,"%s,%s,%d,%s,%s,%E,%E,%E,%E,%E,%s,%s,%s,%s\n");
+  //pretty print
+  //strcpy(strDataFormat,"%s,%s,%d,%s,%s,");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentTemp]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlow]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: currentFlowChange]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishLength]);
+  //strcat(strDataFormat,",");
+  //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fishCondition]);
+  //strcat(strDataFormat,",%s,%s,%s,%s\n");
 
   fprintf(spawnReportPtr,strDataFormat,[timeManager getDateWithTimeT: currentTime],
                                        [species getName],
@@ -3735,21 +3739,23 @@ Boston, MA 02111-1307, USA.
     depthSuit	  = [self getSpawnDepthSuitFor: [aCell getPolyCellDepth] ];
     velSuit	  = [self getSpawnVelSuitFor: [aCell getPolyCellVelocity]];
     spawnQuality  = [self getSpawnQuality: aCell];
-    strcpy(strDataFormat,"%p,");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellDepth]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellVelocity]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellArea]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fracSpawn]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depthSuit]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velSuit]);
-    strcat(strDataFormat,",");
-    strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: spawnQuality]);
-    strcat(strDataFormat,"\n");
+    strcpy(strDataFormat,"%p,%E,%E,%E,%E,%E,%E,%E\n");
+    //pretty print
+    //strcpy(strDataFormat,"%p,");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellDepth]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellVelocity]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: cellArea]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: fracSpawn]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: depthSuit]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velSuit]);
+    //strcat(strDataFormat,",");
+    //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: spawnQuality]);
+    //strcat(strDataFormat,"\n");
     fprintf(spawnCellRptPtr,strDataFormat,self,
 					  cellDepth, 
 					  cellVelocity, 
