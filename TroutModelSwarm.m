@@ -2783,7 +2783,8 @@ char **speciesColor;
                                                   forList: deadFish
                                        //withOutputFilename: "FishMortality.rpt"
                                        withOutputFilename: (char *) fishMortalityFile
-                                        withFileOverwrite: fileOverWrite];
+                                        withFileOverwrite: fileOverWrite
+withColumnWidth: 25];
 
 
   [fishMortalityReporter addColumnWithValueOfVariable: "scenario"
@@ -2829,7 +2830,8 @@ char **speciesColor;
                                              forList: liveFish
                                   //withOutputFilename: "LiveFish.rpt"
                                   withOutputFilename: (char *) fishOutputFile
-                                   withFileOverwrite: fileOverWrite];
+                                   withFileOverwrite: fileOverWrite
+withColumnWidth: 25];
 
 
   [liveFishReporter addColumnWithValueOfVariable: "scenario"
@@ -2883,7 +2885,8 @@ char **speciesColor;
                                              forList: outmigrantList
                                   withOutputFilename: "Outmigrant_Report_Out.csv"
                          //         withOutputFilename: (char *) fishOutputFile
-                                   withFileOverwrite: fileOverWrite];
+                                   withFileOverwrite: fileOverWrite
+withColumnWidth: 25];
 
 
   [outmigrantReporter addColumnWithValueOfVariable: "scenario"

@@ -107,6 +107,8 @@ typedef struct DataColumnStruct DataColumnWithLabel;
 
   char headerFormatString[10];
   char floatFormatString[10];
+  char intFormatString[10];
+  char expFormatString[10];
   int columnWidth;
   BOOL useCSV;
 

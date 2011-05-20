@@ -3214,8 +3214,8 @@ Boston, MA 02111-1307, USA.
   cellFishInfoReporter = [BreakoutReporter   createBeginWithCSV: habitatZone
                                              forList: cellFishList
                                   withOutputFilename: (char *) cellFishInfoReportFName
-                                   withFileOverwrite: fileOverWrite];
-//                                     withColumnWidth: 25];
+                                   withFileOverwrite: fileOverWrite
+withColumnWidth: 25];
 
 
 
