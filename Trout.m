@@ -1401,9 +1401,14 @@ Boston, MA 02111-1307, USA.
   //
   // FLOW THRESHHOLD
   //
+      //fprintf(stdout, "ERROR: Trout >>>> readyToSpawn >>>> getRiverFlow = %f getHabMaxSpawnFlow = %f \n", [reach getRiverFlow], [reach getHabMaxSpawnFlow]);
+      //fflush(0);
   if([reach getRiverFlow] > [reach getHabMaxSpawnFlow])
   {
       return NO;
+      //fprintf(stdout, "ERROR: Trout >>>> readyToSpawn >>>> returning NO due to MaxFlow constraint\n");
+      //fflush(0);
+      //exit(0);
   }
 
   //
