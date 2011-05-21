@@ -1530,33 +1530,27 @@ Boston, MA 02111-1307, USA.
 // readPolyCellDataFile
 //
 /////////////////////////////////
-- readPolyCellDataFile
-{
+- readPolyCellDataFile{
     int cellNo = 0;
     double fracShelter = 0.0;
     double distToHide = 0.0;
     double fracSpawn = 0.0;
     char reachEnd = 'K';
-
     FishCell* aCell = nil;
-
     char inputString[200];
-
+    BOOL csvFormat = FALSE;
 
     FILE* polyDataFPTR = NULL;
     fprintf(stdout, "HabitatSpace >>>> readPolyCellDataFile >>>> BEGIN\n");
     fflush(0);
 
-    if((polyDataFPTR = fopen(cellHabVarsFile, "r")) == NULL)
-    {
+    if((polyDataFPTR = fopen(cellHabVarsFile, "r")) == NULL){
          fprintf(stderr, "ERROR: HabitatSpace >>>> readPolyCellDataFile >>>> unable to open %s for reading\n", cellHabVarsFile);
          fflush(0);
          exit(1);
     }
-
     
-    if(polyCellListNdx == nil)
-    {
+    if(polyCellListNdx == nil){
          fprintf(stderr, "ERROR: HabitatSpace >>>> readPolyCellDataFile >>>> utmCellListNdx is nil\n");
          fflush(0);
          exit(1);
@@ -1565,18 +1559,32 @@ Boston, MA 02111-1307, USA.
     //
     // Read in the data
     //
-
+    fgets(inputString,200,polyDataFPTR);
+    fgets(inputString,200,polyDataFPTR);
+    fgets(inputString,200,polyDataFPTR);
+    
+    // Test for csv format
+    fgets(inputString,200,polyDataFPTR);
+    if(strchr(inputString,',')!=NULL)csvFormat=TRUE;
+    rewind(polyDataFPTR);
     fgets(inputString,200,polyDataFPTR);
     fgets(inputString,200,polyDataFPTR);
     fgets(inputString,200,polyDataFPTR);
 
-    while(fgets(inputString,200,polyDataFPTR) != NULL)
-    {
+    while(fgets(inputString,200,polyDataFPTR) != NULL){
+      if(csvFormat){
+       sscanf(inputString, "%d,%lf,%lf,%lf,%c", &cellNo,
+                                                &fracShelter,
+                                                &distToHide,
+                                                &fracSpawn,
+                                                &reachEnd);
+      }else{
        sscanf(inputString, "%d %lf %lf %lf %c", &cellNo,
                                                 &fracShelter,
                                                 &distToHide,
                                                 &fracSpawn,
                                                 &reachEnd);
+      }
 
 
        
@@ -3214,8 +3222,8 @@ Boston, MA 02111-1307, USA.
   cellFishInfoReporter = [BreakoutReporter   createBeginWithCSV: habitatZone
                                              forList: cellFishList
                                   withOutputFilename: (char *) cellFishInfoReportFName
-                                   withFileOverwrite: fileOverWrite
-withColumnWidth: 25];
+                                   withFileOverwrite: fileOverWrite];
+  //withColumnWidth: 25];
 
 
 
