@@ -1,6 +1,6 @@
-Experiment setup file - 
-created Mar 21 2000
-For no experiment SFR
+Experiment setup file for inSALMO
+Demonstration version with no experiment
+Created 5/23/2011 SFR
 
 numberOfScenarios    1
 numberOfReplicates   1

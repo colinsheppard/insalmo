@@ -1,6 +1,6 @@
-Reach.Setup file.  Example for inSTREAM 4.5   SFR 12/20/2010
-Provide one block of setup information for each reach:
-Reach name, parameter file name, junction numbers, and input file names.
+Reach.Setup file for inSALMO 0.7
+For Clear Creek sites 3A, 3C.   5/23/2011 SFR
+Provide reach name, parameter file name, junction numbers, and input file names.
 
 
 REACHBEGIN

@@ -1,4 +1,4 @@
-Species.Setup file, inSTREAM 4.5.
+Species.Setup file for inSALMO 0.7 application to Clear Creek fall Chinook. SFR 5/23/2011.
 For each species, provide species class name, parameter file name,
 initial population file name, and raster display color.
 
