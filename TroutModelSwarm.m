@@ -2779,13 +2779,18 @@ char **speciesColor;
   //
   // Fish mortality reporter
   //
-  fishMortalityReporter = [BreakoutReporter   createBegin: modelZone
+  fishMortalityReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                                   forList: deadFish
                                        //withOutputFilename: "FishMortality.rpt"
                                        withOutputFilename: (char *) fishMortalityFile
+<<<<<<< HEAD:TroutModelSwarm.m
 //                                        withFileOverwrite: fileOverWrite];
                                         withFileOverwrite: fileOverWrite
                                           withColumnWidth: 25];
+=======
+                                        withFileOverwrite: fileOverWrite];
+  //withColumnWidth: 25];
+>>>>>>> ef891c02d6091bf729ca31e175d2d9c19aa6e65c:TroutModelSwarm.m
 
 
   [fishMortalityReporter addColumnWithValueOfVariable: "scenario"
@@ -2827,11 +2832,12 @@ char **speciesColor;
   //
   // Live fish reporter
   //
-  liveFishReporter = [BreakoutReporter   createBegin: modelZone
+  liveFishReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                              forList: liveFish
                                   //withOutputFilename: "LiveFish.rpt"
                                   withOutputFilename: (char *) fishOutputFile
                                    withFileOverwrite: fileOverWrite];
+  //withColumnWidth: 25];
 
 
   [liveFishReporter addColumnWithValueOfVariable: "scenario"
@@ -2881,10 +2887,11 @@ char **speciesColor;
   //
   // Outmigrant reporter
   //
-  outmigrantReporter = [BreakoutReporter   createBegin: modelZone
+  outmigrantReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                              forList: outmigrantList
                                   withOutputFilename: (char *) outmigrantOutputFile
                                    withFileOverwrite: fileOverWrite];
+  //withColumnWidth: 25];
 
 
   [outmigrantReporter addColumnWithValueOfVariable: "scenario"

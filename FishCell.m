@@ -2016,19 +2016,21 @@ END of OLD CODE */
       hourlyDriftConRate = [aFish getHourlyDriftConRate];
 
       strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
-      strcpy(strDataFormat,"%s,%s,%d,");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: searchHourlyCellTotal]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: driftHourlyCellTotal]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailSearchFood]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailDriftFood]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlySearchConRate]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyDriftConRate]);
-      strcat(strDataFormat,"\n");
+      strcpy(strDataFormat,"%s,%s,%d,%E,%E,%E,%E,%E,%E\n");
+      // Use the following if you want the floating point data to be pretty
+      //strcpy(strDataFormat,"%s,%s,%d,");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: searchHourlyCellTotal]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: driftHourlyCellTotal]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailSearchFood]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyAvailDriftFood]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlySearchConRate]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: hourlyDriftConRate]);
+      //strcat(strDataFormat,"\n");
 
       //fprintf(stdout, "FishCell >>>> foodAvailAndConInCell >>> format of line = %s \n", strDataFormat);
       //fflush(0);
@@ -2083,15 +2085,17 @@ END of OLD CODE */
     if(polyCellDepth != 0){
       theFlow = [space getRiverFlow];
       strncpy(date, [timeManager getDateWithTimeT: [space getModelTime]],12);
-      strcpy(strDataFormat,"%s,");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: theFlow]);
-      strcat(strDataFormat,",%d,");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellArea]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellDepth]);
-      strcat(strDataFormat,",");
-      strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellVelocity]);
-      strcat(strDataFormat,"\n");
+      strcpy(strDataFormat,"%s,%E,%d,%E,%E,%E\n");
+      //pretty print
+      //strcpy(strDataFormat,"%s,");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: theFlow]);
+      //strcat(strDataFormat,",%d,");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellArea]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellDepth]);
+      //strcat(strDataFormat,",");
+      //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: polyCellVelocity]);
+      //strcat(strDataFormat,"\n");
 
       fprintf(depthVelPtr,strDataFormat, date,
                                          theFlow,

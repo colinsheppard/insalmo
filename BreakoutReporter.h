@@ -107,6 +107,8 @@ typedef struct DataColumnStruct DataColumnWithLabel;
 
   char headerFormatString[10];
   char floatFormatString[10];
+  char intFormatString[10];
+  char expFormatString[10];
   int columnWidth;
   BOOL useCSV;
 
@@ -120,13 +122,13 @@ typedef struct DataColumnStruct DataColumnWithLabel;
 
 }
 
-+          createBegin: aZone
++          createBeginWithFixedColumns: aZone
                forList: (id <List>) aListOfObj
     withOutputFilename: (char *) aFileName
      withFileOverwrite: (BOOL) aBool
        withColumnWidth: (int) aColumnWidth;
 
-+          createBegin: aZone
++          createBeginWithCSV: aZone
                forList: (id <List>) aListOfObj
     withOutputFilename: (char *) aFileName
      withFileOverwrite: (BOOL) aBool;
