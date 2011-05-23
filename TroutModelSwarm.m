@@ -2781,17 +2781,8 @@ char **speciesColor;
   //
   fishMortalityReporter = [BreakoutReporter   createBeginWithCSV: modelZone
                                                   forList: deadFish
-                                       //withOutputFilename: "FishMortality.rpt"
                                        withOutputFilename: (char *) fishMortalityFile
-<<<<<<< HEAD:TroutModelSwarm.m
-//                                        withFileOverwrite: fileOverWrite];
-                                        withFileOverwrite: fileOverWrite
-                                          withColumnWidth: 25];
-=======
                                         withFileOverwrite: fileOverWrite];
-  //withColumnWidth: 25];
->>>>>>> ef891c02d6091bf729ca31e175d2d9c19aa6e65c:TroutModelSwarm.m
-
 
   [fishMortalityReporter addColumnWithValueOfVariable: "scenario"
                                         fromObject: self
@@ -3470,4 +3461,5 @@ char **speciesColor;
 }
 
 @end
+
 
