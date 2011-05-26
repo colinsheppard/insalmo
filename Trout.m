@@ -3466,7 +3466,8 @@ Boston, MA 02111-1307, USA.
        fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
        fprintf(mvRptPtr,"\n%s\n\n",fileMetaData);
        [scratchZone free: fileMetaData];
-       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
+       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
+                                                           "DATE",
 							   "SPECIES",
 							   "AGE",
                                                           "VELOCITY",
@@ -3507,7 +3508,7 @@ Boston, MA 02111-1307, USA.
       exit(1);
   }
 
-  strcpy(strDataFormat,"%s,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
+  strcpy(strDataFormat,"%s,%s,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
   //pretty print
   //strcpy(strDataFormat,"%s,%d,");
   //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
@@ -3553,7 +3554,8 @@ Boston, MA 02111-1307, USA.
   //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: expectedMaturity]);
   //strcat(strDataFormat,"\n");
 
-  fprintf(mvRptPtr, strDataFormat,mySpecies,
+  fprintf(mvRptPtr, strDataFormat,[timeManager getDateWithTimeT: [self getCurrentTimeT]],
+                                  mySpecies,
 				  age,
 				  velocity,
 				  depth,
