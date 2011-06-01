@@ -2343,10 +2343,14 @@ Boston, MA 02111-1307, USA.
 
    }
 
-//PRINT THE MOVE REPORT
-#ifdef MOVE_REPORT_ON
-[self moveReport: bestDest];
-#endif
+   // Update previous location
+   prevCell = myCell;
+   prevReach = reach;
+
+   //PRINT THE MOVE REPORT
+   #ifdef MOVE_REPORT_ON
+   [self moveReport: bestDest];
+   #endif
 
 
 
@@ -3466,10 +3470,15 @@ Boston, MA 02111-1307, USA.
        fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
        fprintf(mvRptPtr,"\n%s\n\n",fileMetaData);
        [scratchZone free: fileMetaData];
-       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
+       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
                                                            "DATE",
+                                                           "FISH-ID",
 							   "SPECIES",
 							   "AGE",
+                                                           "REACH",
+                                                           "PrevREACH",
+                                                           "CELL",
+                                                           "PrevCELL",
                                                           "VELOCITY",
                                                           "DEPTH",
                                                           "TEMP",
@@ -3508,7 +3517,7 @@ Boston, MA 02111-1307, USA.
       exit(1);
   }
 
-  strcpy(strDataFormat,"%s,%s,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
+  strcpy(strDataFormat,"%s,%p,%s,%d,%s,%s,%d,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
   //pretty print
   //strcpy(strDataFormat,"%s,%d,");
   //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
@@ -3555,8 +3564,13 @@ Boston, MA 02111-1307, USA.
   //strcat(strDataFormat,"\n");
 
   fprintf(mvRptPtr, strDataFormat,[timeManager getDateWithTimeT: [self getCurrentTimeT]],
+                                  self,
                                   mySpecies,
 				  age,
+                                  [[aCell getReach] getReachName],
+                                  [prevReach getReachName],
+                                  [aCell getPolyCellNumber],
+                                  [prevCell getPolyCellNumber],
 				  velocity,
 				  depth,
 				  temp,
@@ -3793,6 +3807,8 @@ Boston, MA 02111-1307, USA.
     size_t strLen = strlen("Outmigration") + 1;
 
     [model addToNewOutmigrants: self ];
+    prevCell = myCell;
+    prevReach = [myCell getReach];
     [myCell removeFish: self];
     [self setSizeSymbol: [model getSizeSymbolForLength: fishLength]];
 
