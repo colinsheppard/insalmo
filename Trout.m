@@ -2094,7 +2094,7 @@ Boston, MA 02111-1307, USA.
 
   if(myCell == nil) 
   {
-    fprintf(stderr, "WARNING: Trout >>>> moveInReachToMaximizeSurvival >>>> Fish 0x%p has no Cell context.\n", self);
+    fprintf(stderr, "WARNING: Trout >>>> moveInReachToMaximizeSurvival >>>> Fish %p has no Cell context.\n", self);
     fflush(0);
     return self;
   }
@@ -2268,7 +2268,7 @@ Boston, MA 02111-1307, USA.
    {
      fishFeedingStrategy = cellFeedingStrategy; //cellFeedingStrategy is set in -calcNetEnergyForCell
    }
-  fishSwimSpeed       = cellSwimSpeedForCell;       // cellSwimSpeedForCell is set in -calcNetEnergyForCell
+  fishSwimSpeed = cellSwimSpeedForCell;       // cellSwimSpeedForCell is set in -calcNetEnergyForCell
 
   activeResp = [self calcActivityRespirationAt: bestDest 
                                  withSwimSpeed: [self getSwimSpeedAt: bestDest forStrategy: fishFeedingStrategy] ];
@@ -2447,7 +2447,7 @@ Boston, MA 02111-1307, USA.
 
   //
   // The following variables: maxSwimSpeedForCell, feedTimeForCell, 
-  // depthLengthRatioForCell are set here because the depend on
+  // depthLengthRatioForCell are set here because they depend on
   // both cell and fish. They are then used by the
   // survivalManager via fish get methods.
   //
@@ -3475,10 +3475,10 @@ Boston, MA 02111-1307, USA.
                                                            "FISH-ID",
 							   "SPECIES",
 							   "AGE",
-                                                           "REACH",
                                                            "PrevREACH",
-                                                           "CELL",
+                                                           "REACH",
                                                            "PrevCELL",
+                                                           "CELL",
                                                           "VELOCITY",
                                                           "DEPTH",
                                                           "TEMP",
@@ -3567,10 +3567,10 @@ Boston, MA 02111-1307, USA.
                                   self,
                                   mySpecies,
 				  age,
-                                  [[aCell getReach] getReachName],
                                   [prevReach getReachName],
-                                  [aCell getPolyCellNumber],
+                                  [[aCell getReach] getReachName],
                                   [prevCell getPolyCellNumber],
+                                  [aCell getPolyCellNumber],
 				  velocity,
 				  depth,
 				  temp,
