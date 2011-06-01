@@ -865,17 +865,6 @@ END of OLD CODE */
    return habShearParamB;
 }
 
-////////////////////////////////////////////////////
-//
-// setHabSheltSpeedFrac
-//
-////////////////////////////////////////////////////
-- setHabShelterSpeedFrac: (double) aShelterSpeedFrac
-{
-    habShelterSpeedFrac = aShelterSpeedFrac;
-    return self;
-}
-
 
 ///////////////////////////////////////////////
 //
@@ -884,7 +873,7 @@ END of OLD CODE */
 ///////////////////////////////////////////////
 - (double) getHabShelterSpeedFrac
 {
-   return habShelterSpeedFrac;
+   return [space getHabShelterSpeedFrac];
 }
 
 

@@ -88,7 +88,6 @@ Boston, MA 02111-1307, USA.
 
   double habShearParamA;
   double habShearParamB;
-  double habShelterSpeedFrac;
 
   //
   // For exception handling
@@ -160,7 +159,6 @@ Boston, MA 02111-1307, USA.
 - (double) getHabShearParamA;
 - (double) getHabShearParamB;
 
-- setHabShelterSpeedFrac: (double) aShelterSpeedFrac;
 - (double) getHabShelterSpeedFrac;
 
 - tagDestCells;

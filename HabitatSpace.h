@@ -443,6 +443,7 @@ long int maxYCoordinate;
 - (double) getHabDriftConc;
 - (double) getHabDriftRegenDist;
 - (double) getHabPreyEnergyDensity;
+- (double) getHabShelterSpeedFrac;
 
 - buildCellFishInfoReporter;
 - outputCellFishInfoReport;
