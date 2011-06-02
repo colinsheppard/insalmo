@@ -245,6 +245,7 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
   int endYear;
   int numSimDays;
   int simCounter;
+  int fishCounter;
 
   BOOL firstTime;
 
@@ -280,8 +281,6 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
  
 
   id <List> reachSymbolList;
-
-  id <UName> fishNamer;
 
   //
   // YearShuffler

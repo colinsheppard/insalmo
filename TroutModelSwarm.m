@@ -172,7 +172,7 @@ char **speciesColor;
 
   reachSymbolList = [List create: modelZone];
 
-  fishNamer = [UName create: modelZone setBaseName: "Fish-"];
+  fishCounter = 0;
 
 
   fprintf(stdout, "TroutModelSwarm >>>> buildObjects >>> instantiateObjects >>>> BEFORE HabitatManager\n");
@@ -1976,7 +1976,8 @@ char **speciesColor;
   [newSpawner setCaptureLogistic: aCaptureLogistic];
   [newSpawner setJuveOutMigLogistic: anOutMigLogistic];
 
-  [newSpawner setFishID: [fishNamer getNewName]];
+  fishCounter++;  // Give each fish a serial number ID
+  [newSpawner setFishID: fishCounter];
 
   newSpawner = [newSpawner createEnd];
 
@@ -3316,9 +3317,6 @@ char **speciesColor;
      [sizeSymbolList deleteAll];
      [sizeSymbolList drop];
      sizeSymbolList = nil;
-
-     [fishNamer drop];
-     fishNamer = nil;
 
       if(habitatManager){
           [habitatManager drop];

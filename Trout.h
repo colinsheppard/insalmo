@@ -158,7 +158,7 @@ double netEnergyForCell;
 char *feedStrategy;
 char *inShelter;
 
-char * fishID;
+int fishID;
 
 double maxMoveDistance;
 
@@ -220,7 +220,7 @@ id toggledFishForHabSurvUpdate;
 - setSpawnVelocityInterpolator: (id <InterpolationTable>) anInterpolator;
 - setCaptureLogistic: (LogisticFunc *) aLogisticFunc;
 - setJuveOutMigLogistic: (LogisticFunc *) aLogisticFunc;
-- setFishID: (char *) anID;
+- setFishID: (int) anID;
 
 
 //- setMovementRule: (char *) aRule;

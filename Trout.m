@@ -54,7 +54,6 @@ Boston, MA 02111-1307, USA.
   newTrout->isSpawner = NO;
   newTrout->isFemale = NO;
   newTrout->deathCausedBy = NULL;
-  newTrout->fishID = NULL;
 
   return newTrout;
 }
@@ -834,11 +833,9 @@ Boston, MA 02111-1307, USA.
 // setFishID
 //
 ////////////////////////////////////////////////////////////////////////////
-- setFishID: (char *) anID 
+- setFishID: (int) anIDNum 
 {
-  size_t strLen = strlen(anID) + 1;
-  fishID = (char *) [troutZone alloc: strLen*sizeof(char)];
-  strncpy(fishID, anID, strLen);
+  fishID = anIDNum;
 
   return self;
 }
@@ -3533,7 +3530,7 @@ Boston, MA 02111-1307, USA.
       exit(1);
   }
 
-  strcpy(strDataFormat,"%s,%p,%s,%d,%s,%s,%d,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
+  strcpy(strDataFormat,"%s,%d,%s,%d,%s,%s,%d,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
   //pretty print
   //strcpy(strDataFormat,"%s,%d,");
   //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
@@ -3868,11 +3865,6 @@ Boston, MA 02111-1307, USA.
      if(deathCausedBy != NULL){
          [troutZone free: deathCausedBy];
          deathCausedBy = NULL;
-     }
-
-     if(fishID != NULL){
-         [troutZone free: fishID];
-         fishID = NULL;
      }
 
      [troutZone drop];
