@@ -281,6 +281,8 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 
   id <List> reachSymbolList;
 
+  id <UName> fishNamer;
+
   //
   // YearShuffler
   //

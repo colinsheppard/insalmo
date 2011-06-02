@@ -172,6 +172,9 @@ char **speciesColor;
 
   reachSymbolList = [List create: modelZone];
 
+  fishNamer = [UName create: modelZone setBaseName: "Fish-"];
+
+
   fprintf(stdout, "TroutModelSwarm >>>> buildObjects >>> instantiateObjects >>>> BEFORE HabitatManager\n");
   fflush(0);
 
@@ -1894,6 +1897,7 @@ char **speciesColor;
 //////////////////////////////////////////////////////
 //
 // createNewFishWithSpeciesIndex
+//   used for juveniles as well as spawners!
 //
 /////////////////////////////////////////////////////
 - createNewFishWithSpeciesIndex: (int) speciesNdx  
@@ -1971,6 +1975,8 @@ char **speciesColor;
   [newSpawner setSpawnVelocityInterpolator: aSpawnVelocityInterpolator];
   [newSpawner setCaptureLogistic: aCaptureLogistic];
   [newSpawner setJuveOutMigLogistic: anOutMigLogistic];
+
+  [newSpawner setFishID: [fishNamer getNewName]];
 
   newSpawner = [newSpawner createEnd];
 
@@ -3311,6 +3317,8 @@ char **speciesColor;
      [sizeSymbolList drop];
      sizeSymbolList = nil;
 
+     [fishNamer drop];
+     fishNamer = nil;
 
       if(habitatManager){
           [habitatManager drop];

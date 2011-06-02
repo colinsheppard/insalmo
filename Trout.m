@@ -54,6 +54,7 @@ Boston, MA 02111-1307, USA.
   newTrout->isSpawner = NO;
   newTrout->isFemale = NO;
   newTrout->deathCausedBy = NULL;
+  newTrout->fishID = NULL;
 
   return newTrout;
 }
@@ -824,6 +825,21 @@ Boston, MA 02111-1307, USA.
 - setFishLength: (double) aLength 
 {
   fishLength = aLength;
+  return self;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// setFishID
+//
+////////////////////////////////////////////////////////////////////////////
+- setFishID: (char *) anID 
+{
+  size_t strLen = strlen(anID) + 1;
+  fishID = (char *) [troutZone alloc: strLen*sizeof(char)];
+  strncpy(fishID, anID, strLen);
+
   return self;
 }
 
@@ -3564,7 +3580,7 @@ Boston, MA 02111-1307, USA.
   //strcat(strDataFormat,"\n");
 
   fprintf(mvRptPtr, strDataFormat,[timeManager getDateWithTimeT: [self getCurrentTimeT]],
-                                  self,
+                                  fishID,
                                   mySpecies,
 				  age,
                                   [prevReach getReachName],
@@ -3852,6 +3868,11 @@ Boston, MA 02111-1307, USA.
      if(deathCausedBy != NULL){
          [troutZone free: deathCausedBy];
          deathCausedBy = NULL;
+     }
+
+     if(fishID != NULL){
+         [troutZone free: fishID];
+         fishID = NULL;
      }
 
      [troutZone drop];
