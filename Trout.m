@@ -3466,6 +3466,7 @@ Boston, MA 02111-1307, USA.
   char *mySpecies;
   char *fileMetaData;
   char strDataFormat[150];
+  double outMigFuncValue = [juveOutMigLogistic evaluateFor: fishLength];
 
   velocity = [aCell getPolyCellVelocity];
   depth    = [aCell getPolyCellDepth];
@@ -3483,7 +3484,7 @@ Boston, MA 02111-1307, USA.
        fileMetaData = [BreakoutReporter reportFileMetaData: scratchZone];
        fprintf(mvRptPtr,"\n%s\n\n",fileMetaData);
        [scratchZone free: fileMetaData];
-       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
+       fprintf(mvRptPtr,"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n",
                                                            "DATE",
                                                            "FISH-ID",
 							   "SPECIES",
@@ -3514,6 +3515,7 @@ Boston, MA 02111-1307, USA.
                                                           "feedStrategy",
                                                           "nonStarvSurv",
                                                           "ntEnrgyFrBstCll",
+                                                          "outmigrantFunc",
                                                           "ERMForBestCell");
          fflush(mvRptPtr);
          moveRptFirstTime = NO;
@@ -3530,7 +3532,7 @@ Boston, MA 02111-1307, USA.
       exit(1);
   }
 
-  strcpy(strDataFormat,"%s,%d,%s,%d,%s,%s,%d,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E\n");
+  strcpy(strDataFormat,"%s,%d,%s,%d,%s,%s,%d,%d,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%s,%E,%E,%s,%E,%E,%E,%E\n");
   //pretty print
   //strcpy(strDataFormat,"%s,%d,");
   //strcat(strDataFormat,[BreakoutReporter formatFloatOrExponential: velocity]);
@@ -3606,6 +3608,7 @@ Boston, MA 02111-1307, USA.
 				  feedStrategy,
 				  nonStarvSurvival,
 				  netEnergyForBestCell,
+                                  outMigFuncValue,
 				  expectedMaturity);
 
 
