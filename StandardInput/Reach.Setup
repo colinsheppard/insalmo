@@ -5,7 +5,7 @@ Provide reach name, parameter file name, junction numbers, and input file names.
 
 REACHBEGIN
 reachName                         ClearCreek-3A
-habParamFile                      ExampleHab.Params
+habParamFile                      ClearCreek-3AHab.Params
 
 habDownstreamJunctionNumber       2
 habUpstreamJunctionNumber         1
@@ -23,7 +23,7 @@ REACHEND
 
 REACHBEGIN
 reachName                         ClearCreek-3C
-habParamFile                      ExampleHab.Params
+habParamFile                      ClearCreek-3CHab.Params
 
 habDownstreamJunctionNumber       3
 habUpstreamJunctionNumber         2

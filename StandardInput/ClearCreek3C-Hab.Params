@@ -4,7 +4,7 @@ habDriftRegenDist              1000
 habMaxSpawnFlow                10.0
 habPreyEnergyDensity           2500
 habSearchProd              5.00E-07
-habShearParamA                  0.0
-habShearParamB                0.383
+habShearParamA                0.010
+habShearParamB                 0.49
 habShelterSpeedFrac             0.7
 @end
