@@ -34,7 +34,7 @@ fishMaxSwimParamB                   21
 fishMaxSwimParamC              -0.0029
 fishMaxSwimParamD                0.084
 fishMaxSwimParamE                 0.37
-fishMoveDistParamA                 100
+fishMoveDistParamA                  20
 fishMoveDistParamB                   2
 
 fishOutmigrateSuccessL1            5.0
