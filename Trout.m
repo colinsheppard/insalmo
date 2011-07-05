@@ -435,7 +435,6 @@ Boston, MA 02111-1307, USA.
 
   if (isSpawner == YES)
   {
-
   [aRaster fillRectangleX0: anX - 4 
                   Y0: aY - 2 
                   X1: anX + 4 

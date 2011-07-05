@@ -237,39 +237,6 @@ Boston, MA 02111-1307, USA.
     interiorColor = (int) ( ((double) CELL_COLOR_MAX) * colorRatio);
 
   }
-/* Old code
-   maxIndex = (int) (shadeColorMax + 0.5);
-
-   //fprintf(stdout, "FishCell >>>> drawSelfOn >>>> colorVariable = %f\n",colorVariable);
-   //fprintf(stdout, "FishCell >>>> drawSelfOn >>>> shadeColorMax = %f\n",shadeColorMax);
-   //fprintf(stdout, "FishCell >>>> drawSelfOn >>>> colorRatio = %f\n",colorRatio);
-   ////fprintf(stdout, "FishCell >>>> drawSelfOn >>>> maxIndex = %d\n",maxIndex);
-   //fflush(0);
-
-   if(colorVariable == 0.0) 
-   {
-      interiorColor = POLYINTERIORCOLOR;
-   }
-   else
-   {  
-       //fprintf(stdout, "FishCell >>>> drawSelfOn >>>> rasterColorVariable value = %s\n",rasterColorVariable);
-       //fflush(0);
-       for(i = 0; i < maxIndex; i++)
-       {
-           double aColorFrac =  1.0 - (double) (maxIndex - 1.0 - i)/((double) (maxIndex - 1.0));
-   
-           interiorColor = i;
-    
-           if(colorRatio < aColorFrac)
-           {
-              //fprintf(stdout, "FishCell >>>> drawSelfOn >>>> aColorFrac = %f\n",aColorFrac);
-              //fflush(0);
-              break;
-           }
-       }
-   }
-END of OLD CODE */
-
    if(tagCell)
    {
       interiorColor = TAG_CELL_COLOR;
@@ -334,7 +301,7 @@ END of OLD CODE */
              }
         [ndx drop];
   }
-
+ 
 
   //fprintf(stdout, "FishCell >>>> drawSelfOn >>>> END\n");
   //fflush(0);
