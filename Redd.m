@@ -26,7 +26,9 @@ Boston, MA 02111-1307, USA.
 #include <math.h>
 #import "Redd.h"
 #import  "Trout.h"
+#import  "TroutModelSwarm.h"
 
+id <Symbol> Female, Male, CoinFlip;  // sex of fish
 
 @implementation TroutRedd
 
@@ -617,7 +619,8 @@ Boston, MA 02111-1307, USA.
 
   newFish = [model createNewFishWithSpeciesIndex: speciesNdx  
                                          Species: species
-                                          Length: [reddUniformDist getDoubleSample]];
+                                          Length: [reddUniformDist getDoubleSample]
+					     Sex: CoinFlip];
 
   [newFish setFishColor: myColor];
 

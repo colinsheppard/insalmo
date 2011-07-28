@@ -57,6 +57,10 @@ Boston, MA 02111-1307, USA.
 - (id <Symbol>) getFishMortalitySymbolWithName: (char *) aName;
 - (id <Symbol>) getReddMortalitySymbolWithName: (char *) aName;
 - (id <Symbol>) getAgeSymbolForAge: (int) anAge;
+- (id) createNewFishWithSpeciesIndex: (int) speciesNdx  
+                           Species: (id <Symbol>) species
+                            Length: (double) fishLength
+                            Sex: (id <Symbol>) sex;
 - (id <Symbol>) getOutmigrationSymbol;
 - (int) getNumOutmigrants;
 

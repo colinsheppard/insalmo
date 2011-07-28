@@ -39,7 +39,7 @@ Boston, MA 02111-1307, USA.
 
 
 id <Symbol> *mySpecies;
-id <Symbol> Female, Male;  // sex of fish
+id <Symbol> Female, Male, CoinFlip;  // sex of fish
 Class *MyTroutClass; 
 char **speciesName;
 char **speciesColor;
@@ -745,6 +745,7 @@ char **speciesColor;
    id aHabitatSpace;
 
    int numFishThisYear = 0;
+   int numFemalesThisYear = 0;
    int fishNdx = 0;
 
 
@@ -811,6 +812,9 @@ char **speciesColor;
                                           setStdDev: spawnerStdDevArrivalTime];
 
           numFishThisYear = fishInitRecord->number;
+	  numFemalesThisYear = (int) floor( ((double) numFishThisYear) * fishInitRecord->fracFemale + 0.5);
+	  fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> numFishThisYear = %d  fracFemale = %f  numFemalesThisYear = %d \n", numFishThisYear, fishInitRecord->fracFemale, numFemalesThisYear);
+	  fflush(0);
  
           //
           //  build the population list for this species in this reach
@@ -819,7 +823,19 @@ char **speciesColor;
              id newSpawner;
 	     double length = 0.0;
              time_t arrivalTime = 0;
+	     id<Symbol> sex = (fishNdx >= numFemalesThisYear) ? Male : Female;
   
+	    //if(sex == Female){
+	      //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> Female created\n");
+	      //fflush(0);
+	    //}else if (sex == Male){
+	      //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> Male created\n");
+	      //fflush(0);
+	    //}else{
+	      //fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> Error, sex not recognized\n");
+	      //fflush(0);
+	    //}
+
              //
 	     // set properties of the new Trout
              //
@@ -829,7 +845,9 @@ char **speciesColor;
 
 	     newSpawner = [self createNewFishWithSpeciesIndex: fishInitRecord->speciesNdx  
                                                          Species: fishInitRecord->mySpecies 
-                                                          Length: length];
+                                                          Length: length
+							     Sex: sex
+							  ];
 
              [newSpawner setIsSpawner: YES];
              [newSpawner setAge: 5];           //Temporary fix to give spawners an age
@@ -906,6 +924,7 @@ char **speciesColor;
   char year[5];
   char reach[35];
   char number[10];
+  char fracFemale[10];
   char arrivalStartDate[12];
   char arrivalEndDate[12];
   char ratio[10];
@@ -918,6 +937,7 @@ char **speciesColor;
   inputFormat =  "%[0-9] %*1[,] \
                    %[a-zA-Z_-0-9] %*1[,] \
                    %[0-9] %*1[,] \
+                   %[0-9.] %*1[,] \
                    %[0-9/] %*1[,] \
                    %[0-9/] %*1[,] \
                    %[0-9.] %*1[,] \
@@ -945,15 +965,17 @@ char **speciesColor;
            sscanf(inputString, inputFormat, year,
                                             reach,
                                             number,
+					    fracFemale,
                                             arrivalStartDate,
                                             arrivalEndDate,
                                             ratio,
                                             meanLength,
                                             stdDevLength);
 
-           fprintf(stdout, "%s %s %s %s %s %s %s %s\n", year,
+           fprintf(stdout, "%s %s %s %s %s %s %s %s %s\n", year,
                                                         reach,
                                                         number,
+							fracFemale,
                                                         arrivalStartDate,
                                                         arrivalEndDate,
                                                         ratio,
@@ -967,6 +989,7 @@ char **speciesColor;
            fishRecord->year = atoi(year);
            strncpy(fishRecord->reach, reach, 35);
            fishRecord->number = atoi(number);
+           fishRecord->fracFemale = atof(fracFemale);
            fishRecord->arrivalStartTime = [timeManager getTimeTWithDate: arrivalStartDate];
            fishRecord->arrivalEndTime = [timeManager getTimeTWithDate: arrivalEndDate];
            fishRecord->ratio = atof(ratio);
@@ -1903,10 +1926,11 @@ char **speciesColor;
 - createNewFishWithSpeciesIndex: (int) speciesNdx  
                            Species: (id <Symbol>) species
                             Length: (double) fishLength 
+			       Sex: (id <Symbol>) sex
 {
 
   id newSpawner;
-  id <Symbol> sex = nil;
+  //id <Symbol> sex = nil;
   id <InterpolationTable> aCMaxInterpolator = nil;
   id <InterpolationTable> aSpawnDepthInterpolator = nil;
   id <InterpolationTable> aSpawnVelocityInterpolator = nil;
@@ -1930,12 +1954,19 @@ char **speciesColor;
   // set properties of the new Trout
   //
 
-  sex = [coinFlip getCoinToss] == YES ?  Female : Male;
+  if(sex == CoinFlip){
+    sex = [coinFlip getCoinToss] == YES ?  Female : Male;
+  }
   [newSpawner setSex: sex];
 
-  if(sex == Female)
-  {
-      [newSpawner setIsFemale: YES];
+
+  if(sex == Female){
+    [newSpawner setIsFemale: YES];
+    //fprintf(stdout, "TroutModelSwarm >>>> createNewFishWithSpeciesIndex >>>> sex is female\n");
+    //fflush(0);
+  }else{
+    //fprintf(stdout, "TroutModelSwarm >>>> createNewFishWithSpeciesIndex >>>> sex is male\n");
+    //fflush(0);
   }
 
   [newSpawner setMyRedd: nil];

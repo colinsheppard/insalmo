@@ -56,6 +56,7 @@ struct FishSetupStruct
            int  year;
            char reach[35];
            int number;
+           double fracFemale;
            char arrivalStartDate[12];
            char arrivalEndDate[12];
            double ratio;
@@ -408,7 +409,8 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 
 - createNewFishWithSpeciesIndex: (int) speciesNdx  
                            Species: (id <Symbol>) species
-                            Length: (double) fishLength;
+                            Length: (double) fishLength
+                            Sex: (id <Symbol>) sex;
 
 - setFishColormap: theColormaps;
 - readSpeciesSetup;
