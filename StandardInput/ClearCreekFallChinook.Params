@@ -34,7 +34,7 @@ fishMaxSwimParamB                   21
 fishMaxSwimParamC              -0.0029
 fishMaxSwimParamD                0.084
 fishMaxSwimParamE                 0.37
-fishMoveDistParamA                  20
+fishMoveDistParamA                  50
 fishMoveDistParamB                   2
 
 fishOutmigrateSuccessL1            5.0
@@ -130,7 +130,7 @@ mortReddHiTT1                     23.0
 mortReddHiTT9                     17.5
 mortReddLoTT1                      1.7
 mortReddLoTT9                      4.0
-mortReddScourDepth             10000.0
+mortReddScourDepth                20.0
 
 reddDevelParamA                33000.0
 reddDevelParamB                  -2.04
