@@ -6,5 +6,5 @@ habPreyEnergyDensity           2500
 habSearchProd              5.00E-07
 habShearParamA                0.013
 habShearParamB                 0.40
-habShelterSpeedFrac             0.7
+habShelterSpeedFrac             0.4
 @end

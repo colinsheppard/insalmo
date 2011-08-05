@@ -46,7 +46,7 @@ fishRespParamC                  0.0693
 fishRespParamD                    0.03
 fishSearchArea                   20000
 
-fishSpawnEggViability              0.9
+fishSpawnEggViability              0.8
 fishSpawnDefenseArea            200000
 
 fishSpawnStartDate                10/1
