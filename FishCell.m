@@ -1594,7 +1594,7 @@ Boston, MA 02111-1307, USA.
     
 
      //
-     // TerrestialPredation Predation
+     // Terrestial Predation
      // 
      [survMgr addPROBWithSymbol: [model getFishMortalitySymbolWithName: "TerrestialPredation"] 
              withType: "LimitingFunctionProb"
@@ -1677,7 +1677,6 @@ Boston, MA 02111-1307, USA.
                                   withYValue2: 0.1];
 
 
-
      [survMgr addLogisticFuncToProbWithSymbol: [model getFishMortalitySymbolWithName: "AquaticPredation"] 
                           withInputObjectType: ANIMAL
                             withInputSelector: M(getFishLength)
@@ -1711,6 +1710,15 @@ Boston, MA 02111-1307, USA.
                                   withXValue1: fishParams->mortFishAqPredT9
                                   withYValue1: 0.9
                                   withXValue2: fishParams->mortFishAqPredT1
+                                  withYValue2: 0.1];
+
+     // New for salmon: hiding cover function
+     [survMgr addLogisticFuncToProbWithSymbol: [model getFishMortalitySymbolWithName: "AquaticPredation"] 
+                          withInputObjectType: HABITAT
+                            withInputSelector: M(getDistanceToHide)
+                                  withXValue1: fishParams->mortFishAqPredH9
+                                  withYValue1: 0.9
+                                  withXValue2: fishParams->mortFishAqPredH1
                                   withYValue2: 0.1];
 
              

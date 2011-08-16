@@ -169,6 +169,8 @@ double mortFishAqPredF1;
 double mortFishAqPredF9;
 double mortFishAqPredL1;
 double mortFishAqPredL9;
+double mortFishAqPredH1;
+double mortFishAqPredH9;
 
 double mortFishAqPredMin;
 
