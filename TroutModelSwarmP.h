@@ -31,9 +31,9 @@ Boston, MA 02111-1307, USA.
 - (time_t)getModelTime;
 - addToEmptyReddList: aRedd;
 
-- createNewFishWithSpeciesIndex: (int) speciesNdx  
-                        Species: (id <Symbol>) species
-                         Length: (double) fishLength;
+//- createNewFishWithSpeciesIndex: (int) speciesNdx  
+//                        Species: (id <Symbol>) species
+//                         Length: (double) fishLength;
 
 - addAFish: aTrout;
 - (id <List>) getLiveFishList;
