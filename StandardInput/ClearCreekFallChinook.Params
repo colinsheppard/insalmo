@@ -94,8 +94,8 @@ mortFishAqPredF1                    18
 mortFishAqPredF9                     0
 mortFishAqPredL1                     4
 mortFishAqPredL9                    18
-mortFishAqPredH1                   500
-mortFishAqPredH9                  -100
+mortFishAqPredH1                   200
+mortFishAqPredH9                     0
 
 mortFishAqPredMin                 0.92
 
