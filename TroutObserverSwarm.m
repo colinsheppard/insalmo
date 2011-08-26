@@ -551,7 +551,7 @@ Boston, MA 02111-1307, USA.
   velocityHisto = [EZBin createBegin: obsZone];
   SET_WINDOW_GEOMETRY_RECORD_NAME (velocityHisto);
   [velocityHisto setTitle: "Redd Velocity Histogram"];
-  [velocityHisto setAxisLabelsX: "Velocity (cm)" Y: "Number of redds"];
+  [velocityHisto setAxisLabelsX: "Velocity (cm/s)" Y: "Number of redds"];
   [velocityHisto setBinCount: 10];
   [velocityHisto setLowerBound: 0];
   [velocityHisto setUpperBound: 200];
