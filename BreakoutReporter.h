@@ -161,6 +161,7 @@ typedef struct DataColumnStruct DataColumnWithLabel;
                        withLabel: (char *) aDataLabel;
 
 - buildDataColumns;
+- outputDataColumns;
 
 - printBreakoutReportHeader;
 - suppressColumnLabels: (BOOL) aBool;
