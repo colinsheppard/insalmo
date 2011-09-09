@@ -11,10 +11,10 @@ inClass:                  TroutModelSwarm
 sendReplicateCountToParam: replicate
 inClass:                  TroutModelSwarm
 
-#ClassName     FishParams
-#InstanceName  FallChinook
-#ParamName     fishSpawnProb
+#ClassName     TroutModelSwarm
+#InstanceName  NONE
+#ParamName     numSpawnerAdjuster
 #ValueType     double
-#Value         0.9
+#Value         0.5
 #Value         0.9
 

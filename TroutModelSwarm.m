@@ -201,6 +201,9 @@ char **speciesColor;
   fprintf(stdout, "TroutModelSwarm >>>> instantiateObjects >>>> AFTER HabitatManager\n");
   fflush(0);
 
+  // New Sept. 2011 for Limiting Factors Tool
+  if (numSpawnerAdjuster == 0.0) { numSpawnerAdjuster = 1.0; }
+
   return self;
 
 }
@@ -811,7 +814,8 @@ char **speciesColor;
                                             setMean: spawnerMeanArrivalTime
                                           setStdDev: spawnerStdDevArrivalTime];
 
-          numFishThisYear = fishInitRecord->number;
+          // numFishThisYear = fishInitRecord->number; Let LFT control # spawners
+	  numFishThisYear = (int) floor( ((double) fishInitRecord->number) * numSpawnerAdjuster + 0.5);
 	  numFemalesThisYear = (int) floor( ((double) numFishThisYear) * fishInitRecord->fracFemale + 0.5);
 	  fprintf(stdout, "TroutModelSwarm >>>> createSpawners >>>> numFishThisYear = %d  fracFemale = %f  numFemalesThisYear = %d \n", numFishThisYear, fishInitRecord->fracFemale, numFemalesThisYear);
 	  fflush(0);

@@ -166,6 +166,9 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 //END VARIABLES INITIALIZED BY Model.Setup
 //END VARIABLES INITIALIZED BY Model.Setup
 
+// NEW VARIABLE CONTROLLED BY LIMITING FACTOR TOOL, TO VARY SPAWNER ABUND
+double numSpawnerAdjuster;
+
   time_t popInitTime;
 
 
