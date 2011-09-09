@@ -666,9 +666,10 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
 
   if(printRptPtr == NULL)
   {
-      fprintf(stderr, "ERROR: Redd >>>> printReport >>>> printRptPtr = %p\n", printRptPtr);
-      fflush(0);
-      exit(1);
+     return self;   // pointer will be NULL if this optional file is not on
+     // fprintf(stderr, "ERROR: Redd >>>> printReport >>>> printRptPtr = %p\n", printRptPtr);
+     // fflush(0);
+     // exit(1);
   }
 
   fprintf(printRptPtr,"\n%s %p\n","BEGIN REPORT for Redd", self);

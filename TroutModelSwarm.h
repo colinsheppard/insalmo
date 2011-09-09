@@ -48,6 +48,7 @@ Boston, MA 02111-1307, USA.
 
 //#define REDD_SURV_REPORT
 //#define PRINT_CELL_FISH_REPORT
+//#define REDD_MORTALITY_REPORT  // This used to be a standard output
 
 struct FishSetupStruct
        {
@@ -152,7 +153,7 @@ char * runStartDate;
 char * runEndDate;
 const char*  fishOutputFile;
 const char*  fishMortalityFile;
-const char*  reddMortalityFile;
+// const char*  reddMortalityFile;   This is now an optional output
 const char*  reddOutputFile;
 const char*  outmigrantOutputFile;
 //char* popInitDate;  NOT USED FOR SALMON

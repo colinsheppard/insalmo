@@ -434,8 +434,10 @@ char **speciesColor;
   reddBinomialDist = [BinomialDist create: modelZone setGenerator: randGen];
 
   [self openReddSummaryFilePtr];
-  [self openReddReportFilePtr];
 
+#ifdef REDD_MORTALITY_REPORT
+  [self openReddReportFilePtr];
+#endif
   [self createBreakoutReporters];
 
 
@@ -2191,6 +2193,8 @@ char **speciesColor;
    return speciesSymbol;
 }
 
+#ifdef REDD_MORTALITY_REPORT
+
 /////////////////////////////////////////////////
 //
 // openReddReportFilePtr
@@ -2198,6 +2202,8 @@ char **speciesColor;
 //////////////////////////////////////////////////
 - openReddReportFilePtr 
 {
+
+  const char * reddMortalityFile = "Redd_Mortality.rpt";
 
   if(reddRptFilePtr == NULL) 
   {
@@ -2248,6 +2254,9 @@ char **speciesColor;
 
 }
 
+#endif
+
+
 
 /////////////////////////////////////////////////
 //
@@ -2257,12 +2266,12 @@ char **speciesColor;
 - (FILE *) getReddReportFilePtr
 {
 
-   if(reddRptFilePtr == NULL)
-   {
-       fprintf(stderr, "ERROR: TroutModelSwarm >>>> getReddReportFilePtr >>>> File %s is not open\n", reddMortalityFile);
-       fflush(0);
-       exit(1);
-   }
+  // if(reddRptFilePtr == NULL)
+  // {
+  //     fprintf(stderr, "ERROR: TroutModelSwarm >>>> getReddReportFilePtr >>>> File %s is not open\n", reddMortalityFile);
+  //      fflush(0);
+  //     exit(1);
+  // }
 
    return reddRptFilePtr;
 }
