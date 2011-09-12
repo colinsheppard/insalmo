@@ -896,6 +896,7 @@ char **speciesColor;
 
   [QSort sortObjectsIn:  spawners]; 
 
+/*
    id <ListIndex> ndx = [spawners listBegin: scratchZone];
    id aSpawner = nil;
    while(([ndx getLoc] != End) && ((aSpawner = [ndx next]) != nil))
@@ -906,7 +907,7 @@ char **speciesColor;
 
    }
    [ndx drop];
-
+*/
    fprintf(stdout,"TroutModelSwarm >>>> createSpawners >>>> END\n");
    fflush(0);
 
