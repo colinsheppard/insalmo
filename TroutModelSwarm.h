@@ -440,8 +440,11 @@ double numSpawnerAdjuster;
 
 - openReddSummaryFilePtr;
 - (FILE *) getReddSummaryFilePtr;
+
+#ifdef REDD_MORTALITY_REPORT
 - openReddReportFilePtr;
-- (FILE *) getReddReportFilePtr;
+#endif
+- (FILE *) getReddReportFilePtr;  // This method always must be compiled
 
 - outputInfoToTerminal;
 
