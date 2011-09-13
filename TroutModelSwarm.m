@@ -173,6 +173,9 @@ char **speciesColor;
   reachSymbolList = [List create: modelZone];
 
   fishCounter = 0;
+  lftNumTotalOutmigrants = 0; // Cumulative total of all live outmigrants
+  lftNumBigOutmigrants = 0;   // Cumulative total of big live outmigrants
+  lftBigOutmigrantsSizeThreshold = 5.0;  // "Big" outmigrants have length > this 
 
 
   fprintf(stdout, "TroutModelSwarm >>>> buildObjects >>> instantiateObjects >>>> BEFORE HabitatManager\n");
@@ -1539,6 +1542,8 @@ char **speciesColor;
        fprintf(stdout,"TroutModelSwarm >>>> whenToStop >>>> STOPPING\n");
        fflush(0);
 
+       [self writeLFTOutput];   // WRITE OUTPUT FOR LIMITING FACTORS TOOL
+
    }
    else 
    {
@@ -1862,10 +1867,29 @@ char **speciesColor;
 //
 // updateNewOutmigrantsList
 //
+// This updates output for graphics and for the Limiting Factors Tool output file
+//
 //////////////////////////////////
 - updateNewOutmigrantsList
 {
+   id <ListIndex> migrantNdx;
+   id nextOutmigrant = nil;
+
    numOutmigrants = [newOutmigrants getCount];
+   lftNumTotalOutmigrants += numOutmigrants;
+
+   migrantNdx = [newOutmigrants listBegin: scratchZone];
+
+   while (([migrantNdx getLoc] != End) && ((nextOutmigrant = [migrantNdx next]) != nil)) 
+    {
+       if([nextOutmigrant getFishLength] > lftBigOutmigrantsSizeThreshold)
+       {
+          lftNumBigOutmigrants++;
+       }
+    }
+
+   [migrantNdx drop];
+
    [newOutmigrants removeAll];
    return self;
 }
@@ -3116,6 +3140,64 @@ char **speciesColor;
 }
 
 
+///////////////////////////////////////////////
+//
+// writeLFTOutput
+//
+///////////////////////////////////////////////
+
+- writeLFTOutput
+{
+
+  const char * lftOutputFile = "LFT_Output.rpt";
+
+  if(lftOutputFilePtr == NULL) 
+  {
+
+     if ((scenario == 1) && (replicate == 1))
+     {
+        if((lftOutputFilePtr = fopen(lftOutputFile,"w")) == NULL ) 
+        {
+            fprintf(stderr, "ERROR: TroutModelSwarm >>>> writeLFTOutput >>>> Cannot open %s for writing\n",lftOutputFile);
+            fflush(0);
+            exit(1);
+        }
+        fprintf(lftOutputFilePtr,"Limiting factors tool output file\n");
+        fprintf(lftOutputFilePtr,"SYSTEM TIME:  %s\n", [timeManager getSystemDateAndTime]);
+        fprintf(lftOutputFilePtr,"Scenario, Replicate, Total number of outmigrants, Total number of big outmigrants\n");
+     }
+     else // Not the first replicate or scenario, so no header 
+     {
+         if((lftOutputFilePtr = fopen(lftOutputFile,"a")) == NULL) 
+         {
+            fprintf(stderr, "ERROR: TroutModelSwarm >>>> writeLFTOutput >>>> Cannot open %s for appending\n",lftOutputFile);
+            fflush(0);
+            exit(1);
+         }
+     }
+
+  }
+
+   if(lftOutputFilePtr == NULL)
+   {
+       fprintf(stderr, "ERROR: TroutModelSwarm >>>> writeLFTOutput >>>> File %s is not open\n",lftOutputFile);
+       fflush(0);
+       exit(1);
+   }
+
+
+   fprintf(lftOutputFilePtr,"%d\t%d\t%d\t%d\n", 
+      scenario, 
+        replicate, 
+          (lftNumTotalOutmigrants * juvenileSuperindividualRatio), 
+             (lftNumBigOutmigrants * juvenileSuperindividualRatio));
+
+
+
+   return self;
+}
+
+
 //////////////////////////////////////////////////////////
 //
 // drop
@@ -3131,6 +3213,9 @@ char **speciesColor;
   }
   if(reddRptFilePtr != NULL){
       fclose(reddRptFilePtr);
+  }
+  if(lftOutputFilePtr != NULL){
+      fclose(lftOutputFilePtr);
   }
   if(timeManager){
     //  fprintf(stderr, "TroutModelSwarm >>>> drop >>>> dropping timeManager\n");

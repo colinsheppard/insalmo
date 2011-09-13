@@ -129,6 +129,7 @@ typedef struct FishSetupStruct SpawnerInitializationRecord;
 
   FILE * reddRptFilePtr;
   FILE * reddSummaryFilePtr;
+  FILE * lftOutputFilePtr;
 
   //
   // Changes for LJCMultReachv4.0
@@ -167,8 +168,11 @@ int juvenileSuperindividualRatio;  // Number of juveniles / object
 //END VARIABLES INITIALIZED BY Model.Setup
 //END VARIABLES INITIALIZED BY Model.Setup
 
-// NEW VARIABLE CONTROLLED BY LIMITING FACTOR TOOL, TO VARY SPAWNER ABUND
-double numSpawnerAdjuster;
+// NEW VARIABLES CONTROLLED BY OR USED BY LIMITING FACTOR TOOL
+double numSpawnerAdjuster;  // TO VARY SPAWNER ABUNDANCE
+int lftNumTotalOutmigrants; // Cumulative total of all live outmigrants
+int lftNumBigOutmigrants;   // Cumulative total of big live outmigrants
+double lftBigOutmigrantsSizeThreshold; // Size defining "big" outmigrants
 
   time_t popInitTime;
 
@@ -424,6 +428,7 @@ double numSpawnerAdjuster;
 
 - (id <Symbol>) getSpeciesSymbolWithName: (char *) aName;
 
+- writeLFTOutput;  // WRITE OUTPUT FILE FOR LIMITING FACTORS TOOL
 
 //
 // REDD OUTPUT
