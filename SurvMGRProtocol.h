@@ -35,8 +35,6 @@ Boston, MA 02111-1307, USA.
 
 - setTestOutputOnWithFileName: (char *) aFileName;
 
-- (id <Symbol>) getANIMALSYMBOL;
-- (id <Symbol>) getHABITATSYMBOL;
 - (int) getNumberOfProbs;
 - getHabitatObject;
 - getCurrentAnimal;
@@ -49,14 +47,14 @@ Boston, MA 02111-1307, USA.
    withIsStarvProb: (BOOL) isAStarvProb;
 
 - addBoolSwitchFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
-          withInputObjectType: (id <Symbol>) objType
+          withInputObjectType: (BOOL) isAnimal
                withInputSelector: (SEL) aSelector
                   withYesValue: (double) aYesValue   //FIX
                    withNoValue: (double) aNoValue;
 
 
 - addLogisticFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
-         withInputObjectType: (id <Symbol>) objType
+         withInputObjectType: (BOOL) isAnimal
               withInputSelector: (SEL) aSelector
                   withXValue1: (double) xValue1
                   withYValue1: (double) yValue1
@@ -71,11 +69,11 @@ Boston, MA 02111-1307, USA.
 
 - addCustomFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
                   withClassName: (char *) className
-            withInputObjectType: (id <Symbol>) objType
+            withInputObjectType: (BOOL) isAnimal
               withInputSelector: (SEL) aObjSelector;
 
 - addObjectValueFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
-                 withInputObjectType: (id <Symbol>) objType
+                 withInputObjectType: (BOOL) isAnimal 
                    withInputSelector: (SEL) aObjSelector;
                   
 

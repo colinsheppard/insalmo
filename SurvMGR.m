@@ -44,8 +44,6 @@ Boston, MA 02111-1307, USA.
   aSurvMgr->managerNdx = anNdx++;
 
   aSurvMgr->mgrZone = [Zone create: aZone];
-  aSurvMgr->ANIMAL = [Symbol create: aSurvMgr->mgrZone setName: "ANIMAL"];
-  aSurvMgr->HABITAT = [Symbol create: aSurvMgr->mgrZone setName: "HABITAT"];
 
 
   aSurvMgr->starvSurvivalProb = nil;
@@ -181,35 +179,6 @@ Boston, MA 02111-1307, USA.
 
 }
 
-
-- (id <Symbol>) getANIMALSYMBOL
-{
-
-   if(ANIMAL == nil)
-   {
-      fprintf(stderr,"ERROR: SurvMgr >>>> ANIMAL Symbol is nil\n");
-      fflush(0);
-      exit(1);
-   }
-
-   return ANIMAL;
-}
-
-- (id <Symbol>) getHABITATSYMBOL
-{
-
-   if(HABITAT == nil)
-   {
-      fprintf(stderr,"ERROR: SurvMgr >>>> HABITAT Symbol is nil\n");
-      fflush(0);
-      exit(1);
-   }
-
-
-   return HABITAT;
-}
-
-
 - (int) getNumberOfProbs
 {
   return numberOfProbs;
@@ -251,22 +220,15 @@ Boston, MA 02111-1307, USA.
       }
   }
 
-
-
-  if(strncmp("SingleFunctionProb", aProbType, strlen("SingleFunctionProb")) == 0)
-  {
-
+  if(strncmp("SingleFunctionProb", aProbType, strlen("SingleFunctionProb")) == 0){
      aProb = [SingleFuncProb createBegin: mgrZone];
-
-  }
-  else if(strncmp("LimitingFunctionProb", aProbType, strlen("LimitingFunctionProb")) == 0)
-  {
-
+  } else if(strncmp("LimitingFunctionProb", aProbType, strlen("LimitingFunctionProb")) == 0){
      aProb = [LimitingFunctionProb createBegin: mgrZone];
-  }
-
-  else if(strncmp("CustomProb", aProbType, strlen("CustomProb")) == 0)
-  {
+  } else if(strncmp("ReddScour", aProbType, strlen("ReddScour")) == 0){
+     aProb = [ReddScour createBegin: mgrZone];
+  } else if(strncmp("ReddSuperimp", aProbType, strlen("ReddSuperimp")) == 0){
+     aProb = [ReddSuperimp createBegin: mgrZone];
+  }else if(strncmp("CustomProb", aProbType, strlen("CustomProb")) == 0){
      //
      // SurvMGR knows nothing about the custom probablity
      // at compile time. This gets resolved at runtime...
@@ -276,13 +238,9 @@ Boston, MA 02111-1307, USA.
      aCustomProbClass = [objc_get_class([aProbSymbol getName]) class];
      
      aProb = [aCustomProbClass createBegin: mgrZone];
-
-  }
-  else
-  {
+  }else{
      [InternalError raiseEvent: "ERROR: SurvMGR >>>> Cannot create Probability type %s \n", aProbType];
   }  
-
 
    [aProb setProbSymbol: aProbSymbol];
    [aProb setIsStarvProb: isAStarvProb];
@@ -307,7 +265,7 @@ Boston, MA 02111-1307, USA.
 
 
 - addBoolSwitchFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
-          withInputObjectType: (id <Symbol>) objType
+          withInputObjectType: (BOOL) isAnimal
                withInputSelector: (SEL) aSelector
                   withYesValue: (double) aYesValue
                    withNoValue: (double) aNoValue
@@ -320,36 +278,21 @@ Boston, MA 02111-1307, USA.
   BOOL ERROR=TRUE;
 
   ndx = [listOfSurvProbs listBegin: mgrZone];
-  while (([ndx getLoc] != End) && ((aProb = [ndx next]) != nil))
-  {
-     if(aProbSymbol == [aProb getProbSymbol])
-     {
-
+  while (([ndx getLoc] != End) && ((aProb = [ndx next]) != nil)){
+     if(aProbSymbol == [aProb getProbSymbol]){
           aFunc = [aProb createBoolSwitchFuncWithInputMethod: aSelector
                                         withYesValue: aYesValue
                                          withNoValue: aNoValue];
-
-
-
-         if(objType == HABITAT)
-         {
-             [listOfHabitatUpdateFuncs addLast: aFunc];
-         }
-         else if(objType == ANIMAL)
-         {
+         if(isAnimal){
              [listOfAnimalUpdateFuncs addLast: aFunc];
-         }
-         else
-         {
-            break;  //an error occurred 
+         }else{
+             [listOfHabitatUpdateFuncs addLast: aFunc];
          }
 
          ERROR = FALSE;
          break;
      }
-
   }
-
 
   [ndx drop];
 
@@ -366,7 +309,7 @@ Boston, MA 02111-1307, USA.
 
 
 - addLogisticFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
-         withInputObjectType: (id <Symbol>) objType
+         withInputObjectType: (BOOL) isAnimal
               withInputSelector: (SEL) aSelector
                   withXValue1: (double) xValue1
                   withYValue1: (double) yValue1
@@ -388,24 +331,14 @@ Boston, MA 02111-1307, USA.
      {
 
         aFunc = [aProb createLogisticFuncWithInputMethod: aSelector
-                              withInputObjectType: objType
                                        andXValue1: xValue1
                                        andYValue1: yValue1
                                        andXValue2: xValue2
                                        andYValue2: yValue2];
-
-
-         if(objType == HABITAT)
-         {
-             [listOfHabitatUpdateFuncs addLast:  aFunc];
-         }
-         else if(objType == ANIMAL)
-         {
+         if(isAnimal){
              [listOfAnimalUpdateFuncs addLast: aFunc];
-         }
-         else
-         {
-            break;  //an error occurred 
+         }else{
+             [listOfHabitatUpdateFuncs addLast:  aFunc];
          }
 
          ERROR = FALSE;
@@ -501,7 +434,7 @@ Boston, MA 02111-1307, USA.
 
 - addCustomFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
                   withClassName: (char *) className
-            withInputObjectType: (id <Symbol>) objType
+            withInputObjectType: (BOOL) isAnimal
               withInputSelector: (SEL) anInputSelector
 {
 
@@ -518,20 +451,11 @@ Boston, MA 02111-1307, USA.
          id aFunc = nil;
 
          aFunc = [aProb createCustomFuncWithClassName: className
-                                       withInputSelector: anInputSelector
-                                     withInputObjectType: objType];
-
-         if(objType == HABITAT)
-         {
-             [listOfHabitatUpdateFuncs addLast: aFunc];
-         }
-         else if(objType == ANIMAL)
-         {
+                                       withInputSelector: anInputSelector];
+         if(isAnimal){
              [listOfAnimalUpdateFuncs addLast: aFunc];
-         }
-         else
-         {
-            break;  //an error occurred 
+         }else{
+             [listOfHabitatUpdateFuncs addLast: aFunc];
          }
 
          ERROR = FALSE;
@@ -559,7 +483,7 @@ Boston, MA 02111-1307, USA.
 
 
 - addObjectValueFuncToProbWithSymbol: (id <Symbol>) aProbSymbol
-                 withInputObjectType: (id <Symbol>) objType
+                 withInputObjectType: (BOOL) isAnimal
                    withInputSelector: (SEL) anObjSelector
 {
 
@@ -575,21 +499,11 @@ Boston, MA 02111-1307, USA.
      if(aProbSymbol == [aProb getProbSymbol])
      {
 
-        aFunc = [aProb createObjectValueFuncWithInputSelector: anObjSelector
-                                        withInputObjectType: objType];
-
-
-         if(objType == HABITAT)
-         {
+        aFunc = [aProb createObjectValueFuncWithInputSelector: anObjSelector];
+         if(isAnimal){
              [listOfHabitatUpdateFuncs addLast:  aFunc];
-         }
-         else if(objType == ANIMAL)
-         {
+         }else{
              [listOfAnimalUpdateFuncs addLast: aFunc];
-         }
-         else
-         {
-            break;  //an error occurred 
          }
 
          ERROR = FALSE;
@@ -805,13 +719,6 @@ Boston, MA 02111-1307, USA.
 
 
 
-- (void) drop
-{
-     [listOfSurvProbs deleteAll];
-     [mgrZone drop];
-     [super drop];
- 
-}
 
 
 
@@ -1256,6 +1163,65 @@ Boston, MA 02111-1307, USA.
 
 }
 
+/////////////////////////////////////////
+//
+// drop
+//
+////////////////////////////////////////
+- (void) drop
+{
+
+   //fprintf(stdout, "SurvMGR >>>> drop >>>> BEGIN\n");
+   //fflush(0);
+   
+    [listOfSurvProbs deleteAll];
+    [listOfSurvProbs drop];
+    listOfSurvProbs = nil;
+    
+    [survProbLstNdx drop];
+    survProbLstNdx = nil;
+
+    //if(ANIMAL!=nil){
+      ////[mgrZone free: ANIMAL];
+      //ANIMAL = nil;
+    //}
+    //if(HABITAT!=nil){
+      ////[mgrZone free: HABITAT];
+      //HABITAT = nil;
+    //}
+
+    if(listOfKnownNonStarvSurvProbs!=nil){
+      [listOfKnownNonStarvSurvProbs drop];
+      listOfKnownNonStarvSurvProbs = nil;
+    }
+
+    if(knownNonStarvSurvProbLstNdx!=nil){
+      [knownNonStarvSurvProbLstNdx drop];
+      knownNonStarvSurvProbLstNdx = nil;
+    }
+
+    if(listOfAnimalUpdateFuncs!=nil){
+      [listOfAnimalUpdateFuncs deleteAll];
+      [listOfAnimalUpdateFuncs drop];
+      listOfAnimalUpdateFuncs = nil;
+    }
+    if(listOfHabitatUpdateFuncs!=nil){
+      [listOfHabitatUpdateFuncs deleteAll];
+      [listOfHabitatUpdateFuncs drop];
+      listOfHabitatUpdateFuncs = nil;
+    }
+    //if(starvSurvivalProb!=nil){
+      //[starvSurvivalProb drop];  
+      //starvSurvivalProb = nil;  
+    //}
+
+    [mgrZone drop];
+    [super drop];
+    self = nil;
+
+   //fprintf(stdout, "SurvMGR >>>> drop >>>> END\n");
+   //fflush(0);
+}
 
 @end
 

@@ -834,6 +834,8 @@ Boston, MA 02111-1307, USA.
     [polyPointList deleteAll];
     polyPointList = nil;
 
+    //fprintf(stdout, "PolyCell >>>> drop >>>> pixelCount = %d \n",pixelCount);
+    //fflush(0);
     for(i = 0; i < pixelCount; i++)
     {
           [cellZone free: polyCellPixels[i]];

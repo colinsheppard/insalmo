@@ -122,7 +122,6 @@ Boston, MA 02111-1307, USA.
    [xValues atOffset: funcArrayMax put: (void *) anXVal];
    [yValues atOffset: funcArrayMax put: (void *) aYVal];
 
-
    funcArrayMax += 1;
 
    return self;

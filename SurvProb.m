@@ -157,7 +157,6 @@ Boston, MA 02111-1307, USA.
 
 
 - createLogisticFuncWithInputMethod: (SEL) inputMethod
-                withInputObjectType: (id <Symbol>) anObjType
                          andXValue1: (double) xValue1
                          andYValue1: (double) yValue1
                          andXValue2: (double) xValue2
@@ -170,7 +169,6 @@ Boston, MA 02111-1307, USA.
       {
           [InternalError raiseEvent: "ERROR: SurvProb >>>> createLogisticFuncWithInputMethod inputMethod was not set\n"];
       }
-
 
       aFunc =  [LogisticFunc createBegin: probZone 
                          withInputMethod: inputMethod
@@ -232,7 +230,6 @@ Boston, MA 02111-1307, USA.
 
 - createCustomFuncWithClassName: (char *) className
               withInputSelector: (SEL) anInputSelector
-            withInputObjectType: (id <Symbol>) objType
 {
    //
    // SurvProb knows nothing about the custom function
@@ -263,7 +260,6 @@ Boston, MA 02111-1307, USA.
 
 
 - createObjectValueFuncWithInputSelector: (SEL) anObjSelector
-                     withInputObjectType: (id) objType
 {
 
     id aFunc = nil;

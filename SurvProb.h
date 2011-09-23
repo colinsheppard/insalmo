@@ -74,7 +74,6 @@ id <ListIndex> funcListNdx;
 - (double) getSurvivalProb;
 
 - createLogisticFuncWithInputMethod: (SEL) inputMethod
-                withInputObjectType: (id <Symbol>) anObjType
                          andXValue1: (double) xValue1
                          andYValue1: (double) yValue1
                          andXValue2: (double) xValue2
@@ -91,12 +90,10 @@ id <ListIndex> funcListNdx;
 
 
 - createCustomFuncWithClassName: (char *) className
-              withInputSelector: (SEL) anInputSelector
-            withInputObjectType: (id <Symbol>) objType;
+              withInputSelector: (SEL) anInputSelector;
 
 
-- createObjectValueFuncWithInputSelector: (SEL) anObjSelector
-                     withInputObjectType: (id) objType;
+- createObjectValueFuncWithInputSelector: (SEL) anObjSelector;
 
 
 @end

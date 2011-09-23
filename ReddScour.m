@@ -85,6 +85,18 @@ Boston, MA 02111-1307, USA.
 }
 
 
+/////////////////////////////////////////
+//
+// drop
+//
+////////////////////////////////////////
+- (void) drop {
+
+  if(scourFunc != nil){
+    [scourFunc drop];
+    scourFunc = nil;
+  }
+}
 
 
 @end

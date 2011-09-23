@@ -2,6 +2,7 @@ ifeq ($(SWARMHOME),)
 SWARMHOME=/usr
 endif
 
+CFLAGS="-c -g -O -fgnu-runtime -fno-strict-aliasing -Wall -Wno-import -Wno-protocol -Wno-long-long  -D_GNU_SOURCE" 
 
 APPLICATION=insalmo
 OBJECTS=Trout.o \

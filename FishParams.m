@@ -47,7 +47,7 @@ Boston, MA 02111-1307, USA.
   fishParams->parameterFileName = (char *) nil;
 
   fishParams->anInitInt = [aZone alloc: sizeof(int)];
-  fishParams->anInitFloat = [aZone alloc: sizeof(float)];
+  fishParams->anInitFloat = [aZone alloc: sizeof(double)];
   fishParams->anInitDouble = [aZone alloc: sizeof(double)];
   fishParams->anInitId = [aZone alloc: sizeof(id)];
 

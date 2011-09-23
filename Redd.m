@@ -794,6 +794,7 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
   fprintf(printRptPtr,"\n\n%s %p\n","END SURVIVAL REPORT for Redd", self);
 
 [printNdx drop];
+[survPrintList deleteAll];
 [survPrintList drop];
 
 return self;

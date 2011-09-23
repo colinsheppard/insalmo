@@ -42,6 +42,7 @@ Boston, MA 02111-1307, USA.
 
 - (double) getSurvivalProb;
 
+- (void) drop;
 
 
 @end

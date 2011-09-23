@@ -945,31 +945,31 @@ with model input.
           while(([level1Ndx getLoc] != End) && ((level1Key = [level1Ndx next]) != nil))
           {
 
-             const char* level1KeyName = [level1Key getName];
+	    //const char* level1KeyName = [level1Key getName];
 
              [level2Ndx setLoc: Start];
              while(([level2Ndx getLoc] != End) && ((level2Key = [level2Ndx next]) != nil))
              {
 
-                const char* level2KeyName = [level2Key getName];
+	       //const char* level2KeyName = [level2Key getName];
 
                 [level3Ndx setLoc: Start];
                 while(([level3Ndx getLoc] != End) && ((level3Key = [level3Ndx next]) != nil))
                 {
 
-                   const char* level3KeyName = [level3Key getName];
+		  //const char* level3KeyName = [level3Key getName];
 
                    [level4Ndx setLoc: Start];
                    while(([level4Ndx getLoc] != End) && ((level4Key = [level4Ndx next]) != nil))
                    {
 
-                      const char* level4KeyName = [level4Key getName];
+		     //const char* level4KeyName = [level4Key getName];
 
                       [level5Ndx setLoc: Start];
                       while(([level5Ndx getLoc] != End) && ((level5Key = [level5Ndx next]) != nil))
                       {
 
-                           const char* level5KeyName = [level5Key getName];
+			//const char* level5KeyName = [level5Key getName];
 
                            BreakoutAverager* anAverager;
                            
@@ -985,15 +985,15 @@ with model input.
                            [self outputDataColumns];
 
                            if (level1Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,level1KeyName);}
+                             fprintf(filePtr, headerFormatString,[level1Key getName]);}
                            if (level2Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,level2KeyName);}
+                             fprintf(filePtr, headerFormatString,[level2Key getName]);}
                            if (level3Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,level3KeyName);}
+                             fprintf(filePtr, headerFormatString,[level3Key getName]);}
                            if (level4Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,level4KeyName);}
+                             fprintf(filePtr, headerFormatString,[level4Key getName]);}
                            if (level5Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,level5KeyName);}
+                             fprintf(filePtr, headerFormatString,[level5Key getName]);}
                            fprintf(filePtr, headerFormatString, [anAverager getOutputLabel]);
 
 			  aVal = [anAverager getAveragerValue];
