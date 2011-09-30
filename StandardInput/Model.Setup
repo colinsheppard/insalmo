@@ -7,7 +7,7 @@ randGenSeed                  32461
 numberOfSpecies              1
 
 runStartDate                 10/1/2006
-runEndDate                   10/10/2006
+runEndDate                   9/30/2007
 fishOutputFile               Live_Fish_Out.csv
 fishMortalityFile            Dead_Fish_Out.csv
 reddOutputFile               Redds_Out.csv

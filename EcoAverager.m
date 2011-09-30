@@ -150,27 +150,24 @@ PHASE(Using)
 
 }
 
-- (void)update
-{
-  if (isList)
-    {
+- (void)update{
+  if (isList){
       count = 0;
       total = 0.0;
       totalSquared = 0.0;
       min = max = 0.0;
       
-      {
-        id <Index> iter;
-        id obj;
+      id <Index> iter;
+      id obj;
         
-        iter = [target begin: getCZone (getZone (self))];
-        for (obj = NEXT (iter); GETLOC (iter) == (id) Member; obj = NEXT (iter))
-          ADD (CALL (obj));
-        [iter drop];
+      iter = [target begin: getCZone (getZone (self))];
+      for (obj = NEXT (iter); GETLOC (iter) == (id) Member; obj = NEXT (iter)){
+	ADD (CALL (obj));
       }
-    }
-  else
+      [iter drop];
+  }else{
     ADD (CALL (target));
+  }
 }
 
 - (double)getAverage

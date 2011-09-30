@@ -822,6 +822,14 @@ Boston, MA 02111-1307, USA.
 
     //fprintf(stdout, "PolyCell >>>> drop >>>> BEGIN\n");
     //fflush(0);
+    
+    for(i = 0; i < pixelCount; i++)
+    {
+          [cellZone free: polyCellPixels[i]];
+          polyCellPixels[i] = NULL; 
+    }
+    [cellZone free: polyCellPixels];
+    polyCellPixels = NULL;
 
     for(i = 0; i < numberOfNodes; i++)
     {
@@ -836,13 +844,6 @@ Boston, MA 02111-1307, USA.
 
     //fprintf(stdout, "PolyCell >>>> drop >>>> pixelCount = %d \n",pixelCount);
     //fflush(0);
-    for(i = 0; i < pixelCount; i++)
-    {
-          [cellZone free: polyCellPixels[i]];
-          polyCellPixels[i] = NULL; 
-    }
-    [cellZone free: polyCellPixels];
-    polyCellPixels = NULL;
 
    [cellZone drop];
 

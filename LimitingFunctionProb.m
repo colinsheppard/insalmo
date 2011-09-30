@@ -45,7 +45,8 @@ Boston, MA 02111-1307, USA.
 {
    if([funcList getCount] < 2)
    {
-      [InternalError raiseEvent: "ERROR: LimitingFunctionProb >>>> probName = %s getSurvivalProb funcList has less than 2 members\n", probName];
+     //[InternalError raiseEvent: "ERROR: LimitingFunctionProb >>>> probName = %s getSurvivalProb funcList has less than 2 members\n", probName];
+      [InternalError raiseEvent: "ERROR: LimitingFunctionProb >>>> probName = %s getSurvivalProb funcList has less than 2 members\n", "<probName Missing>"];
    }
 
    minProbFunc = [funcList getFirst];
@@ -87,7 +88,7 @@ Boston, MA 02111-1307, USA.
 
    if((minSurvProb < 0.0) || (minSurvProb > 1.0))
    {
-       [InternalError raiseEvent: "ERROR: LimitingFunctionProb >>>> minSurvProb in %s is not between zero and one. Value is: %f\n", probName, minSurvProb];
+       [InternalError raiseEvent: "ERROR: LimitingFunctionProb >>>> minSurvProb in %s is not between zero and one. Value is: %f\n", "<probName Missing>", minSurvProb];
    }
 
    //xprint(funcListNdx);

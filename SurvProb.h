@@ -43,7 +43,7 @@ id <Zone> probZone;
 id survMgr;
 
 
-char *probName;
+/*char *probName;*/
 id <Symbol> probSymbol;
 
 unsigned isStarvProb;
@@ -65,7 +65,7 @@ id <ListIndex> funcListNdx;
 - setIsStarvProb: (unsigned) aBool;
 - setAnAgentKnows: (unsigned) aBool;
 
-- (const char *) getName;
+/*- (const char *) getName;*/
 - (id <Symbol>) getProbSymbol;
 
 - (BOOL) getIsStarvProb;
@@ -95,5 +95,6 @@ id <ListIndex> funcListNdx;
 
 - createObjectValueFuncWithInputSelector: (SEL) anObjSelector;
 
+- (void) drop;
 
 @end

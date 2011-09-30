@@ -936,6 +936,8 @@ with model input.
       id level4Key = nil;
       id level5Key = nil;
 
+      char* levelKeyName;
+
       double aVal;
 
       while(([ndx getLoc] != End) && ((anAveragerMap = [ndx next]) != nil))
@@ -985,15 +987,30 @@ with model input.
                            [self outputDataColumns];
 
                            if (level1Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,[level1Key getName]);}
+			     levelKeyName = (char *)[level1Key getName];
+                             fprintf(filePtr, headerFormatString,levelKeyName);
+			     [scratchZone free: levelKeyName];
+			   }
                            if (level2Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,[level2Key getName]);}
+			     levelKeyName = (char *)[level2Key getName];
+                             fprintf(filePtr, headerFormatString,levelKeyName);
+			     [scratchZone free: levelKeyName];
+			   }
                            if (level3Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,[level3Key getName]);}
+			     levelKeyName = (char *)[level3Key getName];
+                             fprintf(filePtr, headerFormatString,levelKeyName);
+			     [scratchZone free: levelKeyName];
+			   }
                            if (level4Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,[level4Key getName]);}
+			     levelKeyName = (char *)[level4Key getName];
+                             fprintf(filePtr, headerFormatString,levelKeyName);
+			     [scratchZone free: levelKeyName];
+			   }
                            if (level5Key != dummyKeySymbol) {
-                             fprintf(filePtr, headerFormatString,[level5Key getName]);}
+			     levelKeyName = (char *)[level5Key getName];
+                             fprintf(filePtr, headerFormatString,levelKeyName);
+			     [scratchZone free: levelKeyName];
+			   }
                            fprintf(filePtr, headerFormatString, [anAverager getOutputLabel]);
 
 			  aVal = [anAverager getAveragerValue];

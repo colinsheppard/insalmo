@@ -78,7 +78,7 @@ Boston, MA 02111-1307, USA.
 
   probSymbol = aNameSymbol;
 
-  probName = (char *) [probSymbol getName];
+  //probName = (char *) [probSymbol getName];
 
   return self;
 
@@ -118,10 +118,10 @@ Boston, MA 02111-1307, USA.
 
 
 
-- (const char *) getName
-{
-   return probName;
-}
+//- (const char *) getName
+//{
+//return probName;
+//}
 
 
 
@@ -280,6 +280,18 @@ Boston, MA 02111-1307, USA.
 
 }
 
+- (void) drop {
+  //fprintf(stdout, "SurvProb >>>> drop BEGIN\n");
+  //fflush(0);
+  //[scratchZone free: probName];
+  [funcList deleteAll];
+  [funcList drop];
+  funcList = nil;
+  [funcListNdx drop];
+  funcListNdx = nil;
+  //fprintf(stdout, "SurvProb >>>> drop END\n");
+  //fflush(0);
+}
 
 
 

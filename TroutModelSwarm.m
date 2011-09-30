@@ -3425,9 +3425,16 @@ char **speciesColor;
      [fishMortSymbolList drop];
      fishMortSymbolList = nil;
 
-     [reddMortSymbolList deleteAll];
-     [reddMortSymbolList drop];
-     reddMortSymbolList = nil;
+    //id <ListIndex> lstNdx;
+    //id aSymbol = nil;
+    //lstNdx = [reddMortSymbolList listBegin: scratchZone]; 
+    //while(([lstNdx getLoc] != End) && ((aSymbol = [lstNdx next]) != nil)){
+      //[modelZone free: aSymbol];
+    //}
+    //[lstNdx drop];
+    [reddMortSymbolList deleteAll];
+    [reddMortSymbolList drop];
+    reddMortSymbolList = nil;
 
     //[outmigrationSymbol drop];
     outmigrationSymbol = nil;

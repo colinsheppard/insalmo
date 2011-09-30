@@ -1827,6 +1827,7 @@ Boston, MA 02111-1307, USA.
      survMgr = [survMgr createEnd];
   }
  
+  [mapNdx drop];
   //fprintf(stdout, "Cell >>>> initializeSurvProb >>>> END\n");
   //fflush(0);
 
