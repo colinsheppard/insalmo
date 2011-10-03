@@ -1,9 +1,12 @@
 /*
-inSTREAM Version 4.3, October 2006.
-Individual-based stream trout modeling software. Developed and maintained by Steve Railsback (Lang, Railsback & Associates, Arcata, California) and
-Steve Jackson (Jackson Scientific Computing, McKinleyville, California).
-Development sponsored by EPRI, US EPA, USDA Forest Service, and others.
-Copyright (C) 2004 Lang, Railsback & Associates.
+inSALMO individual-based salmon model, Version 1.0, October 2011.
+Developed and maintained by Steve Railsback, Lang, Railsback & Associates, 
+Steve@LangRailsback.com; Colin Sheppard, critter@stanfordalumni.org; and
+Steve Jackson, Jackson Scientific Computing, McKinleyville, California.
+Development sponsored by US Bureau of Reclamation under the 
+Central Valley Project Improvement Act, EPRI, USEPA, USFWS,
+USDA Forest Service, and others.
+Copyright (C) 2011 Lang, Railsback & Associates.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,6 +23,7 @@ along with this program (see file LICENSE); if not, write to the
 Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 */
+
 
 
 #import <ctype.h>
