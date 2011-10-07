@@ -98,8 +98,12 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
   numberOfEggsLostToHiTemp = 0;
   numberOfEggsLostToSuperimp = 0;
 
+  #ifdef REDD_MORTALITY_REPORT
   printList     = [List create: reddZone];
+  #endif
+  #ifdef REDD_SURV_REPORT
   survPrintList = [List create: reddZone];
+  #endif
 
   
   reddUniformDist = [UniformDoubleDist create: reddZone 
@@ -421,18 +425,22 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
            exit(1);
        }
 
+      #ifdef REDD_MORTALITY_REPORT
        [self createPrintString: eggsLostToDewatering
                               : eggsLostToScouring
                               : eggsLostToLowTemp
                               : eggsLostToHiTemp
                               : eggsLostToSuperimp
                               : [model getModelTime] ];
+       #endif
 
+       #ifdef REDD_SURV_REPORT
        [self createSurvPrintStringWithDewaterSF: dewater
                                     withScourSF: scour
                                    withLoTempSF: loTemp
                                    withHiTempSF: hiTemp
                                  withSuperimpSF: superimp];
+       #endif
      
 
       }
@@ -448,7 +456,9 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
 
   if(numberOfEggs == 0 ) 
   {
+      #ifdef REDD_MORTALITY_REPORT
      [self printReport];
+      #endif
      //[self createReddSummaryStr];
      //[self printReddSummary];  
 
@@ -574,7 +584,9 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
      // determine if Redd empty - if so, remove redd
      if (numberOfEggs <= 0)
      {
+      #ifdef REDD_MORTALITY_REPORT
         [self printReport]; // Added 2/28/04 skj
+      #endif
         [self removeWhenEmpty];
      }
   }

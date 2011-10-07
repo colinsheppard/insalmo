@@ -2,3 +2,5 @@
 insalmo
 *_Out.csv
 *.rpt
+callgrind*
+massif*
