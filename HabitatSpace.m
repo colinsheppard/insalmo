@@ -1609,7 +1609,7 @@ Boston, MA 02111-1307, USA.
             if([aCell getPolyCellNumber] == cellNo)
             {
                [aCell setCellFracShelter: fracShelter];
-               [aCell setDistanceToHide: distToHide];
+               [aCell setDistanceToHide: (distToHide * 100)];  // Convert from meters to centimeters
                [aCell setCellFracSpawn: fracSpawn];
                [aCell calcMaxAvailGravelArea];
                //[aCell calcCellAvailableGravelArea];
