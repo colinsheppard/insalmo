@@ -99,6 +99,10 @@ Boston, MA 02111-1307, USA.
 
    //fprintf(stderr, "ObjectValueFunc >>>> updateWith >>>> objectVal = %f \n", objectVal);
    //fflush(0);
+   
+   // Following statement was missing until Feb 2012. It does not affect inSALMO.
+   funcValue = objectVal;
+
 
    return self;
 
