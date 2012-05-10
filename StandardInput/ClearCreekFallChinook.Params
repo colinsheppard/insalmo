@@ -97,7 +97,7 @@ mortFishAqPredL9                    18
 mortFishAqPredH1                   200
 mortFishAqPredH9                     0
 
-mortFishAqPredMin                 0.92
+mortFishAqPredMin                 0.94
 
 mortFishAqPredT1                    15
 mortFishAqPredT9                     8
@@ -118,7 +118,7 @@ mortFishTerrPredH9                -100
 mortFishTerrPredL1                   6
 mortFishTerrPredL9                   3
 
-mortFishTerrPredMin               0.95
+mortFishTerrPredMin               0.98
 
 mortFishTerrPredT1                  10
 mortFishTerrPredT9                  50

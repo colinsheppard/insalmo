@@ -1,9 +1,9 @@
 @begin
-habDriftConc               6.50E-10
+habDriftConc                 10E-10
 habDriftRegenDist              1000
 habMaxSpawnFlow                10.0
 habPreyEnergyDensity           2500
-habSearchProd              5.00E-07
+habSearchProd               8.0E-07
 habShearParamA                0.010
 habShearParamB                 0.49
 habShelterSpeedFrac             0.4
