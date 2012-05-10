@@ -1,12 +1,12 @@
 /*
-EcoSwarm library for individual-based modeling, last revised October 2011.
+EcoSwarm library for individual-based modeling, last revised February 2012.
 Developed and maintained by Steve Railsback, Lang, Railsback & Associates, 
 Steve@LangRailsback.com; Colin Sheppard, critter@stanfordalumni.org; and
 Steve Jackson, Jackson Scientific Computing, McKinleyville, California.
 Development sponsored by US Bureau of Reclamation under the 
 Central Valley Project Improvement Act, EPRI, USEPA, USFWS,
 USDA Forest Service, and others.
-Copyright (C) 2011 Lang, Railsback & Associates.
+Copyright (C) 2004-2012 Lang, Railsback & Associates.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,9 +27,10 @@ Boston, MA 02111-1307, USA.
 
 /*
 
-This version of BreakoutReporter was created 9/6/2011 by Steve Railsback.
-It is modified to write a single column of output values, with the breakout 
-categories listed in a different columns. This format is more flexible
+This version of BreakoutReporter was created 12/7/2011 by Steve Railsback.
+It is modified to write one column of output for each output variable, with the breakout 
+categories listed in columns, instead of having separate output columns for each value
+of each breakout category. This format is more flexible
 for use with Excel pivot tables: it lets you create the breakouts you want in Excel,
 and pivot tables are easier to create because the number of columns does not vary
 with model input.
@@ -97,9 +98,9 @@ with model input.
    reporter->useCSV = FALSE;
    reporter->columnWidth = aColumnWidth;
    sprintf(reporter->headerFormatString, "%s%d%s", "%-",aColumnWidth,"s");
-   sprintf(reporter->floatFormatString, "%s%d%s", "%-",aColumnWidth,"f\n");
-   sprintf(reporter->intFormatString, "%s%d%s", "%-",aColumnWidth,"d\n");
-   sprintf(reporter->expFormatString, "%s%d%s", "%-",aColumnWidth,"E\n");
+   sprintf(reporter->floatFormatString, "%s%d%s", "%-",aColumnWidth,"f");
+   sprintf(reporter->intFormatString, "%s%d%s", "%-",aColumnWidth,"d");
+   sprintf(reporter->expFormatString, "%s%d%s", "%-",aColumnWidth,"E");
    fprintf(stdout, "BreakoutReport >>>>   createBegin: aZone >>>> useCSV = %d \n", (int) reporter->useCSV);
    fprintf(stdout, "BreakoutReport >>>>   headerFormatString = %s\n", reporter->headerFormatString);
    fprintf(stdout, "BreakoutReport >>>>   floatFormatString = %s\n", reporter->floatFormatString);
@@ -838,8 +839,18 @@ with model input.
            fprintf(filePtr, headerFormatString, level5HeaderString);
         }
 
-      fprintf(filePtr, headerFormatString, "OutputType");
-      fprintf(filePtr, headerFormatString, "Value");
+//      fprintf(filePtr, headerFormatString, "OutputType");
+
+//      fprintf(filePtr, headerFormatString, "Value");
+
+     id <ListIndex> lstNdx = [outputWithLabelsList listBegin: scratchZone];
+     OutputWithLabel* outputLabel = (OutputWithLabel *) nil;
+       
+     while(([lstNdx getLoc] != nil) && ((outputLabel = (OutputWithLabel *) [lstNdx next]) != (OutputWithLabel *) nil))
+     {
+         fprintf(filePtr, headerFormatString, outputLabel);
+
+     }
 
 
           if(useCSV == TRUE)
@@ -943,9 +954,6 @@ with model input.
 
       double aVal;
 
-      while(([ndx getLoc] != End) && ((anAveragerMap = [ndx next]) != nil))
-      {
-
           [level1Ndx setLoc: Start];
           while(([level1Ndx getLoc] != End) && ((level1Key = [level1Ndx next]) != nil))
           {
@@ -976,16 +984,8 @@ with model input.
 
 			//const char* level5KeyName = [level5Key getName];
 
-                           BreakoutAverager* anAverager;
-                           
-                           anAverager = [[[[[anAveragerMap at: level1Key]
-                                                           at: level2Key]
-                                                           at: level3Key]
-                                                           at: level4Key]
-                                                           at: level5Key];
-                           [anAverager update];
-
-                           // Now, print out one line per value, with data columns
+ 
+                           // Now, print out one line per combination of categories, with data columns
 
                            [self outputDataColumns];
 
@@ -1014,47 +1014,123 @@ with model input.
                              fprintf(filePtr, headerFormatString,levelKeyName);
 			     [scratchZone free: levelKeyName];
 			   }
-                           fprintf(filePtr, headerFormatString, [anAverager getOutputLabel]);
+
+                      [ndx setLoc: Start];
+                      while(([ndx getLoc] != End) && ((anAveragerMap = [ndx next]) != nil))
+                      {
+                        BreakoutAverager* anAverager;
+                           
+                           anAverager = [[[[[anAveragerMap at: level1Key]
+                                                           at: level2Key]
+                                                           at: level3Key]
+                                                           at: level4Key]
+                                                           at: level5Key];
+                           [anAverager update];
 
 			  aVal = [anAverager getAveragerValue];
-			  if(aVal==(double)(int)aVal){
-			    if(useCSV == TRUE){
-			      fprintf(filePtr, "%d\n",(int)aVal);
-			    }else{
+			  if(aVal==(double)(int)aVal)  // It's an integer
+                          {
+			    if(useCSV == TRUE)
+                            {
+			      fprintf(filePtr, "%d,",(int)aVal);
+			    }
+                            else
+                            {
 			      fprintf(filePtr, intFormatString,(int)aVal);
 			    }
-			  }else{
-			    if(aVal == 0.0){
-				   fprintf(filePtr, floatFormatString,aVal);
-			    }else if(aVal < 0.0){
-				    if(log10(-aVal) < -3.0){
-				      if(useCSV == TRUE){
-					   fprintf(filePtr,"%E\n",aVal);
-				      }else{
-				        fprintf(filePtr,expFormatString,aVal);
-				      }
-				    }else{
-				      fprintf(filePtr, floatFormatString,aVal);
-				    }
-			    }else if(log10(aVal) < -3.0){
-			      if(useCSV == TRUE){
-				   fprintf(filePtr,"%E\n",aVal);
-			      }else{
-				fprintf(filePtr,expFormatString,aVal);
-			      }
-			    }else{
+			  }
+                          else   // It's a float
+                          {
+                            
+			    if(aVal == 0.0)
+                            {
 				   fprintf(filePtr, floatFormatString,aVal);
 			    }
-			  }
-//                           fflush(filePtr);
-                      }                           
-                   }
-                }
-             }
-          }
+                            else if(aVal < 0.0)  // It's a negative float
+                             {
+                               if(log10(-aVal) < -3.0)  // It's a small neg. float
+                               {
+                                 if(useCSV == TRUE)
+                                      {
+					   fprintf(filePtr,"%E,",aVal);
+				      }
+                                      else
+                                      {
+				        fprintf(filePtr,expFormatString,aVal);
+				      }
+			       }                        // It's a small neg. float
+                               else  // It's a big neg. float
+                               {
+			         if(useCSV == TRUE)
+                                 {
+				   fprintf(filePtr,"%f,",aVal);
+			         }
+                                 else
+                                 {
+				   fprintf(filePtr,floatFormatString,aVal);
+				 }
+			       }                        // It's a big neg. float
+			     }                                // It's a negative float
+                            else if(log10(aVal) < -3.0)    // It's a small pos. float
+                             {
+			       if(useCSV == TRUE)
+                               {
+				   fprintf(filePtr,"%E,",aVal);
+			       }
+                               else
+                               {
+				 fprintf(filePtr,expFormatString,aVal);
+			       }
+			     }                        // It's a small pos. float
+                            else                      // It's a big pos. float
+                            {
+			       if(useCSV == TRUE)
+                               {
+				   fprintf(filePtr,"%f,",aVal);
+			       }
+                               else
+                               {
+				   fprintf(filePtr, floatFormatString,aVal);
+			       }
+			    }                         // It's a big pos. float
+			  }  // It's a float
 
-      } //while ndx
+                      } //while ndx
 
+                      if(useCSV == TRUE)
+                      {
+                         //
+                         // go back one character and in order to 
+                         // overwrite trailing ',' with a \n
+                         //
+                         long filePos = 0;
+                         if((filePos = ftell(filePtr)) != (long) -1)
+                         {
+                             filePos = filePos - 1;
+                             if(fseek(filePtr, filePos, 0) != 0)
+                             {
+                              fprintf(stderr, "BreakoutReporter >>>>  printBreakoutReportHeader >>>> ERROR: cannot reset output file position\n");
+                                 fflush(0);
+                                 exit(1);
+                             }
+
+                         }
+                         else
+                          {
+                                fprintf(stderr, "BreakoutReporter >>>> printBreakoutReportHeader >>>> ERROR: cannot get output file position\n");
+                                fflush(0);
+                                exit(1);
+                          }
+                      } //if useCSV
+
+                      // And finally end the line
+                      fprintf(filePtr, "\n");
+
+                   }  //level5Ndx
+                }  //level4Ndx
+             }  //level3Ndx
+          }  //level2Ndx
+       } //level1Ndx
 
       fflush(filePtr);
 
