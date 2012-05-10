@@ -43,11 +43,11 @@ Boston, MA 02111-1307, USA.
 ///////////////////////////////////////////////////////////////////////////////
 //
 // compareArrivalTime
-// Needed by QSort in TroutModelSwarm method: buildTotalTroutPopList
+// Needed by QSort in TroutModelSwarm method: createSpawners
 //
 ///////////////////////////////////////////////////////////////////////////////
-//- (int) compareArrivalTime: aSpawner 
-- (int) compare: aSpawner 
+- (int) compareArrivalTime: aSpawner 
+//- (int) compare: aSpawner 
 {
   double oFishArriveTime = [aSpawner getArrivalTime];
 

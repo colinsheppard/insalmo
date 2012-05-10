@@ -899,7 +899,7 @@ char **speciesColor;
   fprintf(stdout,"TroutModelSwarm >>>> createInitialFish >>>> END\n");
   fflush(0);
 
-  [QSort sortObjectsIn:  spawners]; 
+  [QSort sortObjectsIn: spawners using: M(compareArrivalTime:)];
 
 /*
    id <ListIndex> ndx = [spawners listBegin: scratchZone];
@@ -1906,7 +1906,7 @@ char **speciesColor;
 ///////////////////////////////////////
 - sortLiveFish
 {
-  [QSort sortObjectsIn:  liveFish];
+  [QSort sortObjectsIn:  liveFish using: M(compare:)];
   [QSort reverseOrderOf: liveFish];
 
   return self;

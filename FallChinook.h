@@ -32,7 +32,7 @@ Boston, MA 02111-1307, USA.
 
 }
 + createBegin: aZone;
-- (int) compare: aSpawner;
+- (int) compareArrivalTime: aSpawner;
 
 - (void) drop;
 
