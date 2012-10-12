@@ -2583,6 +2583,13 @@ Boston, MA 02111-1307, USA.
 /////////////////////////////////////////////////////////////////
 - grow 
 {
+    //
+    // if we are already dead -- or outmigrated --
+    // just return. Important to keep outmigrated fish from growing into
+    // the next (wrong) size class.
+
+    if(causeOfDeath != nil) return self;
+
   prevWeight = fishWeight;
   prevLength = fishLength;
   prevCondition = fishCondition;
