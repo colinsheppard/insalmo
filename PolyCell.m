@@ -677,6 +677,19 @@ Boston, MA 02111-1307, USA.
    ppNdx = nil;
 
    //
+   // The list of adjacent cells shouldn't be empty
+   //
+   if([listOfAdjacentCells getCount] < 1)
+   {
+     fprintf(stderr, "ERROR: PolyCell >>>> createPolyAdjacentCellsFrom >>>> adjacentCells is empty at CellNum: %d\n", 
+        polyCellNumber);
+     fflush(0);
+     exit(1);
+   }
+
+
+
+   //
    // Do not drop ndx, it belongs to HabitatSpace!!
    //
 

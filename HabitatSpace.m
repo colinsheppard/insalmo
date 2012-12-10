@@ -781,7 +781,8 @@ Boston, MA 02111-1307, USA.
 /////////////////////////////////////////////
 - buildPolyCells
 {
-    fprintf(stdout, "HabitatSpace >>>> buildPolyCells >>>> BEGIN\n");
+    // Do not remove this print statement; needed to catch bad input.
+    fprintf(stdout, "HabitatSpace %s >>>> buildPolyCells >>>> BEGIN\n",reachName);
     fflush(0);
 
     polyCellList = [List create: habitatZone];
