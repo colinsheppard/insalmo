@@ -163,12 +163,15 @@ id <Symbol> Female, Male, CoinFlip;  // sex of fish
 /////////////////////////////////////////////////////////////
 - drawSelfOn: (id <Raster>) aRaster 
 {
+  if (myRasterX >= 0)  // myRasterX is -1 if there are no pixels in cell
+  {
   [aRaster ellipseX0: myRasterX - 3 
                   Y0: myRasterY - 2 
                   X1: myRasterX + 3 
                   Y1: myRasterY + 2 
                Width: 1 
                Color: myColor];  
+  }
 
   return self;
 }

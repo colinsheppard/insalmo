@@ -205,6 +205,10 @@ Boston, MA 02111-1307, USA.
   // don't call super, do all of the work here 
   //
 
+  // Just stop if there are no pixels - happens for small cells & low resolution
+  if(pixelCount < 1) 
+  { return self;}
+
   // If cell is dry shade it accordingly, otherwise shade according to colormap
   if(polyCellDepth < dryDepthThreshold){
 	  interiorColor = DRY_CELL_COLOR;
@@ -1336,8 +1340,18 @@ Boston, MA 02111-1307, USA.
   [reddsIContain addFirst: aRedd];
   numberOfRedds = [reddsIContain getCount];
 
-  [aRedd setRasterX: polyCellPixels[aPixelNum]->pixelX];
-  [aRedd setRasterY: polyCellPixels[aPixelNum]->pixelY];
+  // Deal with potential that there are no pixels
+  if(pixelCount > 0)
+  {
+    [aRedd setRasterX: polyCellPixels[aPixelNum]->pixelX];
+    [aRedd setRasterY: polyCellPixels[aPixelNum]->pixelY];
+  }
+
+  else
+  {
+    [aRedd setRasterX: -1];
+    [aRedd setRasterY: -1];
+  }
 
   [reddPixelDist drop];
 
