@@ -1065,6 +1065,14 @@ Boston, MA 02111-1307, USA.
 //////////////////////////////////////////////////////////////////
 - (void) setCellFracShelter: (double) aDouble 
 {
+  if(aDouble < 0 || aDouble > 1.0)
+  {
+     fprintf(stderr, "ERROR: FishCell # %d >>>> fracShelter given illegal value of: %f \n",
+       polyCellNumber, aDouble);
+     fflush(0);
+     exit(1);
+  }
+
     cellFracShelter = aDouble;
 }
 
@@ -1127,6 +1135,14 @@ Boston, MA 02111-1307, USA.
 //////////////////////////////////////////////////////////////////
 - setCellFracSpawn: (double) aFracSpawn 
 {
+  if(aFracSpawn < 0.0 || aFracSpawn > 1.0)
+  {
+     fprintf(stderr, "ERROR: FishCell # %d >>>> fracSpawn given illegal value of: %f \n",
+       polyCellNumber, aFracSpawn);
+     fflush(0);
+     exit(1);
+  }
+
    cellFracSpawn = aFracSpawn;
    return self;
 }
