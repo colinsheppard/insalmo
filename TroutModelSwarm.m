@@ -1634,7 +1634,7 @@ char **speciesColor;
 	     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> aRandInt = %d\n", aRandInt);
 	     // fflush(0);
 		   //if([fishCell getPolyCellDepth] <= 0.0)
-		   if([fishCell getPolyCellDepth] <= ([aSpawner getFishLength] / 2)){
+		   if([fishCell getPolyCellDepth] <= ([aSpawner getFishLength] / 20)){
 			 fishCell = (FishCell *) nil;
 			 continue;
 		   }
