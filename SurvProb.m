@@ -1,5 +1,5 @@
 /*
-EcoSwarm library for individual-based modeling, last revised October 2011.
+EcoSwarm library for individual-based modeling, last revised April 2013.
 Developed and maintained by Steve Railsback, Lang, Railsback & Associates, 
 Steve@LangRailsback.com; Colin Sheppard, critter@stanfordalumni.org; and
 Steve Jackson, Jackson Scientific Computing, McKinleyville, California.

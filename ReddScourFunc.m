@@ -1,5 +1,5 @@
 /*
-inSALMO individual-based salmon model, Version 1.2, October 2011.
+inSALMO individual-based salmon model, Version 1.2, April 2013.
 Developed and maintained by Steve Railsback, Lang, Railsback & Associates, 
 Steve@LangRailsback.com; Colin Sheppard, critter@stanfordalumni.org; and
 Steve Jackson, Jackson Scientific Computing, McKinleyville, California.
