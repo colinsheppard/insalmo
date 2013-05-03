@@ -1971,10 +1971,13 @@ Boston, MA 02111-1307, USA.
            id aReach = nil;
            id <ListIndex> reachNdx = [habDownstreamLinksToUS listBegin: scratchZone];
            id <List> oReachPotentialCells = [List create: scratchZone];
-           int numNonZeroDepthCells = 0;
+           int numOKCells = 0;
            while(([reachNdx getLoc] != End) && ((aReach = [reachNdx next]) != nil))
            {
-                  id <List> cellList = [aReach getUpstreamCells]; 
+   // Starting in V. 1.5, select among all DS cells that are not dry and have
+   // velocity less than fish max swim speed.
+
+                  id <List> cellList = [aReach getPolyCellList]; 
  
                   if([cellList getCount] > 0)
                   { 
@@ -1983,9 +1986,11 @@ Boston, MA 02111-1307, USA.
                  
                       while(([clNdx getLoc] != End) && ((fishCell = [clNdx next]) != nil))
                       {
-                          if([fishCell getPolyCellDepth] > 0.0)
+    // Starting in V. 1.5, fish move down only into non-dry cells with vel < maxSwimSpeed
+    // Note that maxSwimSpeed is not updated for different temperature in new reach
+                          if([fishCell getPolyCellDepth] > 0.0 && [fishCell getPolyCellVelocity] < maxSwimSpeedForCell)
                           {
-                              numNonZeroDepthCells++;
+                              numOKCells++;
                               [oReachPotentialCells addLast: fishCell];
                           }
                        }
@@ -1995,33 +2000,35 @@ Boston, MA 02111-1307, USA.
             }
             [reachNdx drop];
 
-            if(numNonZeroDepthCells == 0)
+            if(numOKCells == 0)
             {
                  [self moveToBestDest: bestDest];
-                  fprintf(stderr, "WARNING: Trout >>>> moveToMaximizeExpectedMaturity >>>>  habDownstreamLinksToUS all have zero depth >>>> juvenile staying in reach %s\n", [reach getReachName]);
+                  fprintf(stderr, "WARNING: Trout >>>> moveToMaximizeExpectedMaturity >>>>  habDownstreamLinksToUS none have good depth & vel >>>> juvenile staying in reach %s\n", [reach getReachName]);
                   fflush(0);
             }
-            else if(numNonZeroDepthCells == 1)
+            else if(numOKCells == 1)
             {
                  bestDest = [oReachPotentialCells getFirst];
             }
             else
             {
                    //
-                   // randomly select one the non-dry cells
+                   // randomly select one the cells meeting criteria
                    //
                    unsigned oReachCellChoice = [oReachCellChoiceDist getUnsignedWithMin: 0
-                                                                                withMax: (unsigned) (numNonZeroDepthCells - 1)]; 
+                                                                                withMax: (unsigned) (numOKCells - 1)]; 
     
 
                    bestDest = [oReachPotentialCells atOffset: oReachCellChoice];
 
             }
                // 
-               // Now move to the downstream reach and repeat the whole move
+               // Now move to the downstream reach and repeat the move
                //
                   [self moveToBestDest: bestDest];
-                  [self moveToMaximizeExpectedMaturity];
+              //    [self moveToMaximizeExpectedMaturity];
+   // Starting in V. 1.5, use method that allows only move one reach/day
+                  [self moveToMaximizeEMInReach];
         
             [oReachPotentialCells removeAll];
             [oReachPotentialCells drop];
@@ -2076,6 +2083,150 @@ Boston, MA 02111-1307, USA.
   return self;
 
 } // moveToMaximizeExpectedMaturity 
+
+
+///////////////////////////////////////////////////////////////////////
+//
+// moveToMaximizeEMInReach         SFR 3/28/2013
+// Same as moveToMaximizeExpectedMaturity except
+// does not include outmigration
+///////////////////////////////////////////////////////////////////////
+- moveToMaximizeEMInReach 
+{
+  id <ListIndex> destNdx;
+  FishCell *destCell=nil;
+  FishCell *bestDest=nil;
+  double bestExpectedMaturity=0.0;
+  double expectedMaturityHere=0.0;
+  double expectedMaturityAtDest=0.0;
+
+  // double outMigFuncValue = [juveOutMigLogistic evaluateFor: fishLength];
+
+  //fprintf(stdout, "Trout >>>> moveToMaximizeExpectedMaturity >>>> BEGIN >>>> fish = %p\n", self);
+  //fprintf(stdout, "Trout >>>> moveToMaximizeExpectedMaturity >>>> outMigFuncValue = %f\n", outMigFuncValue);
+  //fflush(0);
+  //exit(0);
+
+  if(myCell == nil) 
+  {
+    fprintf(stderr, "WARNING: Trout >>>> moveToMaximizeExpectedMaturity >>>> Fish 0x%p has no Cell context.\n", self);
+    fflush(0);
+    return self;
+  }
+
+  //
+  // The following vars. are now set in expectedMaturityAt:
+  
+  // temporaryTemperature = [myCell getTemperature];
+  // temporaryTurbidity =  [myCell getTurbidity];
+  // standardResp    = [self calcStandardRespirationAt: myCell];
+  // cMax            = [self calcCmax: temporaryTemperature];
+  // detectDistance  = [self calcDetectDistanceAt: myCell]; 
+
+  //
+  // calculate our expected maturity here
+  //
+  expectedMaturityHere = [self expectedMaturityAt: myCell];
+ 
+  if(destCellList == nil)
+  {
+      fprintf(stderr, "ERROR: Trout >>>> moveToMaximizeExpectedMaturity >>>> destCellList is nil\n");
+      fflush(0);
+      exit(1);
+  }
+
+  //
+  // destCellList must be empty
+  // before it is populated.
+  //
+  [destCellList removeAll];
+  
+  //
+  // Now, let the habitat space populate
+  // the destCellList with myCells adjacent cells
+  // and any other cells that are within
+  // maxMoveDistance.
+  //
+  //fprintf(stdout, "Trout >>>> moveToMaximizeExpectedMaturity >>>> maxMoveDistance = %f\n", maxMoveDistance);
+   //fflush(0);
+  //xprint(myCell);
+
+
+  [myCell getNeighborsWithin: maxMoveDistance
+                    withList: destCellList];
+
+  destNdx = [destCellList listBegin: scratchZone];
+  while (([destNdx getLoc] != End) && ((destCell = [destNdx next]) != nil))
+  {
+      //
+      // SHUNT FOR DEPTH ... it's assumed fish won't jump onto shore
+      //
+      if([destCell getPolyCellDepth] <= 0.0)
+      {
+         continue;
+      }
+
+      expectedMaturityAtDest = [self expectedMaturityAt: destCell];
+
+      if (expectedMaturityAtDest >= bestExpectedMaturity) 
+      {
+	  bestExpectedMaturity = expectedMaturityAtDest;
+	  bestDest = destCell;
+      }
+
+   }  //while destNdx
+
+   if(expectedMaturityHere >= bestExpectedMaturity) 
+   {
+      //
+      // Stay here 
+      //
+      bestDest = myCell;
+      bestExpectedMaturity = expectedMaturityHere;
+   }
+
+   if(bestDest == nil) 
+   { 
+      fprintf(stderr, "ERROR: Trout >>>> moveToMaximizeExpectedMaturity >>>> bestDest is nil\n");
+      fflush(0);
+      exit(1);
+   }
+
+   // 
+   //  Now, move 
+   //
+
+   [self moveToBestDest: bestDest];
+
+	/*  Outmigration stuff deleted here */
+
+   //
+   // RESOURCE CLEANUP
+   // 
+   if(destNdx != nil) 
+   {
+     [destNdx drop];
+   }
+
+   #ifdef DEBUG_TROUT_FISHPARAMS
+     #ifdef DEBUG_MOVE
+   
+       fprintf(stderr,"\n");
+       fprintf(stderr,"<<<<<METHOD: moveToMaximizeExpectedMaturity speciesNdx = %d >>>>>\n", speciesNdx);
+       xprint(self);
+       fprintf(stderr,"fishEMForUnknownCells = %f\n", fishParams->fishEMForUnknownCells);
+       fprintf(stderr,"\n"); 
+    
+     #endif
+   #endif
+
+  //fprintf(stderr, "Trout >>>> moveToMaximizeExpectedMaturity >>>> END >>>> expectedMaturityAtDest = %f\n", expectedMaturityAtDest);
+  //fprintf(stderr, "Trout >>>> moveToMaximizeExpectedMaturity >>>> END >>>> fish = %p\n", self);
+  //fflush(0);
+
+  return self;
+
+} // moveToMaximizeEMInReach 
 
 
 ///////////////////////////////////////////////////////////////////////

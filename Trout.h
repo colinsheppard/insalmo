@@ -325,6 +325,7 @@ id toggledFishForHabSurvUpdate;
 - outmigrateFrom: (FishCell *) bestDest;
 
 - moveToMaximizeExpectedMaturity;
+- moveToMaximizeEMInReach; // New in v. 1.5
 - moveInReachToMaximizeSurvival;
 //- moveToMaximizeSurvival;
 //- moveToMinimizeRiskGrowth;
