@@ -2988,15 +2988,21 @@ Boston, MA 02111-1307, USA.
   double fSA;
   double velocity=0.0;
   double habSearchProd=0.0;
-  double aMaxSwimSpeed = [self calcMaxSwimSpeedAt: aCell];
+  double aMaxSwimSpeed;
   
   if (isSpawner == YES)
   {
      return 0.0;
   }
 
+  if ([aCell getPolyCellDepth] <= 0.0)
+  {
+     return 0.0;
+  }
+
   else
  {
+  aMaxSwimSpeed = [self calcMaxSwimSpeedAt: aCell];
   fSA = fishParams->fishSearchArea;
 
   velocity = [aCell getPolyCellVelocity];
