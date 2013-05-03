@@ -1,18 +1,23 @@
-inSALMO Version 1.2, May 2012.
+inSALMO Version 1.5, May 2013.
 
-This software implements version 1.0 of the inSALMO individual-based salmon model. The 
-model represents effects of river habitat on freshwater life stages of salmon, from 
-spawning through outmigration of juveniles. (The version number 1.2 results from
-several bug-fixes; the code still implements v. 1.0 of the model description.)
+This software implements version 1.5 of the inSALMO individual-based salmon model. The model represents effects of river habitat on freshwater life stages of salmon, from spawning through outmigration of juveniles. 
 
-The model is thoroughly documented in the report "inSALMO Version 1.0:
-Model Improvements and Demonstration Application to Chinook Salmon Spawning, Incubation, 
-and Rearing in Clear Creek, California" prepared by Lang, Railsback & Associates and 
-USDA Forest Service Pacific Southwest Research Station for US Bureau of Reclamation, 
-under Contract R09PS20027, Improvement of Salmon Life-Cycle Framework Model (inSALMO). 
+Version 1.5 implements several model revisions plus bug fixes. The revisions are outlined below and will be documented in an updated model description to be published in May, 2013.
+
+The previous version number 1.2 resulted from several bug-fixes; the code still implemented v. 1.0 of the model description. That version of the model is thoroughly documented in the report "inSALMO Version 1.0: Model Improvements and Demonstration Application to Chinook Salmon Spawning, Incubation, and Rearing in Clear Creek, California" prepared by Lang, Railsback & Associates and USDA Forest Service Pacific Southwest Research Station for US Bureau of Reclamation, under Contract R09PS20027, Improvement of Salmon Life-Cycle Framework Model (inSALMO). 
 
 For information contact Steve Railsback, Steve@LangRailsback.com
 
-
 Model documentation and code is available at:
 http://www.fws.gov/sacramento/Fisheries/Instream-Flow/fisheries_instream-flow_inSalmo.htm
+
+Version 1.5 includes these modifications from v. 1.0:
+
+1) In the outmigration action, juveniles moving downstream into a new reach 
+ (a) choose a cell randomly out of all those in the reach with velocity < maxSwimSpeed, not just those at the upper end, and 
+ (b) move only one reach per day.
+2) Adults are no longer forced to spawn on last day of spawning window.
+3) Parameter changes:
+ (a) fishSpawnProb varied in an experiment; value of 0.08 best reproduces time series of outmigrant lengths
+ (b) New aquatic predation parameters to better reflect Clear Creek habitat and predators
+4) New input for adult initialization that is modified (from Spawning Area Mapping data) to better reflect actual spawner distributions.
