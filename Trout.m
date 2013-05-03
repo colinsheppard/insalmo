@@ -1844,7 +1844,7 @@ Boston, MA 02111-1307, USA.
 
 ///////////////////////////////////////////////////////////////////////
 //
-// moveToMaximizeExpectedMaturity 
+// moveToMaximizeExpectedMaturity
 //
 ///////////////////////////////////////////////////////////////////////
 - moveToMaximizeExpectedMaturity 
@@ -1855,9 +1855,6 @@ Boston, MA 02111-1307, USA.
   double bestExpectedMaturity=0.0;
   double expectedMaturityHere=0.0;
   double expectedMaturityAtDest=0.0;
-
-  double temporaryTemperature;
-  double temporaryTurbidity;
 
   double outMigFuncValue = [juveOutMigLogistic evaluateFor: fishLength];
 
@@ -1875,12 +1872,12 @@ Boston, MA 02111-1307, USA.
 
   //
   // Calculate the variables that depend only on the reach that a fish is in.
-  //
-  temporaryTemperature = [myCell getTemperature];
-  temporaryTurbidity =  [myCell getTurbidity];
-  standardResp    = [self calcStandardRespirationAt: myCell];
-  cMax            = [self calcCmax: temporaryTemperature];
-  detectDistance  = [self calcDetectDistanceAt: myCell]; 
+  //  (can't do this because cells may be in multiple reaches, with different 
+  //  temperature and turbidity. Moved to expectedMaturityAt:
+  // temporaryTemperature = [myCell getTemperature];
+  // standardResp    = [self calcStandardRespirationAt: myCell];
+  // cMax            = [self calcCmax: temporaryTemperature];
+  // detectDistance  = [self calcDetectDistanceAt: myCell]; 
 
   //
   // calculate our expected maturity here
@@ -2099,7 +2096,6 @@ Boston, MA 02111-1307, USA.
   double expectedMaturityAtDest=0.0;
 
   double temporaryTemperature;
-  double temporaryTurbidity;
 
   //fprintf(stdout, "Trout >>>> moveInReachToMaximizeSurvival >>>> BEGIN >>>> fish = %p\n", self);
   //fprintf(stdout, "Trout >>>> moveInReachToMaximizeSurvival >>>> outMigFuncValue = %f\n", outMigFuncValue);
@@ -2117,7 +2113,6 @@ Boston, MA 02111-1307, USA.
   // Calculate the variables that depend only on the reach that a fish is in.
   //
   temporaryTemperature = [myCell getTemperature];
-  temporaryTurbidity =  [myCell getTurbidity];
   standardResp    = [self calcStandardRespirationAt: myCell];
   cMax            = [self calcCmax: temporaryTemperature];
   detectDistance  = [self calcDetectDistanceAt: myCell]; 
@@ -2468,6 +2463,11 @@ Boston, MA 02111-1307, USA.
   maxSwimSpeedForCell = [self calcMaxSwimSpeedAt: aCell];
   feedTimeForCell = [self calcFeedTimeAt: aCell];
   depthLengthRatioForCell = [self calcDepthLengthRatioAt: aCell];
+  
+  // and these trout instance variables depend on reach and fish
+  standardResp = [self calcStandardRespirationAt: aCell];
+  cMax = [self calcCmax: [aCell getTemperature]];
+  detectDistance = [self calcDetectDistanceAt: aCell]; 
 
 
   //
