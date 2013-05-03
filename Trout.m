@@ -1345,9 +1345,7 @@ Boston, MA 02111-1307, USA.
    *    g) steady flows (cell) <branch> <msg>
    *    h) condition threshhold (fish) <calc>
 
-	Criteria are re-ordered for salmon so females spawn
-	on the last day of date window even if some criteria
-	are not met.
+	Criteria are re-ordered for salmon.
 
    */
 
@@ -1390,12 +1388,13 @@ Boston, MA 02111-1307, USA.
 
   //
   //  IS IT THE LAST DAY OF THE SPAWN WINDOW?
-  //
-
+  //  Removed as criterion starting with v. 1.5
+  /*
   if([timeManager isThisTime: currentTime onThisDay: fishParams->fishSpawnEndDate] == YES) 
   { 
       return YES;
   }
+  */
 
 
   currentTemp = [reach getTemperature];
