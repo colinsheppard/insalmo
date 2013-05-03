@@ -110,7 +110,7 @@ Boston, MA 02111-1307, USA.
    // If there is no gravel, then there can be no superimposition
    if ([[aRedd getCell] getCellFracSpawn] < 0.0000001)
    {
-     funcValue = 0.0;
+     funcValue = 1.0;
      return self;
    }
   
