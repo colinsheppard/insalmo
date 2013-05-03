@@ -912,6 +912,8 @@ Boston, MA 02111-1307, USA.
               [newPolyCell setNumberOfSpecies: numberOfSpecies];
               [newPolyCell setFishParamsMap: fishParamsMap];
               [newPolyCell setTimeManager: timeManager];
+              [newPolyCell setHabShearParamA: habShearParamA
+							  habShearParamB: habShearParamB];
 
               [newPolyCell buildObjects]; //fishCell needs to have objects built
               [polyCellList addLast: newPolyCell];
