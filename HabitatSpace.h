@@ -381,7 +381,6 @@ long int maxYCoordinate;
 - (id <List>) getPolyCellList;
 - (unsigned int) getPolyPixelsX;
 - (unsigned int) getPolyPixelsY;
-- (FishCell *) getCellForNewFishWithCellNum: (int) aCellNum;
 - (FishCell *) getCellWithCellNum: (int) aCellNum;
 //
 // END POLY CELLS

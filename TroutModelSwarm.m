@@ -1597,6 +1597,8 @@ char **speciesColor;
     id <List> activeSpawners = [List create: scratchZone];
     time_t arrivalTime = -1;
     id randCellDist = nil;
+	int aRandInt;
+	int maxCellTrials = 10000;
    
     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> BEGIN\n");
     // fflush(0);
@@ -1623,30 +1625,39 @@ char **speciesColor;
 	     reach = [aSpawner getReach];
 	     [randCellDist setIntegerMin: 0  setMax: [[reach getPolyCellList] getCount] - 1];
 
-	      while(fishCell == (FishCell *) nil){
-		   int aRandInt = [randCellDist getIntegerSample];
+		 while(fishCell == nil){
+			  maxCellTrials--;
+			  if(maxCellTrials <= 0) {
+				fprintf(stderr, "ERROR: TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> no sufficiently deep cell found\n");
+				fprintf(stderr, "Fish length: %f Reach: %s\n",[aSpawner getFishLength],[reach getReachName]);
+				fflush(0);
+				exit(1);
+				}
+			aRandInt = [randCellDist getIntegerSample]; 
+			fishCell = [[reach getPolyCellList] atOffset: aRandInt];
 
-		   while(fishCell == nil){
-			  aRandInt = [randCellDist getIntegerSample]; 
-			  fishCell = [reach getCellForNewFishWithCellNum: aRandInt];
-		   }
+			if(fishCell == nil) {
+				fprintf(stderr, "ERROR: TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> fishCell is nil\n");
+				fflush(0);
+				}
+
 		   
-	     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> aRandInt = %d\n", aRandInt);
+	     // fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> fish length: %f cell depth: %f\n",[aSpawner getFishLength], [fishCell getPolyCellDepth]);
 	     // fflush(0);
-		   //if([fishCell getPolyCellDepth] <= 0.0)
-		   if([fishCell getPolyCellDepth] <= ([aSpawner getFishLength] / 20)){
+
+		 if([fishCell getPolyCellDepth] <= ([aSpawner getFishLength] / 10.0)){
 			 fishCell = (FishCell *) nil;
-			 continue;
+			// fprintf(stdout, "TroutModelSwarm >>>> moveSpawnersToLiveFish >>>> Rejected cell\n");
+			// fflush(0);
 		   }
-		  
-		   break;
-	      }
+         }
+
 	     
 	      //xprint(liveFish);
 	      //xprint(fishCell);
 	      [aSpawner setCell: fishCell];
 	      [fishCell addFish: aSpawner];
-         }
+		}
     }
     [ndx drop];
 

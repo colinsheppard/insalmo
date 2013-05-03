@@ -1426,6 +1426,7 @@ Boston, MA 02111-1307, USA.
 // getCellForNewFishWithCellNum
 //
 ///////////////////////////////////////////////////////////
+/*   No longer used because it incorrectly assumes cell numbers are sequential starting with zero
 - (FishCell *) getCellForNewFishWithCellNum: (int) aCellNum
 {
      FishCell* fishCell = nil;
@@ -1458,7 +1459,7 @@ Boston, MA 02111-1307, USA.
 
      return fishCell;
 }
-
+*/
 
 ///////////////////////////////////////////////////
 //
