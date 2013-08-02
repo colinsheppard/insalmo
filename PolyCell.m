@@ -539,22 +539,6 @@ Boston, MA 02111-1307, USA.
       exit(1);
    }
 
-   for(i = 0; i < numberOfPPoints; i++) 
-   {
-      j = (i + 1) % numberOfPPoints;
-
-      polyPointI = [polyPointList atOffset: i];
-      polyPointJ = [polyPointList atOffset: j];
-
-      polyCenterX  += (([polyPointI getIntX] + [polyPointJ getIntX]) * 
-                       ([polyPointI getIntX] * [polyPointJ getIntY]
-                        - [polyPointJ getIntX] * [polyPointI getIntY]));
-
-      polyCenterY  += (([polyPointI getIntY] + [polyPointJ getIntY]) * 
-                       (  [polyPointI getIntX] * [polyPointJ getIntY]
-                        - [polyPointJ getIntX] * [polyPointI getIntY]));
-   }
-
    polyCenterX = 0.0;
    polyCenterY = 0.0;
 
