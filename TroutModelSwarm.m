@@ -2068,44 +2068,64 @@ char **speciesColor;
 //
 // readSpeciesSetup
 //
+// Copied from inSTREAM SFR 8/1/2013
 ////////////////////////////////////////////////////////////////////////////////
-- readSpeciesSetup 
-{
+- readSpeciesSetup {
   FILE* speciesFP=NULL;
   const char* speciesFile="Species.Setup";
-  int speciesIDX;
+  int speciesIDX, speciesBlockCount = 0;
   char* headerLine;
 
-  int checkNumSpecies=0;
+  headerLine = (char *) [modelZone alloc: HCOMMENTLENGTH*sizeof(char)];
 
-  if(numberOfSpecies > 10)
-  {
+  if((speciesFP = fopen( speciesFile, "r")) == NULL){
+      fprintf(stderr, "ERROR: TroutModelSwarm >>>> readSpeciesSetup >>>> Cannot open speciesFile %s",speciesFile);
+      fflush(0);
+      exit(1);
+  }
+  // Count the number of species and increment numberOfSpecies accordingly
+  // first skip the 3 header lines and the following blank line
+  numberOfSpecies = 0;
+  fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
+  fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
+  fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
+  fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
+  while(fgets(headerLine,HCOMMENTLENGTH,speciesFP)!=NULL){
+    speciesBlockCount++;
+    if(speciesBlockCount==4){
+      speciesBlockCount = 0;
+      numberOfSpecies++;
+      // skip the next blank line
+      fgets(headerLine,HCOMMENTLENGTH,speciesFP);
+    }
+  }
+  fclose(speciesFP);
+
+  if(numberOfSpecies == 0){
+     fprintf(stderr, "ERROR: TroutModelSwarm >>>> readSpeciesSetup >>>> numberOfSpecies is zero\n"); 
+     fflush(0);
+     exit(1);
+  }else if(numberOfSpecies > 10){
       fprintf(stderr, "ERROR: TroutModelSwarm >>>> readSpeciesSetup >>>> numberOfSpecies greater than 10");
       fflush(0);
       exit(1);
   }
-
   speciesName  = (char **) [modelZone alloc: numberOfSpecies*sizeof(char *)];
   speciesParameter  = (char **) [modelZone alloc: numberOfSpecies*sizeof(char *)];
   speciesPopFile = (char **) [modelZone alloc: numberOfSpecies*sizeof(char *)];
   speciesColor = (char **) [modelZone alloc: numberOfSpecies*sizeof(char *)];
 
-  headerLine = (char *) [modelZone alloc: HCOMMENTLENGTH*sizeof(char)];
 
-  if((speciesFP = fopen( speciesFile, "r")) == NULL) 
-  {
+  if((speciesFP = fopen( speciesFile, "r")) == NULL){
       fprintf(stderr, "ERROR: TroutModelSwarm >>>> readSpeciesSetup >>>> Cannot open speciesFile %s",speciesFile);
       fflush(0);
       exit(1);
   }
-
   fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
   fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
   fgets(headerLine,HCOMMENTLENGTH,speciesFP);  
 
-  for(speciesIDX=0;speciesIDX<numberOfSpecies;speciesIDX++) 
-  {
-
+  for(speciesIDX=0;speciesIDX<numberOfSpecies;speciesIDX++) {
       speciesName[speciesIDX] = (char *) [modelZone alloc: 200*sizeof(char)];
       speciesParameter[speciesIDX] = (char *) [modelZone alloc: 200*sizeof(char)];
       speciesPopFile[speciesIDX] = (char *) [modelZone alloc: 200*sizeof(char)];
@@ -2114,27 +2134,13 @@ char **speciesColor;
       if(fscanf(speciesFP,"%s%s%s%s",speciesName[speciesIDX],
                               speciesParameter[speciesIDX],
                               speciesPopFile[speciesIDX],
-                              speciesColor[speciesIDX]) != EOF)
-      {
-          checkNumSpecies++;
-
+                              speciesColor[speciesIDX]) != EOF){
           fprintf(stdout, "TroutModelSwarm >>>> readSpeciesSetup >>>> Myfiles are: %s %s %s \n", speciesName[speciesIDX],speciesParameter[speciesIDX], speciesPopFile[speciesIDX]);
           fflush(0);
       }
-
    }
-
-   if((checkNumSpecies != numberOfSpecies) || (checkNumSpecies == 0))
-   {
-      fprintf(stderr, "ERROR: TroutModelSwarm >>>> readSpeciesSetup >>>> Please check the Species.Setup file and the Model.Setup file and\n ensure that the numberOfSpecies is consistent with the Species.Setup data\n");
-      fflush(0);
-      exit(1);
-   
-   } 
-
    fclose(speciesFP);
    [modelZone free: headerLine];
-
    return self;
 } 
 
