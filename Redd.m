@@ -832,12 +832,7 @@ return self;
 
   id printString;
   char formatString[150];
-  double temp,flow,depth;
   
-  temp = [myCell getTemperature];
-  flow = [myCell getRiverFlow];
-  depth = [myCell getPolyCellDepth];
-
   printString  = [[self getZone] alloc: 300*sizeof(char)];
 
   strcpy(formatString,"%p,%s,%E,%E,%E,%E,%E,%E,%E,%E\n");

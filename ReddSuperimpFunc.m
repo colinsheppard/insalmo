@@ -61,7 +61,6 @@ Boston, MA 02111-1307, USA.
 - updateWith: anObj
 {
 
-   int speciesNdx;
    //int otherReddSpNdx;
    FishParams* otherReddFishParams;
    float superimpSF=1.0;
@@ -76,7 +75,6 @@ Boston, MA 02111-1307, USA.
    double areaAvailableToday;
 
    id aRedd = anObj;
-   FishParams* fishParams;
    id cell = nil;
 
    if(inputMethod == (SEL) nil)
@@ -143,8 +141,6 @@ Boston, MA 02111-1307, USA.
  
    }
 
-   speciesNdx = [aRedd getSpeciesNdx];
-   fishParams = [aRedd getFishParams];
 
    // Add up how much area was disturbed by redd-building today
    // assuming redds created on same day do not overlap
