@@ -61,6 +61,7 @@ char **speciesColor;
   troutModelSwarm->numberOfSpecies=0;
   troutModelSwarm->timeManager = nil;
   troutModelSwarm->fishColorMap = nil;
+  troutModelSwarm->lftBigOutmigrantsSizeThreshold = 5.0;  // "Big" outmigrants have length > this 
 
   troutModelSwarm->printFishParams = NO;
 
@@ -177,7 +178,6 @@ char **speciesColor;
   fishCounter = 0;
   lftNumTotalOutmigrants = 0; // Cumulative total of all live outmigrants
   lftNumBigOutmigrants = 0;   // Cumulative total of big live outmigrants
-  lftBigOutmigrantsSizeThreshold = 5.0;  // "Big" outmigrants have length > this 
 
 
   fprintf(stdout, "TroutModelSwarm >>>> buildObjects >>> instantiateObjects >>>> BEFORE HabitatManager\n");
