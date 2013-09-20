@@ -794,8 +794,10 @@ Boston, MA 02111-1307, USA.
 - readInputRecords{
 
   FILE* inputFP=NULL;
-  char tempString[200];
-  char header1[200];
+  int strArraySize = 1501;
+  char tempString[strArraySize];
+  char header1[strArraySize];
+  char delimiters[5] = " \t\n,";
 
   int inputNdx = 0;
 
@@ -803,7 +805,11 @@ Boston, MA 02111-1307, USA.
   time_t prevInputTime = 0;
 
 
-  char date[12];
+  char* sInputData;
+  char* date;
+  char* sHour;
+  char* sMinute;
+  char* sSecond;
   int hour = 0;
   int minute = 0;
   int second = 0;
@@ -811,193 +817,162 @@ Boston, MA 02111-1307, USA.
   double inputData;
 
   int lineNumber = 3;
-
-  BOOL CSV = NO;
-
+  
    //
-   // Check the input filename to see if it is a .csv file
+   // Check if file can be opened 
    //
-  if((inputFP = fopen(inputFileName, "r")) != NULL){
-    fgets(tempString, 200, inputFP);
-    fgets(tempString, 200, inputFP);
-    fgets(tempString, 200, inputFP);
-    fgets(tempString, 200, inputFP);
-    if(strchr(tempString,',')!=NULL){
-       CSV = YES;
-    }
-    fclose(inputFP);
-  }else{
+  if((inputFP = fopen(inputFileName, "r")) == NULL){
     fprintf(stderr,  "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> Unable to open time series input file  %s\n", inputFileName);
     fflush(0);
     exit(1);
   }
-
-  //fprintf(stdout, "TimeSeriesInputManager >>>>  readInputRecords >>>> CSV = %d, file=%s \n", (int) CSV, inputFileName);
-  //fflush(0);
-  //exit(0);
-
+  fprintf(stdout,"TimeSeriesInputManager >>> readInputRecords >>> reading file: %s \n",inputFileName);
+  fflush(0);
   numRecords = 0;
 
-  if((inputFP = fopen(inputFileName, "r")) != NULL){
+  fgets(header1,HCOMMENTLENGTH,inputFP);
+  fgets(header1,HCOMMENTLENGTH,inputFP);
+  fgets(header1,HCOMMENTLENGTH,inputFP);
+
+  while(fgets(tempString, strArraySize, inputFP) != NULL){
+    date =  strtok(tempString,delimiters);
+    [TimeSeriesInputManager unQuote: date];
+    // IMPORTANT: You need to parse the rest of the data in tempString before converting the string date to a time_t b/c
+    // timeManager uses strtok as well which would interfere with the parsing going on here.
+    if(inputDataType == DAILY){
+        sInputData = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sInputData];
+        inputData = atof(sInputData);
+
+        anInputTime = [timeManager getTimeTWithDate: date];
+    }else if(inputDataType == HOURLY){
+        sHour = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sHour];
+        hour = atoi(sHour);
+
+        sInputData = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sInputData];
+        inputData = atof(sInputData);
+
+        anInputTime = [timeManager getTimeTWithDate: date
+                                           withHour: hour
+                                         withMinute: minute
+                                         withSecond: second];
+      }else{
+        sHour = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sHour];
+        hour = atoi(sHour);
+        sMinute = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sMinute];
+        minute = atoi(sMinute);
+        sSecond = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sSecond];
+        second = atoi(sSecond);
+
+        sInputData = strtok(NULL,delimiters);
+        [TimeSeriesInputManager unQuote: sInputData];
+        inputData = atof(sInputData);
+        anInputTime = [timeManager getTimeTWithDate: date
+                                           withHour: hour
+                                         withMinute: minute
+                                         withSecond: second];
+      }
+      if((startTime <= anInputTime) && (anInputTime <= endTime)){
+          numRecords++;
+      }
+  }
+  fclose(inputFP);
+
+  if(numRecords > 0){
+      if((inputFP = fopen(inputFileName, "r")) == NULL){
+          fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> error opening %s\n", inputFileName);
+          fflush(0);
+          exit(1);
+      }
       fgets(header1,HCOMMENTLENGTH,inputFP);
       fgets(header1,HCOMMENTLENGTH,inputFP);
       fgets(header1,HCOMMENTLENGTH,inputFP);
 
-      while(fgets(tempString, 200, inputFP) != NULL){
-          if(inputDataType == DAILY){
-              if(CSV == NO){
-                  sscanf(tempString,"%s%lf", date, &inputData);
-              }else{
-                char sInputData[15];
-                char * inputFormat = "%s,%s";
-                sscanf(tempString, inputFormat, date,sInputData);
-                inputData = atof(sInputData);
-              }
-              anInputTime = (double) [timeManager getTimeTWithDate: date];
-          }else if(inputDataType == HOURLY){
-              if(CSV == NO){
-                  sscanf(tempString,"%s%d%lf", date, &hour, &inputData);
-              }else{
-                char sInputData[15];
-                char sHour[15]; 
-                char * inputFormat = "%s,%s,%s";
-                sscanf(tempString, inputFormat, date,sHour,sInputData);
-                hour = atoi(sHour);
-                inputData = atof(sInputData);
-              }
-              anInputTime = (double) [timeManager getTimeTWithDate: date
-                                                          withHour: hour
-                                                        withMinute: minute
-                                                        withSecond: second];
+      inputRecord = (double **)[timeSeriesInputZone alloc: numRecords*sizeof(double *)];
+    
+      while(fgets(tempString, strArraySize, inputFP) != NULL){
+        date =  strtok(tempString,delimiters);
+        [TimeSeriesInputManager unQuote: date];
+        // IMPORTANT: You need to parse the rest of the data in tempString before converting the string date to a time_t b/c
+        // timeManager uses strtok as well which would interfere with the parsing going on here.
+        if(inputDataType == DAILY){
+            sInputData = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sInputData];
+            inputData = atof(sInputData);
+
+            anInputTime = [timeManager getTimeTWithDate: date];
+        }else if(inputDataType == HOURLY){
+            sHour = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sHour];
+            hour = atoi(sHour);
+
+            sInputData = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sInputData];
+            inputData = atof(sInputData);
+
+            anInputTime = [timeManager getTimeTWithDate: date
+        				       withHour: hour
+        				     withMinute: minute
+        				     withSecond: second];
           }else{
-	    //OTHER
-              if(CSV == NO){
-                  sscanf(tempString,"%s%d%d%d%lf", date, &hour, &minute, &second, &inputData);  
-              }else{
-                char sInputData[15];
-                char sHour[15]; 
-                char sMinute[15]; 
-                char sSecond[15]; 
-                char * inputFormat = "%s,%s,%s,%s,%s";
-                sscanf(tempString, inputFormat, date,sHour,sMinute,sSecond,sInputData);
-                hour = atoi(sHour);
-                minute = atoi(sMinute);
-                second = atoi(sSecond);
-                inputData = atof(sInputData);
-              }
+            sHour = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sHour];
+            hour = atoi(sHour);
+            sMinute = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sMinute];
+            minute = atoi(sMinute);
+            sSecond = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sSecond];
+            second = atoi(sSecond);
 
-              anInputTime = (double) [timeManager getTimeTWithDate: date
-                                                          withHour: hour
-                                                        withMinute: minute
-                                                        withSecond: second];
+            sInputData = strtok(NULL,delimiters);
+            [TimeSeriesInputManager unQuote: sInputData];
+            inputData = atof(sInputData);
+            anInputTime = [timeManager getTimeTWithDate: date
+        				       withHour: hour
+        				     withMinute: minute
+        				     withSecond: second];
+          }
+          if(inputNdx == 0){
+               prevInputTime = anInputTime;
+          }else if(prevInputTime < anInputTime){
+               prevInputTime = anInputTime;
+          }else{
+               fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> Data file %s not increasing in time; Check lineNumber %d\n", inputFileName, lineNumber);
+               fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> prevInputTime = %ld >>>> anInputTime = %ld\n", prevInputTime, anInputTime);
+               fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> date = %s \n", date);
+               fflush(0);
+               exit(1);
           }
           if((startTime <= anInputTime) && (anInputTime <= endTime)){
-              numRecords++;
+              inputRecord[inputNdx] = (double *)[timeSeriesInputZone  alloc: 2*sizeof(double)];
+              inputRecord[inputNdx][0] = anInputTime;
+              inputRecord[inputNdx][1] = inputData;
+              inputNdx++;
+          }else if(anInputTime > endTime){
+               break;
           }
       }
-      fclose(inputFP);
+      //cleanup
+      fclose (inputFP);
 
-      if(numRecords > 0){
-          if((inputFP = fopen(inputFileName, "r")) == NULL){
-              fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> error opening %s\n", inputFileName);
-              fflush(0);
-              exit(1);
-          }
-          fgets(header1,HCOMMENTLENGTH,inputFP);
-          fgets(header1,HCOMMENTLENGTH,inputFP);
-          fgets(header1,HCOMMENTLENGTH,inputFP);
-
-          inputRecord = (double **)[timeSeriesInputZone alloc: numRecords*sizeof(double *)];
-    
-          while(fgets(tempString, 200, inputFP) != NULL){
-                  lineNumber++;
-
-                  if(inputDataType == DAILY){
-                      if(CSV == NO){
-                          sscanf(tempString,"%s%lf", date, &inputData);
-                      }else{
-                        char sInputData[15];
-                        char * inputFormat = "%s,%s";
-                        sscanf(tempString, inputFormat, date,sInputData);
-                        inputData = atof(sInputData);
-                      }
-                      anInputTime = (double) [timeManager getTimeTWithDate: date];
-                  }else if(inputDataType == HOURLY){
-                        if(CSV == NO){
-                            sscanf(tempString,"%s%d%lf", date, &hour, &inputData);
-                        }else{
-                          char sInputData[15];
-                          char sHour[15]; 
-                          char * inputFormat = "%s,%s,%s";
-                          sscanf(tempString, inputFormat, date,sHour,sInputData);
-                          hour = atoi(sHour);
-                          inputData = atof(sInputData);
-                        }
-                        anInputTime = (double) [timeManager getTimeTWithDate: date
-                                                                    withHour: hour
-                                                                  withMinute: minute
-                                                                  withSecond: second];
-                  }else{
-		    //OTHER
-                       if(CSV == NO){
-                           sscanf(tempString,"%s%d%d%d%lf", date, &hour, &minute, &second, &inputData);  
-                       }else{
-                         char sInputData[15];
-                         char sHour[15]; 
-                         char sMinute[15]; 
-                         char sSecond[15]; 
-                         char * inputFormat = "%s,%s,%s,%s,%s";
-                         sscanf(tempString, inputFormat, date,sHour,sMinute,sSecond,sInputData);
-                         hour = atoi(sHour);
-                         minute = atoi(sMinute);
-                         second = atoi(sSecond);
-                         inputData = atof(sInputData);
-                       }
-                       anInputTime = (double) [timeManager getTimeTWithDate: date
-                                                                   withHour: hour
-                                                                 withMinute: minute
-                                                                 withSecond: second];
-                  }
-                  if(inputNdx == 0){
-                       prevInputTime = anInputTime;
-                  }else if(prevInputTime < anInputTime){
-                      prevInputTime = anInputTime;
-                  }else{
-                      fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> Data file %s not increasing in time; Check lineNumber %d\n", inputFileName, lineNumber);
-                      fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> prevInputTime = %ld >>>> anInputTime = %ld\n", prevInputTime, anInputTime);
-                      fprintf(stderr, "ERROR: TimeSeriesInputManager >>>> readInputRecords >>>> date = %s \n", date);
-                      fflush(0);
-                      exit(1);
-                  }
-                 if((startTime <= anInputTime) && (anInputTime <= endTime)){
-                     inputRecord[inputNdx] = (double *)[timeSeriesInputZone  alloc: 2*sizeof(double)];
-                     inputRecord[inputNdx][0] = anInputTime;
-                     inputRecord[inputNdx][1] = inputData;
-                     inputNdx++;
-                 }else if(anInputTime > endTime){
-                      break;
-                 }
-              }
-              //cleanup
-              fclose (inputFP);
-
-              if(numRecords != inputNdx){
-                   fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> check data file %s near line %d\n", inputFileName, lineNumber);
-                   fflush(0);
-                   exit(1);
-              }
-              fprintf(stdout, "TimeSeriesInputManager >>>>> readInputRecords >>>> number data records created = %d\n", inputNdx);
-              fflush(0);
-          }else{
-	    //numRecords == 0
-              fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> No data found between starting and ending dates for file %s\n", inputFileName);
-              fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> No data records created\n");
-              fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> Check the startTime and endTime.\n");
-              fflush(0);
-              exit(1);
-          }
+      if(numRecords != inputNdx){
+           fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> check data file %s near line %d, numRecords = %d, inputNdx = %d \n", inputFileName, lineNumber,numRecords,inputNdx);
+           fflush(0);
+           exit(1);
+      }
+      fprintf(stdout, "TimeSeriesInputManager >>>>> readInputRecords >>>> number data records created = %d\n", inputNdx);
+      fflush(0);
   }else{
-      fprintf(stderr,  "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> Unable to open time series input file  %s\n", inputFileName);
+      //numRecords == 0
+      fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> No data found between starting and ending dates for file %s\n", inputFileName);
+      fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> No data records created\n");
+      fprintf(stderr, "ERROR: TimeSeriesInputManager >>>>> readInputRecords >>>> Check the startTime and endTime.\n");
       fflush(0);
       exit(1);
   }
@@ -1548,6 +1523,26 @@ Boston, MA 02111-1307, USA.
    return self;
 }
 
+///////////////////////////////////////////
+//
+// unQuote
+//
+// This function alters the string argument if the string has double quotes at the front and end, 
+// the double quotes are removed.
+//
+///////////////////////////////////////////
++ (void) unQuote: (char *) toScrub {
+  int i;
+
+  if(toScrub==NULL)return;
+  if(toScrub[0]=='"' && toScrub[strlen(toScrub)-1] == '"'){
+    for(i=1;i<=strlen(toScrub)-2;i++){
+      toScrub[i-1] = toScrub[i];
+    }
+    toScrub[i-1] = '\0';
+  }
+  return;
+}
 
 
 
