@@ -1053,7 +1053,7 @@ Boston, MA 02111-1307, USA.
          exit(1);
       }
 
-      sprintf(filename, "Model%03d_Frame%03ld.png", modelNumber, getCurrentTime());
+      sprintf(filename, "Model%03d_Frame%04ld.png", modelNumber, getCurrentTime());
 
       pixID =  [Pixmap createBegin: [self getZone]];
       [pixID  setWidget: raster];
