@@ -2918,10 +2918,10 @@ Boston, MA 02111-1307, USA.
    while(([polyCellListNdx getLoc] != End)
             && ((fishCell = [polyCellListNdx next]) != nil))
   {
-      double polyCellDepth = [fishCell getPolyCellArea];
+      double polyCellDepth = [fishCell getPolyCellDepth];
       if(polyCellDepth > 0.0)
       {
-         habWettedArea += polyCellDepth;
+         habWettedArea += [fishCell getPolyCellArea];
       }
   }
 
