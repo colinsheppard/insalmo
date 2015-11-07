@@ -200,12 +200,12 @@ Boston, MA 02111-1307, USA.
 
         aTimeT = aTimeT - timeZoneOffset;
 
-      /*
-        printf("aFormattedDate = %s \n", aFormattedDate);
-        printf("aTimeT = %d \n", (int) aTimeT);
-        printf("aDate = %s \n\n", [self getDateWithTimeT: aTimeT]);
-        fflush(stdout);
-      */
+      
+        //printf("aFormattedDate = %s \n", aFormattedDate);
+        //printf("aTimeT = %d \n", (int) aTimeT);
+        //printf("aDate = %s \n\n", [self getDateWithTimeT: aTimeT]);
+        //fflush(stdout);
+      
 
 
  if(aTimeT == -1 )  
@@ -288,10 +288,10 @@ Boston, MA 02111-1307, USA.
            aTimeT = aTimeT + 86400;
         }
 
-        //printf("aFormattedDate = %s \n", aFormattedDate);
-        //printf("aTimeT = %d \n", (int) aTimeT);
-        //printf("aDate = %s \n\n", [self getDateWithTimeT: aTimeT]);
-        //fflush(stdout);
+	//printf("aFormattedDate = %s \n", aFormattedDate);
+	//printf("aTimeT = %d \n", (int) aTimeT);
+	//printf("aDate = %s \n\n", [self getDateWithTimeT: aTimeT]);
+	//fflush(stdout);
 
 
 
@@ -797,34 +797,54 @@ Boston, MA 02111-1307, USA.
   startTimeStruct.tm_yday = 0;
   startTimeStruct.tm_isdst = defaultDST;       /* no daylight savings */
 
-  startTime = mktime(&startTimeStruct);
-  startTime = startTime - timeZoneOffset;
+  endTimeStruct.tm_sec = defaultSecond;         /* seconds */
+  endTimeStruct.tm_min = defaultMinute;         /* minutes */
+  endTimeStruct.tm_hour = defaultHour;        /* hours */
+  endTimeStruct.tm_mday = endDateDay;
+  endTimeStruct.tm_mon = endDateMonth - 1;
+  endTimeStruct.tm_year = (timeYear -1900);
+  endTimeStruct.tm_wday = 0;
+  endTimeStruct.tm_yday = 0;
+  endTimeStruct.tm_isdst = defaultDST;       /* no daylight savings */
 
-  if([self getJulianDayWithTimeT: aTime_t] >= [self getJulianDayWithTimeT: startTime]){
-     timeIsBetween = YES;
-  } else if([self getJulianDayWithTimeT: aTime_t] <= [self getJulianDayWithTimeT: endTime]){
-     timeIsBetween = YES;
-  }
+  startTime = mktime(&startTimeStruct);
+  endTime = mktime(&endTimeStruct);
+
+
+  startTime = startTime - timeZoneOffset;
+  endTime = endTime - timeZoneOffset;
 
   if(endTime  < startTime)
   {
-     endTimeStruct.tm_sec = defaultSecond;         /* seconds */
-     endTimeStruct.tm_min = defaultMinute;         /* minutes */
-     endTimeStruct.tm_hour = defaultHour;        /* hours */
-     endTimeStruct.tm_mday = endDateDay;
-     endTimeStruct.tm_mon = endDateMonth - 1;
-     endTimeStruct.tm_year = ((timeYear + 1) - 1900);
-     endTimeStruct.tm_wday = 0;
-     endTimeStruct.tm_yday = 0;
-     endTimeStruct.tm_isdst = defaultDST;       /* no daylight savings */
+	 // endTimeStruct.tm_sec = defaultSecond;         /* seconds */
+	 // endTimeStruct.tm_min = defaultMinute;         /* minutes */
+	 // endTimeStruct.tm_hour = defaultHour;        /* hours */
+	 // endTimeStruct.tm_mday = endDateDay;
+	 // endTimeStruct.tm_mon = endDateMonth - 1;
+	 // endTimeStruct.tm_year = ((timeYear + 1) - 1900);
+	 // endTimeStruct.tm_wday = 0;
+	 // endTimeStruct.tm_yday = 0;
+	 // endTimeStruct.tm_isdst = defaultDST;       /* no daylight savings */
  
-     endTime = mktime(&endTimeStruct);
+	 // endTime = mktime(&endTimeStruct);
 
 
-     endTime = endTime - timeZoneOffset;
-
-  }else if((startTime <= aTime_t) && (aTime_t <= endTime)){
-      timeIsBetween = YES;
+	 // endTime = endTime - timeZoneOffset;
+	if([self getJulianDayWithTimeT: aTime_t] >= [self getJulianDayWithTimeT: startTime])
+	  {
+		  timeIsBetween = YES;
+	  }
+	else if([self getJulianDayWithTimeT: aTime_t] <= [self getJulianDayWithTimeT: endTime])
+	  {
+		  timeIsBetween = YES;
+	  }
+  }
+  else
+  {
+	  if((startTime <= aTime_t) && (aTime_t <= endTime))
+	  {
+		  timeIsBetween = YES;
+	  }
   }
 
   //fprintf(stderr, "TIMEMANAGER >>>> isTime:betweenMMDD:andMMDD >>>> startTime = %ld \n", (long) startTime);
